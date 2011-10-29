@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[zzzhc's Blog]]></title>
-  <link href="http://zzzhc.github.com/atom.xml" rel="self"/>
-  <link href="http://zzzhc.github.com/"/>
-  <updated>2011-10-29T12:59:33+08:00</updated>
-  <id>http://zzzhc.github.com/</id>
+  <link href="http://blog.zzzhc.com/atom.xml" rel="self"/>
+  <link href="http://blog.zzzhc.com/"/>
+  <updated>2011-10-29T19:32:55+08:00</updated>
+  <id>http://blog.zzzhc.com/</id>
   <author>
     <name><![CDATA[zzzhc]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[lucene 3下最快的中文分词器]]></title>
-    <link href="http://zzzhc.github.com/blogs/115"/>
+    <link href="http://blog.zzzhc.com/blogs/115"/>
     <updated>2011-06-19T00:00:00+08:00</updated>
-    <id>http://zzzhc.github.com/blogs/115</id>
+    <id>http://blog.zzzhc.com/blogs/115</id>
     <content type="html"><![CDATA[<h1>包包分词器 - 一个基于字典的快速中文分词器</h1>
 
 <h2>source code</h2>
@@ -134,9 +134,9 @@
   
   <entry>
     <title type="html"><![CDATA[mysqld 5.1.41的一个神奇bug]]></title>
-    <link href="http://zzzhc.github.com/blogs/107"/>
+    <link href="http://blog.zzzhc.com/blogs/107"/>
     <updated>2011-06-09T00:00:00+08:00</updated>
-    <id>http://zzzhc.github.com/blogs/107</id>
+    <id>http://blog.zzzhc.com/blogs/107</id>
     <content type="html"><![CDATA[<p>今天打算在本地装两个数据库，方便测试，用mysql_install_db &#8211;datadir=/opt/mysql初始化mysql data directory, 死活都不成功，/opt, /opt/mysql的权限都改成0777也是一样</p>
 
 <p>OS:</p>
@@ -258,9 +258,9 @@ bug总是无处不在啊!</p>
   
   <entry>
     <title type="html"><![CDATA[做事]]></title>
-    <link href="http://zzzhc.github.com/blogs/101"/>
+    <link href="http://blog.zzzhc.com/blogs/101"/>
     <updated>2011-05-19T00:00:00+08:00</updated>
-    <id>http://zzzhc.github.com/blogs/101</id>
+    <id>http://blog.zzzhc.com/blogs/101</id>
     <content type="html"><![CDATA[<p>做好一件事和用正确的方法做好一件事，看起来是一样的结果，实际上如果每次做的事都留下一两个坑，几年之后会再也无法移动。
 但什么是正确的方法？这也没有定论，不同的阶段会不一样。</p>
 ]]></content>
@@ -268,9 +268,9 @@ bug总是无处不在啊!</p>
   
   <entry>
     <title type="html"><![CDATA[lucene中文分词器比较]]></title>
-    <link href="http://zzzhc.github.com/blogs/86"/>
+    <link href="http://blog.zzzhc.com/blogs/86"/>
     <updated>2011-05-03T00:00:00+08:00</updated>
-    <id>http://zzzhc.github.com/blogs/86</id>
+    <id>http://blog.zzzhc.com/blogs/86</id>
     <content type="html"><![CDATA[<h1>当前支持lucene 3.1的中文分词器</h1>
 
 <ul>
@@ -520,9 +520,9 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
   
   <entry>
     <title type="html"><![CDATA[solr faceted search]]></title>
-    <link href="http://zzzhc.github.com/blogs/77"/>
+    <link href="http://blog.zzzhc.com/blogs/77"/>
     <updated>2011-04-24T00:00:00+08:00</updated>
-    <id>http://zzzhc.github.com/blogs/77</id>
+    <id>http://blog.zzzhc.com/blogs/77</id>
     <content type="html"><![CDATA[<p>从用户角度看，<a href="http://wiki.apache.org/solr/SolrFacetingOverview">faceted search</a>把搜索结果分入多个类别(一般还会显示各个类别下有多少结果)，并允许用户分类别查看。在电子商务类网站经常可以看到，如</p>
 
 <ul>
@@ -546,9 +546,9 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
   
   <entry>
     <title type="html"><![CDATA[solr]]></title>
-    <link href="http://zzzhc.github.com/blogs/69"/>
+    <link href="http://blog.zzzhc.com/blogs/69"/>
     <updated>2011-04-11T00:00:00+08:00</updated>
-    <id>http://zzzhc.github.com/blogs/69</id>
+    <id>http://blog.zzzhc.com/blogs/69</id>
     <content type="html"><![CDATA[<p><a href="http://lucene.apache.org/solr/">solr</a>是一个基于<a href="http://lucene.apache.org/">lucene</a>，高度可配置的企业级搜索平台。它自己的介绍:</p>
 
 <blockquote>
@@ -581,9 +581,9 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
   
   <entry>
     <title type="html"><![CDATA[wiki markup]]></title>
-    <link href="http://zzzhc.github.com/blogs/42"/>
+    <link href="http://blog.zzzhc.com/blogs/42"/>
     <updated>2011-04-09T00:00:00+08:00</updated>
-    <id>http://zzzhc.github.com/blogs/42</id>
+    <id>http://blog.zzzhc.com/blogs/42</id>
     <content type="html"><![CDATA[<p>wordpress的编辑器实在不怎么样，想念<a href="http://confluence.atlassian.com/">conflucene</a>的<a href="http://confluence.atlassian.com/renderer/notationhelp.action?section=all">wiki markup</a>.</p>
 
 <p>confluence的wiki markup是从<a href="http://textile.thresholdstate.com/">textile</a>改进过来的，在plugins里找了会，没有好用的textile plugin，像textile 2会把原来的内容变成乱七八遭的，没法忍。</p>
@@ -604,9 +604,9 @@ confluence里的||column||column||很简单快捷。</li>
   
   <entry>
     <title type="html"><![CDATA[nodejs]]></title>
-    <link href="http://zzzhc.github.com/blogs/31"/>
+    <link href="http://blog.zzzhc.com/blogs/31"/>
     <updated>2011-04-09T00:00:00+08:00</updated>
-    <id>http://zzzhc.github.com/blogs/31</id>
+    <id>http://blog.zzzhc.com/blogs/31</id>
     <content type="html"><![CDATA[<p><a href="http://nodejs.org/" target="_blank">nodejs</a> Evented I/O for         <a href="http://code.google.com/p/v8/">V8 JavaScript</a>.</p>
 
 <p>node的目标是提供一种简单的方式来构建可伸缩的网络程序。在node里几乎没有函数会直接执行IO操作，进程从不会阻塞在某个IO等待上。event, callback是node中两个主要的概念，因为IO操作不阻塞，通过event, callback来实现是很自然的。</p>
@@ -746,9 +746,9 @@ Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
   
   <entry>
     <title type="html"><![CDATA[ruby eventmachine]]></title>
-    <link href="http://zzzhc.github.com/blogs/25"/>
+    <link href="http://blog.zzzhc.com/blogs/25"/>
     <updated>2011-04-02T00:00:00+08:00</updated>
-    <id>http://zzzhc.github.com/blogs/25</id>
+    <id>http://blog.zzzhc.com/blogs/25</id>
     <content type="html"><![CDATA[<p><a href="https://github.com/eventmachine/eventmachine">eventmachine</a> 是一个快速轻量的网络协议框架，有不少ruby应用基于它实现，如thin, ruby-amqp. eventmachine在不同os上自动选择最佳的底层网络通知机制，在linux上用epoll，freebsd上用kqueue.</p>
 
 <p>eventmachine对网络事件进行封装，有事件发生时回调预设的handler module。</p>
@@ -951,9 +951,9 @@ Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
   
   <entry>
     <title type="html"><![CDATA[Qpid ruby client]]></title>
-    <link href="http://zzzhc.github.com/blogs/17"/>
+    <link href="http://blog.zzzhc.com/blogs/17"/>
     <updated>2011-03-31T00:00:00+08:00</updated>
-    <id>http://zzzhc.github.com/blogs/17</id>
+    <id>http://blog.zzzhc.com/blogs/17</id>
     <content type="html"><![CDATA[<p>Qpid对ruby的官方支持：<a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/" target="_blank">https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/</a></p>
 
 <p>感觉是对python client的port, 代码风格看起来很不ruby, 用了挺多锁，信号，线程，想要停止一个connection都比较困难。对AMQP协议的实现细节被序列化到一个spec_cache下，不可读。基本没有文档，总体来说不像是一个可以正式用的东西。</p>
@@ -1106,9 +1106,9 @@ producer.rb</p>
   
   <entry>
     <title type="html"><![CDATA[AMQP]]></title>
-    <link href="http://zzzhc.github.com/blogs/4"/>
+    <link href="http://blog.zzzhc.com/blogs/4"/>
     <updated>2011-03-30T00:00:00+08:00</updated>
-    <id>http://zzzhc.github.com/blogs/4</id>
+    <id>http://blog.zzzhc.com/blogs/4</id>
     <content type="html"><![CDATA[<p><a href="http://www.amqp.org/">AMQP</a>(Advanced Message Queuing Protocol) 是一个为消息驱动中间件提供的应用层协议，binary protocol. <a href="http://www.amqp.org/confluence/display/AMQP/AMQP+Specification">协议规范</a>有多个版本，0-8版本是支持得最多的。</p>
 
 <p>AMQP的原始用途只是为金融界提供一个可以彼此协作的消息协议，而现在的目标则是为通用消息队列架构提供通用基础架构。因此，面向消息的中间件 （MOM）系统，例如发布/订阅队列，没有作为基本元素实现，而是通过发送简化的AMQ实体来完成。这些实体也是规范的一 部分，形成了在线路层协议顶端的一个层级：AMQP模型。这个模型统一了消息模式，包括发布/订阅，队列，事务以及流数据，路由等。</p>
@@ -1126,9 +1126,9 @@ producer.rb</p>
 
 <h2>exchange的类型说明:</h2>
 
-<p><img class="size-full wp-image-5" title="direct exchange" src="http://zzzhc.github.com/images/posts/direct.jpg" alt="" width="450" height="300" />
-<img class="size-full wp-image-7" title="topic exchange" src="http://zzzhc.github.com/images/posts/topic.jpg" alt="" width="550" height="350" />
-<img class="size-full wp-image-6" title="fanout exchange" src="http://zzzhc.github.com/images/posts/fanout.jpg" alt="" width="450" height="300" /></p>
+<p><img class="size-full wp-image-5" title="direct exchange" src="http://blog.zzzhc.com/images/posts/direct.jpg" alt="" width="450" height="300" />
+<img class="size-full wp-image-7" title="topic exchange" src="http://blog.zzzhc.com/images/posts/topic.jpg" alt="" width="550" height="350" />
+<img class="size-full wp-image-6" title="fanout exchange" src="http://blog.zzzhc.com/images/posts/fanout.jpg" alt="" width="450" height="300" /></p>
 
 <p>&nbsp;</p>
 
