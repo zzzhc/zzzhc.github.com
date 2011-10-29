@@ -1,0 +1,85 @@
+---
+layout: post
+title: 'AMQP'
+date: 2011-3-30
+wordpress_id: 4
+permalink: /blogs/4
+comments: true
+---
+
+[AMQP](http://www.amqp.org/)(Advanced Message Queuing Protocol) 是一个为消息驱动中间件提供的应用层协议，binary protocol. [协议规范](http://www.amqp.org/confluence/display/AMQP/AMQP+Specification)有多个版本，0-8版本是支持得最多的。
+
+AMQP的原始用途只是为金融界提供一个可以彼此协作的消息协议，而现在的目标则是为通用消息队列架构提供通用基础架构。因此，面向消息的中间件 （MOM）系统，例如发布/订阅队列，没有作为基本元素实现，而是通过发送简化的AMQ实体来完成。这些实体也是规范的一 部分，形成了在线路层协议顶端的一个层级：AMQP模型。这个模型统一了消息模式，包括发布/订阅，队列，事务以及流数据，路由等。
+
+## 几个主要概念:
+* broker，即AMQP server
+* message, 内容不可变，没有长度限制
+* queue, message最终总会进入一个queue
+* exchange, 为message提供分发服务，按binding规则将message分发到一个或多个queue, 有多种类型，如direct, fanout, topic
+* binding,　消息路由规则
+
+## exchange的类型说明:
+
+<img class="size-full wp-image-5" title="direct exchange" src="/images/posts/direct.jpg" alt="" width="450" height="300" />
+<img class="size-full wp-image-7" title="topic exchange" src="/images/posts/topic.jpg" alt="" width="550" height="350" />
+<img class="size-full wp-image-6" title="fanout exchange" src="/images/posts/fanout.jpg" alt="" width="450" height="300" />
+
+&nbsp;
+
+## brokers
+
+* [Apache Qpid](http://qpid.apache.org/) 性能很好
+* [RabbitMQ](http://www.rabbitmq.com/)
+* [Red Hat Enterprise MRG](http://www.redhat.com/mrg)
+* ...
+
+## Qpid c++ broker性能测试结果
+
+qpid-perftest --worker-threads 16 --default-queue-limit 1024000 --queue-purge-interval 30 --tcp-nodelay --mgmt-enable no
+<table>
+<tbody>
+<tr>
+<th><span style="color: #333333;">Message size (bytes)</span></th>
+<th><span style="color: #333333;">Total transfers/sec</span></th>
+<th> Total Mbytes/sec</th>
+</tr>
+<tr>
+<td>32</td>
+<td>708,159</td>
+<td>21.6113</td>
+</tr>
+<tr>
+<td>64</td>
+<td>627,766</td>
+<td>38.3158</td>
+</tr>
+<tr>
+<td>128</td>
+<td>537,001</td>
+<td>65.5519</td>
+</tr>
+<tr>
+<td>256</td>
+<td>487,070</td>
+<td>118.914</td>
+</tr>
+<tr>
+<td>512</td>
+<td>278,192</td>
+<td>135.445</td>
+</tr>
+<tr>
+<td>1024</td>
+<td>176,901</td>
+<td>172.755</td>
+</tr>
+</tbody>
+</table>
+
+
+## ruby client
+
+* [qpid ruby client](https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/)
+* [ruby-amqp](https://github.com/ruby-amqp/amqp) 只支持AMQP 0-8
+
+

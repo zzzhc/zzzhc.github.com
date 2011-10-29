@@ -1,0 +1,96 @@
+---
+layout: post
+title: 'Qpid ruby client'
+date: 2011-3-31
+wordpress_id: 17
+permalink: /blogs/17
+comments: true
+---
+Qpid对ruby的官方支持：<a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/" target="_blank">https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/</a>
+
+感觉是对python client的port, 代码风格看起来很不ruby, 用了挺多锁，信号，线程，想要停止一个connection都比较困难。对AMQP协议的实现细节被序列化到一个spec_cache下，不可读。基本没有文档，总体来说不像是一个可以正式用的东西。
+
+大概的用法，用rake gem生成gem包，安装gem install pkg/qpid-0.10.2.gem
+
+用qpid java broker的时候要注意下，创建connection的时候要指定用户名密码。
+conn = Qpid::Connection.new(TCPSocket.new("localhost", 5672),
+:username =&gt; "guest",
+:password =&gt; "guest")
+
+参考example写了两个简单例子
+producer.rb
+
+{% codeblock %}
+#!/usr/bin/env ruby
+
+require &quot;rubygems&quot;
+require &quot;qpid&quot;
+require &quot;socket&quot;
+
+conn = Qpid::Connection.new(TCPSocket.new(&quot;localhost&quot;, 5672),
+                                         :username =&gt; &quot;guest&quot;,
+                                         :password =&gt; &quot;guest&quot;)
+conn.start(10)
+
+ssn = conn.session(&quot;test_producer&quot;)
+
+# create a queue
+ssn.queue_declare(&quot;test-queue&quot;)
+ssn.exchange_declare(&quot;test-exchange&quot;, :type =&gt; &quot;direct&quot;)
+
+dp = ssn.delivery_properties(:routing_key =&gt; &quot;test-queue&quot;)
+mp = ssn.message_properties(:content_type =&gt; &quot;text/plain&quot;)
+
+ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;Hello QPID!&quot;))
+ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;Hello RUBY!&quot;))
+while line = gets.strip
+  break if line =~ /^(exit|done)$/i
+  ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, line.strip))
+end
+ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;done&quot;))
+ssn.sync
+
+ssn.close()
+conn.close()
+
+{% endcodeblock %}
+
+consumer.rb
+
+{% codeblock %}
+#!/usr/bin/env ruby
+
+require &quot;rubygems&quot;
+require &quot;qpid&quot;
+require &quot;socket&quot;
+
+conn = Qpid::Connection.new(TCPSocket.new(&quot;localhost&quot;, 5672),
+                                         :username =&gt; &quot;guest&quot;,
+                                         :password =&gt; &quot;guest&quot;)
+conn.start(10)
+
+ssn = conn.session(&quot;test_consumer&quot;)
+
+incoming = ssn.incoming(&quot;messages&quot;)
+ssn.message_subscribe(
+  :destination =&gt; &quot;messages&quot;,
+  :queue =&gt; &quot;test-queue&quot;,
+  :accept_mode =&gt; ssn.message_accept_mode.none
+)
+
+# start incoming message flow
+incoming.start()
+
+while true
+ body = incoming.get().body
+ puts body
+ break if body == &quot;done&quot;
+end
+
+ssn.close()
+conn.close()
+{% endcodeblock %}
+
+另一个ruby AMQP协议的实现是[ruby-amqp](https://github.com/ruby-amqp/amqp) ,基于event-machine, 目前只支持amqp 0-8.
+
+主要是为与rabbitmq通讯打造，简单试了下simple example也可用在qpid上，其它自动的example基本跑不过。现在开发比较活跃，更看好它。

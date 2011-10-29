@@ -1,0 +1,22 @@
+---
+layout: post
+title: 'wiki markup'
+date: 2011-4-9
+wordpress_id: 42
+permalink: /blogs/42
+comments: true
+---
+wordpress的编辑器实在不怎么样，想念<a href="http://confluence.atlassian.com/">conflucene</a>的<a href="http://confluence.atlassian.com/renderer/notationhelp.action?section=all">wiki markup</a>.
+
+confluence的wiki markup是从<a href="http://textile.thresholdstate.com/">textile</a>改进过来的，在plugins里找了会，没有好用的textile plugin，像textile 2会把原来的内容变成乱七八遭的，没法忍。
+
+接着试了下markdown, 因为在github的项目上经常看到README.md, 知道是用markdown语法写的。<a href="http://wordpress.org/extend/plugins/markdown-on-save/">markdown on save</a>看起来是没有侵入性的, markdown version放post_content_formatted字段里，对于wordpress 3.1来说放在meta里更好. 参考<a href="http://daringfireball.net/projects/markdown/syntax">markdown syntax</a>练习了一下，基本还好，有两个地方不太满意：
+
+<ul>
+<li>ordered list要自己用数字开头,像1.这样来写，同时又忽略这些值的内容，相当反直觉，还是textile里的#爽快</li>
+<li>不直接支持table, 虽然可以自己直接写
+   &lt;table&gt;...&lt;/table&gt;
+confluence里的||column||column||很简单快捷。</li>
+</ul>
+
+先用它了。

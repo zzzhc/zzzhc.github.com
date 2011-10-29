@@ -1,0 +1,32 @@
+---
+layout: post
+title: 'solr'
+date: 2011-4-11
+wordpress_id: 69
+permalink: /blogs/69
+comments: true
+---
+<a href="http://lucene.apache.org/solr/">solr</a>是一个基于<a href="http://lucene.apache.org/">lucene</a>，高度可配置的企业级搜索平台。它自己的介绍:
+
+<blockquote>
+  Solr is the popular, blazing fast open source enterprise search platform from the Apache Lucene project. Its major features include powerful full-text search, hit highlighting, faceted search, dynamic clustering, database integration, rich document (e.g., Word, PDF) handling, and geospatial search. Solr is highly scalable, providing distributed search and index replication, and it powers the search and navigation features of many of the world's largest internet sites.
+</blockquote>
+
+<a href="http://lucene.apache.org/solr/features.html">Features</a>有一堆,觉得比较实用的几点有
+
+<ul>
+<li>高度可配置，index和query的各部分都能通过配置定制</li>
+<li>与数据库表结构类似的索引定义，支持主键，支持基本数据类型(如int), 很容易与表结构关联起来，更新方便</li>
+<li>支持<a href="http://wiki.apache.org/solr/MultipleIndexes">multiple indexes</a>, 方便对多个表分别建索引</li>
+<li>简单的HTTP接口，开发改进client都很方便</li>
+<li>支持replication, 对HA和search scalability提供了一些安慰</li>
+<li>简单的后台管理界面，支持查看索引(<a href="http://wiki.apache.org/solr/LukeRequestHandler">LukeRequestHandler</a>),执行查询，有助于debug</li>
+<li>丰富的文档，主要是<a href="http://wiki.apache.org/solr/FrontPage">wiki</a></li>
+</ul>
+
+几个不足的地方：
+
+<ul>
+<li>配置太繁琐，需要反复查文档</li>
+<li>管理界面太简陋</li>
+</ul>
