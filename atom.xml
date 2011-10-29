@@ -1,16 +1,1200 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[zzzhc's Blog]]></title>
   <link href="http://zzzhc.github.com/atom.xml" rel="self"/>
   <link href="http://zzzhc.github.com/"/>
-  <updated>2011-10-29T11:44:00+08:00</updated>
+  <updated>2011-10-29T12:59:33+08:00</updated>
   <id>http://zzzhc.github.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[zzzhc]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[lucene 3下最快的中文分词器]]></title>
+    <link href="http://zzzhc.github.com/blogs/115"/>
+    <updated>2011-06-19T00:00:00+08:00</updated>
+    <id>http://zzzhc.github.com/blogs/115</id>
+    <content type="html"><![CDATA[<h1>包包分词器 - 一个基于字典的快速中文分词器</h1>
+
+<h2>source code</h2>
+
+<ul>
+<li><a href="https://github.com/zzzhc/baobao-analyzer">github project</a></li>
+</ul>
+
+
+<h2>features</h2>
+
+<ul>
+<li>简单 1000LOC</li>
+<li>高效 7M+ chars/second</li>
+<li>支持中文，英语，数字</li>
+<li>自动识别未登录词</li>
+<li>支持OffsetAttribute</li>
+<li>支持TypeAttribute</li>
+<li>支持PositionIncrementAttribute</li>
+</ul>
+
+
+<h2>usage</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Dict dict = new Dict();
+</span><span class='line'>    dict.addAllSpecialTypes();
+</span><span class='line'>    BufferedReader dictReader = new BufferedReader(new InputStreamReader(
+</span><span class='line'>        new FileInputStream("dict.txt"), "UTF-8"));
+</span><span class='line'>    dict.load(dictReader);
+</span><span class='line'>    dictReader.close();
+</span><span class='line'>    dict.optimize();
+</span><span class='line'>    DictAnalyzer dictAnalyzer = new DictAnalyzer(dict);</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>benchmark</h2>
+
+<p>ant benchmark</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>supported features:
+</span><span class='line'>                  CharTerm  Offset  PositionIncrement  Term  Type
+</span><span class='line'>      IKAnalyzer         Y       Y                  N     Y     N
+</span><span class='line'>   MMSegAnalyzer         Y       Y                  N     Y     Y
+</span><span class='line'> PaodingAnalyzer         Y       Y                  N     Y     Y
+</span><span class='line'>StandardAnalyzer         Y       Y                  Y     Y     Y
+</span><span class='line'>  BaoBaoAnalyzer         Y       Y                  Y     Y     Y
+</span><span class='line'>
+</span><span class='line'>test 1, sample length=26265
+</span><span class='line'>            name          chars           time         tokens speed(chars/second)
+</span><span class='line'> PaodingAnalyzer          26265          0.610          12542            43036.87
+</span><span class='line'>   MMSegAnalyzer          26265          0.314          14007            83566.52
+</span><span class='line'>      IKAnalyzer          26265          0.262          16016           100177.91
+</span><span class='line'>StandardAnalyzer          26265          0.141          22366           185727.87
+</span><span class='line'>  BaoBaoAnalyzer          26265          0.038          18185           695682.16
+</span><span class='line'>
+</span><span class='line'>test 2, sample length=262650
+</span><span class='line'>            name          chars           time         tokens speed(chars/second)
+</span><span class='line'> PaodingAnalyzer         262650          0.187         125420          1402139.61
+</span><span class='line'>      IKAnalyzer         262650          0.163         160160          1613693.16
+</span><span class='line'>   MMSegAnalyzer         262650          0.158         140070          1664009.53
+</span><span class='line'>  BaoBaoAnalyzer         262650          0.041         181850          6362134.44
+</span><span class='line'>StandardAnalyzer         262650          0.020         223660         12905789.80
+</span><span class='line'>
+</span><span class='line'>test 3, sample length=2626500
+</span><span class='line'>            name          chars           time         tokens speed(chars/second)
+</span><span class='line'>      IKAnalyzer        2626500          2.251        1601600          1166564.72
+</span><span class='line'> PaodingAnalyzer        2626500          1.462        1254200          1796381.55
+</span><span class='line'>   MMSegAnalyzer        2626500          1.043        1400700          2519010.94
+</span><span class='line'>  BaoBaoAnalyzer        2626500          0.352        1818500          7458959.20
+</span><span class='line'>StandardAnalyzer        2626500          0.202        2236600         13015280.16</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[mysqld 5.1.41的一个神奇bug]]></title>
+    <link href="http://zzzhc.github.com/blogs/107"/>
+    <updated>2011-06-09T00:00:00+08:00</updated>
+    <id>http://zzzhc.github.com/blogs/107</id>
+    <content type="html"><![CDATA[<p>今天打算在本地装两个数据库，方便测试，用mysql_install_db &#8211;datadir=/opt/mysql初始化mysql data directory, 死活都不成功，/opt, /opt/mysql的权限都改成0777也是一样</p>
+
+<p>OS:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ cat /etc/lsb-release 
+</span><span class='line'>DISTRIB_ID=Ubuntu
+</span><span class='line'>DISTRIB_RELEASE=10.04
+</span><span class='line'>DISTRIB_CODENAME=lucid
+</span><span class='line'>DISTRIB_DESCRIPTION="Ubuntu 10.04.1 LTS"</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ mysql_install_db --datadir=/opt/mysql/
+</span><span class='line'>Installing MySQL system tables...
+</span><span class='line'>110609 20:59:26 [Warning] Can't create test file /opt/mysql/zzzhc-laptop.lower-test
+</span><span class='line'>110609 20:59:26 [Warning] Can't create test file /opt/mysql/zzzhc-laptop.lower-test
+</span><span class='line'>
+</span><span class='line'>Installation of system tables failed!  Examine the logs in
+</span><span class='line'>/opt/mysql/ for more information.
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>换成/tmp目录,mysql_install_db &#8211;datadir=/tmp，神奇地成功了。</p>
+
+<p>bash -x mysql_install_db &#8211;datadir=/opt/mysql/发现问题在这:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+ mysqld_install_cmd_line='/usr/sbin/mysqld  --language=/usr/share/mysql/english --bootstrap   --basedir=/usr --datadir=/opt/mysql/ --log-warnings=0 --loose-skip-innodb   --loose-skip-ndbcluster  --user=mysql --max_allowed_packet=8M   --default-storage-engine=myisam   --net_buffer_length=16K'
+</span><span class='line'>+ s_echo 'Installing MySQL system tables...'
+</span><span class='line'>+ test 0 -eq 0 -a 0 -eq 0
+</span><span class='line'>+ echo 'Installing MySQL system tables...'
+</span><span class='line'>Installing MySQL system tables...
+</span><span class='line'>+ /usr/sbin/mysqld --language=/usr/share/mysql/english --bootstrap --basedir=/usr --datadir=/opt/mysql/ --log-warnings=0 --loose-skip-innodb --loose-skip-ndbcluster --user=mysql --max_allowed_packet=8M --default-storage-engine=myisam --net_buffer_length=16K
+</span><span class='line'>+ echo 'use mysql;'
+</span><span class='line'>+ cat /usr/share/mysql/mysql_system_tables.sql /usr/share/mysql/mysql_system_tables_data.sql
+</span><span class='line'>110609 21:04:14 [Warning] Can't create test file /opt/mysql/zzzhc-laptop.lower-test
+</span><span class='line'>110609 21:04:14 [Warning] Can't create test file /opt/mysql/zzzhc-laptop.lower-test
+</span><span class='line'>+ eval cat
+</span><span class='line'>++ cat
+</span><span class='line'>+ echo
+</span><span class='line'>
+</span><span class='line'>+ echo 'Installation of system tables failed!  Examine the logs in'
+</span><span class='line'>Installation of system tables failed!  Examine the logs in
+</span><span class='line'>+ echo '/opt/mysql/ for more information.'
+</span><span class='line'>/opt/mysql/ for more information.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>strace /usr/sbin/mysqld &#8211;language=/usr/share/mysql/english &#8211;bootstrap &#8211;basedir=/usr &#8211;datadir=/opt/mysql/ &#8211;log-warnings=0 &#8211;loose-skip-innodb &#8211;loose-skip-ndbcluster &#8211;user=mysql &#8211;max_allowed_packet=8M &#8211;default-storage-engine=myisam &#8211;net_buffer_length=16K 2>&amp;1 |tee strace.log</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>stat64("/usr/share/mysql/charsets/Index.xml", {st_mode=S_IFREG|0644, st_size=18261, ...}) = 0 
+</span><span class='line'>brk(0x22064000)                         = 0x22064000
+</span><span class='line'>open("/usr/share/mysql/charsets/Index.xml", O_RDONLY|O_LARGEFILE) = 3 
+</span><span class='line'>read(3, "..., 18261) = 18261
+</span><span class='line'>close(3)                                = 0 
+</span><span class='line'>unlink("/opt/mysql/zzzhc-laptop.LOWER-TEST") = -1 ENOENT (No such file or directory)
+</span><span class='line'>open("/opt/mysql/zzzhc-laptop.lower-test", O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied)
+</span><span class='line'>time(NULL)                              = 1307624820
+</span><span class='line'>write(2, "110609 21:07:00 [Warning] Can't "..., 84110609 21:07:00 [Warning] Can't create test file /opt/mysql/zzzhc-laptop.lower-test
+</span><span class='line'>) = 84
+</span><span class='line'>unlink("/opt/mysql/zzzhc-laptop.LOWER-TEST") = -1 ENOENT (No such file or directory)
+</span><span class='line'>open("/opt/mysql/zzzhc-laptop.lower-test", O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied)
+</span><span class='line'>time(NULL)                              = 1307624820
+</span><span class='line'>write(2, "110609 21:07:00 [Warning] Can't "..., 84110609 21:07:00 [Warning] Can't create test file /opt/mysql/zzzhc-laptop.lower-test
+</span><span class='line'>) = 84</span></code></pre></td></tr></table></div></figure>
+
+
+<p>open(&#8220;/opt/mysql/zzzhc-laptop.lower-test&#8221;, O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied) 这个太没道理了。。。比较了/tmp和/opt/mysql两种情况下的strace结果，没发现什么可疑的地方，难道是/tmp目录有什么奇怪的特性??</p>
+
+<p>0.77试了下，一切正常。
+bug总是无处不在啊!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[做事]]></title>
+    <link href="http://zzzhc.github.com/blogs/101"/>
+    <updated>2011-05-19T00:00:00+08:00</updated>
+    <id>http://zzzhc.github.com/blogs/101</id>
+    <content type="html"><![CDATA[<p>做好一件事和用正确的方法做好一件事，看起来是一样的结果，实际上如果每次做的事都留下一两个坑，几年之后会再也无法移动。
+但什么是正确的方法？这也没有定论，不同的阶段会不一样。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[lucene中文分词器比较]]></title>
+    <link href="http://zzzhc.github.com/blogs/86"/>
+    <updated>2011-05-03T00:00:00+08:00</updated>
+    <id>http://zzzhc.github.com/blogs/86</id>
+    <content type="html"><![CDATA[<h1>当前支持lucene 3.1的中文分词器</h1>
+
+<ul>
+<li><a href="http://code.google.com/p/mmseg4j/">mmseg4j</a>
+mmseg4j 用 Chih-Hao Tsai 的 MMSeg 算法(http://technology.chtsai.org/mmseg/ )实现的中文分词器，并实现 lucene 的 analyzer 和 solr 的TokenizerFactory 以方便在Lucene和Solr中使用。 </li>
+<li><a href="http://code.google.com/p/paoding/">paoding</a>
+Paoding&#8217;s Knives 中文分词具有极 高效率 和 高扩展性 。引入隐喻，采用完全的面向对象设计，构思先进。
+高效率：在PIII 1G内存个人机器上，1秒 可准确分词 100万 汉字。
+采用基于 不限制个数 的词典文件对文章进行有效切分，使能够将对词汇分类定义。
+能够对未知的词汇进行合理解析 </li>
+<li><a href="http://code.google.com/p/ik-analyzer/">ik-analyzer</a>
+IKAnalyzer是一个开源的，基于java语言开发的轻量级的中文分词工具包。从2006年12月推出1.0版开始，IKAnalyzer已经推出了3个大版本。最初，它是以开源项目Luence为应用主体的，结合词典分词和文法分析算法的中文分词组件。新版本的IKAnalyzer3.0则发展为面向Java的公用分词组件，独立于Lucene项目，同时提供了对Lucene的默认优化实现。</li>
+<li><a href="http://code.google.com/p/imdict-chinese-analyzer/">imdict</a>
+imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算法基于隐马尔科夫模型(Hidden Markov Model, HMM)，是中国科学院计算技术研究所的ictclas中文分词程序的重新实现（基于Java），可以直接为lucene搜索引擎提供简体中文分词支持。 已加入lucene contributor, smartcn.</li>
+</ul>
+
+
+<h1>支持的特性</h1>
+
+<table>
+  <thead>
+     <td>name</td>
+     <td>CharTermAttribute</td>
+     <td>OffsetAttribute</td>
+     <td>TypeAttribute</td>
+     <td>PositionIncrementAttribute</td>
+     <td>KeywordAttribute</td>
+  </thead>
+  <tr>
+     <td>mmseg4j</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>N</td>
+     <td>N</td>
+  </tr>
+  <tr>
+     <td>paoding</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>N</td>
+     <td>N</td>
+  </tr>
+  <tr>
+     <td>ik-analyzer</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>N</td>
+     <td>N</td>
+     <td>N</td>
+  </tr>
+  <tr>
+     <td>imdict</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>N</td>
+     <td>Y</td>
+  </tr>
+</table>
+
+
+<h1>性能比较</h1>
+
+<p>本机cpu: Intel(R) Core(TM)2 Duo CPU     P8600  @ 2.40GHz</p>
+
+<table>
+  <thead>
+     <td>name</td>
+     <td>speed(chars/second)</td>
+  </thead>
+  <tr>
+     <td>StandardAnalyzer</td>
+     <td>5227272</td>
+  </tr>
+  <tr>
+     <td>mmseg4j</td>
+     <td>771812</td>
+  </tr>
+  <tr>
+     <td>paoding</td>
+     <td>847145</td>
+  </tr>
+  <tr>
+     <td>ik-analyzer</td>
+     <td>657142</td>
+  </tr>
+  <tr>
+     <td>imdict</td>
+     <td>269242</td>
+  </tr>
+</table>
+
+
+<p>测试代码:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[code lang="java"]//CNAnalyzerBenchmark.java
+</span><span class='line'>import java.io.IOException;
+</span><span class='line'>import java.io.StringReader;
+</span><span class='line'>import java.util.HashSet;
+</span><span class='line'>import java.util.Iterator;
+</span><span class='line'>
+</span><span class='line'>import net.paoding.analysis.analyzer.PaodingAnalyzer;
+</span><span class='line'>
+</span><span class='line'>import org.apache.lucene.analysis.Analyzer;
+</span><span class='line'>import org.apache.lucene.analysis.TokenStream;
+</span><span class='line'>import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
+</span><span class='line'>import org.apache.lucene.analysis.standard.StandardAnalyzer;
+</span><span class='line'>import org.apache.lucene.util.Attribute;
+</span><span class='line'>import org.apache.lucene.util.Version;
+</span><span class='line'>import org.wltea.analyzer.lucene.IKAnalyzer;
+</span><span class='line'>
+</span><span class='line'>import com.chenlb.mmseg4j.analysis.MMSegAnalyzer;
+</span><span class='line'>
+</span><span class='line'>public class CNAnalyzerBenchmark {
+</span><span class='line'>
+</span><span class='line'>    public static void main(String[] args) throws IOException {
+</span><span class='line'>        IKAnalyzer ikAnalyzer = new IKAnalyzer();
+</span><span class='line'>        testAnalyzer(ikAnalyzer);
+</span><span class='line'>
+</span><span class='line'>        MMSegAnalyzer mmsegAnalyzer = new MMSegAnalyzer();
+</span><span class='line'>        testAnalyzer(mmsegAnalyzer);
+</span><span class='line'>
+</span><span class='line'>        PaodingAnalyzer paodingAnalyzer = new PaodingAnalyzer();
+</span><span class='line'>        testAnalyzer(paodingAnalyzer);
+</span><span class='line'>
+</span><span class='line'>        SmartChineseAnalyzer smartChineseAnalyzer = new SmartChineseAnalyzer(
+</span><span class='line'>                Version.LUCENE_31, false);
+</span><span class='line'>        testAnalyzer(smartChineseAnalyzer);
+</span><span class='line'>
+</span><span class='line'>        StandardAnalyzer standardAnalyzer = new StandardAnalyzer(
+</span><span class='line'>                Version.LUCENE_31, new HashSet&lt;String&gt;());
+</span><span class='line'>        testAnalyzer(standardAnalyzer);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    static void testAnalyzer(Analyzer a) throws IOException {
+</span><span class='line'>        String data = &quot;中文(chinese)与西方语言最大的区别&quot; + &quot;就在于语句的词汇之间没有明显的分词界限，&quot;
+</span><span class='line'>                + &quot;但是计算机自然语言处理是按词汇来进行分析的，&quot; + &quot;因此中文分词的效果直接影响中文检索和自然语言处理的准确性。&quot;;
+</span><span class='line'>        StringBuilder ss = new StringBuilder();
+</span><span class='line'>        for (int i = 0; i &lt; 10000; i++) {
+</span><span class='line'>            ss.append(data);
+</span><span class='line'>        }
+</span><span class='line'>        String s = ss.toString();
+</span><span class='line'>
+</span><span class='line'>        long startTime = System.currentTimeMillis();
+</span><span class='line'>
+</span><span class='line'>        String attributes = &quot;&quot;;
+</span><span class='line'>        TokenStream stream = a.tokenStream(&quot;&quot;, new StringReader(s));
+</span><span class='line'>        Iterator&lt;Class&lt;? extends Attribute&gt;&gt; iterator = stream
+</span><span class='line'>                .getAttributeClassesIterator();
+</span><span class='line'>        while (iterator.hasNext()) {
+</span><span class='line'>            Class&lt;? extends Attribute&gt; attrClass = iterator.next();
+</span><span class='line'>            attributes += &quot; &quot; + attrClass.getSimpleName();
+</span><span class='line'>        }
+</span><span class='line'>        stream = a.tokenStream(&quot;&quot;, new StringReader(s));
+</span><span class='line'>        while (stream.incrementToken()) {
+</span><span class='line'>        }
+</span><span class='line'>        long endTime = System.currentTimeMillis();
+</span><span class='line'>               System.out.println(a.getClass().getSimpleName() + &quot; attributes: &quot;
+</span><span class='line'>                   + attributes);
+</span><span class='line'>               double seconds = (endTime - startTime) / 1000.0;
+</span><span class='line'>               System.out.println(&quot;chars=&quot; + s.length() + 
+</span><span class='line'>                       &quot;,time=&quot; + seconds + &quot;seconds&quot; + 
+</span><span class='line'>                      &quot;,speed=&quot; + (int) (s.length() / seconds) + &quot;chars/second&quot;
+</span><span class='line'>               );
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>[/code]</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[solr faceted search]]></title>
+    <link href="http://zzzhc.github.com/blogs/77"/>
+    <updated>2011-04-24T00:00:00+08:00</updated>
+    <id>http://zzzhc.github.com/blogs/77</id>
+    <content type="html"><![CDATA[<p>从用户角度看，<a href="http://wiki.apache.org/solr/SolrFacetingOverview">faceted search</a>把搜索结果分入多个类别(一般还会显示各个类别下有多少结果)，并允许用户分类别查看。在电子商务类网站经常可以看到，如</p>
+
+<ul>
+<li><a href="http://s.taobao.com/search?q=%C9%CF%CD%F8%B1%BE">淘宝</a>，显示全部分类</li>
+<li><a href="http://www.amazon.cn/s/ref=nb_ss?url=search-alias%3Daps&amp;keywords=%E4%B8%8A%E7%BD%91%E6%9C%AC&amp;x=0&amp;y=0">卓越</a>，左侧</li>
+<li><a href="http://search.360buy.com/Search?keyword=%C9%CF%CD%F8%B1%BE">京东商城</a>，顶部</li>
+</ul>
+
+
+<p>FacetFields有两种，枚举型和分词型。枚举型适合类别比较少的场景，如卓越。分词型适合于类别很多，但每个document所属的类别较少的情况。Facet field不需要定义成stored,但需要是indexed. facet主要是用在drill-down到搜索结果的一个子集，实际查询是会生成一个对应类别的filter query.</p>
+
+<p>实现原理，枚举型与分词型有些区别</p>
+
+<ul>
+<li>枚举型，遍历field的所有terms, 得到各个term对应的document BitSet, 这个结果与query result作与</li>
+<li>分词型，遍历搜索结果中的每个document, 从field cache里得到它对应的terms, 累加terms出现次数</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[solr]]></title>
+    <link href="http://zzzhc.github.com/blogs/69"/>
+    <updated>2011-04-11T00:00:00+08:00</updated>
+    <id>http://zzzhc.github.com/blogs/69</id>
+    <content type="html"><![CDATA[<p><a href="http://lucene.apache.org/solr/">solr</a>是一个基于<a href="http://lucene.apache.org/">lucene</a>，高度可配置的企业级搜索平台。它自己的介绍:</p>
+
+<blockquote>
+  Solr is the popular, blazing fast open source enterprise search platform from the Apache Lucene project. Its major features include powerful full-text search, hit highlighting, faceted search, dynamic clustering, database integration, rich document (e.g., Word, PDF) handling, and geospatial search. Solr is highly scalable, providing distributed search and index replication, and it powers the search and navigation features of many of the world&#8217;s largest internet sites.
+</blockquote>
+
+
+<p><a href="http://lucene.apache.org/solr/features.html">Features</a>有一堆,觉得比较实用的几点有</p>
+
+<ul>
+<li>高度可配置，index和query的各部分都能通过配置定制</li>
+<li>与数据库表结构类似的索引定义，支持主键，支持基本数据类型(如int), 很容易与表结构关联起来，更新方便</li>
+<li>支持<a href="http://wiki.apache.org/solr/MultipleIndexes">multiple indexes</a>, 方便对多个表分别建索引</li>
+<li>简单的HTTP接口，开发改进client都很方便</li>
+<li>支持replication, 对HA和search scalability提供了一些安慰</li>
+<li>简单的后台管理界面，支持查看索引(<a href="http://wiki.apache.org/solr/LukeRequestHandler">LukeRequestHandler</a>),执行查询，有助于debug</li>
+<li>丰富的文档，主要是<a href="http://wiki.apache.org/solr/FrontPage">wiki</a></li>
+</ul>
+
+
+<p>几个不足的地方：</p>
+
+<ul>
+<li>配置太繁琐，需要反复查文档</li>
+<li>管理界面太简陋</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[wiki markup]]></title>
+    <link href="http://zzzhc.github.com/blogs/42"/>
+    <updated>2011-04-09T00:00:00+08:00</updated>
+    <id>http://zzzhc.github.com/blogs/42</id>
+    <content type="html"><![CDATA[<p>wordpress的编辑器实在不怎么样，想念<a href="http://confluence.atlassian.com/">conflucene</a>的<a href="http://confluence.atlassian.com/renderer/notationhelp.action?section=all">wiki markup</a>.</p>
+
+<p>confluence的wiki markup是从<a href="http://textile.thresholdstate.com/">textile</a>改进过来的，在plugins里找了会，没有好用的textile plugin，像textile 2会把原来的内容变成乱七八遭的，没法忍。</p>
+
+<p>接着试了下markdown, 因为在github的项目上经常看到README.md, 知道是用markdown语法写的。<a href="http://wordpress.org/extend/plugins/markdown-on-save/">markdown on save</a>看起来是没有侵入性的, markdown version放post_content_formatted字段里，对于wordpress 3.1来说放在meta里更好. 参考<a href="http://daringfireball.net/projects/markdown/syntax">markdown syntax</a>练习了一下，基本还好，有两个地方不太满意：</p>
+
+<ul>
+<li>ordered list要自己用数字开头,像1.这样来写，同时又忽略这些值的内容，相当反直觉，还是textile里的#爽快</li>
+<li>不直接支持table, 虽然可以自己直接写
+   &lt;table&gt;&#8230;&lt;/table&gt;
+confluence里的||column||column||很简单快捷。</li>
+</ul>
+
+
+<p>先用它了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[nodejs]]></title>
+    <link href="http://zzzhc.github.com/blogs/31"/>
+    <updated>2011-04-09T00:00:00+08:00</updated>
+    <id>http://zzzhc.github.com/blogs/31</id>
+    <content type="html"><![CDATA[<p><a href="http://nodejs.org/" target="_blank">nodejs</a> Evented I/O for         <a href="http://code.google.com/p/v8/">V8 JavaScript</a>.</p>
+
+<p>node的目标是提供一种简单的方式来构建可伸缩的网络程序。在node里几乎没有函数会直接执行IO操作，进程从不会阻塞在某个IO等待上。event, callback是node中两个主要的概念，因为IO操作不阻塞，通过event, callback来实现是很自然的。</p>
+
+<p>这一两年node发展很快，有了包管理器(<a href="http://github.com/isaacs/npm" target="_blank">npm</a>)，也出现了各种各样的module, 如</p>
+
+<ul>
+    <li>Web Framework: <a href="http://github.com/visionmedia/express" target="_blank">Express</a>, node的<a href="http://www.sinatrarb.com/" target="_blank">sinatra</a></li>
+    <li>template engine: <a href="https://github.com/visionmedia/haml.js" target="_blank">hamljs</a></li>
+    <li>mysql driver:<a href="http://github.com/felixge/node-mysql" target="_blank">node-mysql</a></li>
+    <li>mongodb client: <a href="https://github.com/christkv/node-mongodb-native" target="_blank">node-mongodb-native</a></li>
+    <li>redis client: <a href="https://github.com/mranney/node_redis" target="_blank">node_redis</a></li>
+</ul>
+
+
+<p>有了这些之后要用javascript开发一个web app相对容易多了。</p>
+
+<p>这两天简单试了下，用express, hamljs, node-mongodb-native写了一个最简单的blog app.</p>
+
+<p>安装环境</p>
+
+<ul>
+    <li>install node [code language=&#8221;bash&#8221;] #download source code from http://nodejs.org/dist/
+ wget http://nodejs.org/dist/node-v0.4.5.tar.gz
+tar -xf node-v0.4.5.tar.gz
+cd node-v0.4.5
+./configure &amp;&amp; make &amp;&amp; sudo make install
+[/code]</li>
+    <li>install mongodb
+[code language=&#8221;bash&#8221;] #http://www.mongodb.org/downloads
+wget http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.8.1.tgz
+tar -xf mongodb-linux-i686-1.8.1.tgz
+cd mongodb-linux-i686-1.8.1
+sudo mkdir -p /data/db
+sudo chown `id -u` -R /data
+bin/mongod # start mongodb server
+[/code]</li>
+    <li>install npm [code language=&#8221;bash&#8221;]git clone http://github.com/isaacs/npm.git
+cd npm
+sudo make install
+[/code]</li>
+    <li>install modules [code language=&#8221;bash&#8221;] sudo npm install express
+sudo npm install hamljs
+sudo npm install mongodb
+[/code]</li>
+</ul>
+
+
+<p>express指南见<a href="http://expressjs.com/guide.html" target="_blank">http://expressjs.com/guide.html</a>，它的route方式跟rails比算很弱的，没有对restful的直接支持，但在加上methodOverride后都可以自己定义出来。
+模板引擎用hamljs, 通过app.register(&#8216;.haml&#8217;, require(&#8216;hamljs&#8217;))指定。在hamljs layout里要嵌入其它模板内容时可以用!= body。partial可以用!= partial(&#8220;post.haml&#8221;, posts)。!=的意思是对后面的内容不作escape, 细节可以看hamljs代码，很短，不到700行。
+mongodb client用起来比较费劲，一层一层的callback, 适当封装下应该会好使点。
+最终的代码放在<a href="https://github.com/nodepress/draft">https://github.com/nodepress/draft</a>
+性能看起来还是很好的，production模式下(NODE_ENV=production node blog.js) 并发５个连接(ab -c 5 -n 1000 http://localhost:3000/posts/)的结果
+Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ ab -c 5 -n 1000 http://localhost:3000/posts/
+</span><span class='line'>....
+</span><span class='line'>Server Software:        
+</span><span class='line'>Server Hostname:        localhost
+</span><span class='line'>Server Port:            3000
+</span><span class='line'>
+</span><span class='line'>Document Path:          /posts/
+</span><span class='line'>Document Length:        2950 bytes
+</span><span class='line'>
+</span><span class='line'>Concurrency Level:      5
+</span><span class='line'>Time taken for tests:   1.145 seconds
+</span><span class='line'>Complete requests:      1000
+</span><span class='line'>Failed requests:        0
+</span><span class='line'>Write errors:           0
+</span><span class='line'>Total transferred:      3073000 bytes
+</span><span class='line'>HTML transferred:       2950000 bytes
+</span><span class='line'>Requests per second:    873.02 [#/sec] (mean)
+</span><span class='line'>Time per request:       5.727 [ms] (mean)
+</span><span class='line'>Time per request:       1.145 [ms] (mean, across all concurrent requests)
+</span><span class='line'>Transfer rate:          2619.90 [Kbytes/sec] received
+</span><span class='line'>
+</span><span class='line'>Connection Times (ms)
+</span><span class='line'>              min  mean[+/-sd] median   max
+</span><span class='line'>Connect:        0    0   0.0      0       0
+</span><span class='line'>Processing:     3    6   1.8      5      22
+</span><span class='line'>Waiting:        3    6   1.8      5      22
+</span><span class='line'>Total:          3    6   1.8      5      22
+</span><span class='line'>
+</span><span class='line'>Percentage of the requests served within a certain time (ms)
+</span><span class='line'>  50%      5
+</span><span class='line'>  66%      5
+</span><span class='line'>  75%      6
+</span><span class='line'>  80%      6
+</span><span class='line'>  90%      7
+</span><span class='line'>  95%      8
+</span><span class='line'>  98%     14
+</span><span class='line'>  99%     16
+</span><span class='line'> 100%     22 (longest request)</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ruby eventmachine]]></title>
+    <link href="http://zzzhc.github.com/blogs/25"/>
+    <updated>2011-04-02T00:00:00+08:00</updated>
+    <id>http://zzzhc.github.com/blogs/25</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/eventmachine/eventmachine">eventmachine</a> 是一个快速轻量的网络协议框架，有不少ruby应用基于它实现，如thin, ruby-amqp. eventmachine在不同os上自动选择最佳的底层网络通知机制，在linux上用epoll，freebsd上用kqueue.</p>
+
+<p>eventmachine对网络事件进行封装，有事件发生时回调预设的handler module。</p>
+
+<p>事件处理都需要放在EventMachine::run里，可以分server, client两种模式</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#server
+</span><span class='line'>EventMachine::run {
+</span><span class='line'>  EventMachine::start_server &quot;0.0.0.0&quot;, port, ServerHandler
+</span><span class='line'>}
+</span><span class='line'>#client
+</span><span class='line'>EventMachine::run {
+</span><span class='line'>  EventMachine::connect remote_server, port, ClientHandler #client
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在一个网络连接的生存周期中，可能发生的回调事件有：</p>
+
+<ol>
+    <li>post_init　handler对象创建后，注意client模式时，即使连接还未建立也会被调用</li>
+    <li>connection_completed　主动连接远端服务器，连接建立时</li>
+    <li>receive_data　有数据可读时, 在这里需要处理协议细节</li>
+    <li>unbind　连接关闭，主动关闭，对方关闭或网络错误</li>
+</ol>
+
+
+<p>在handler上可以使用send_data发送数据.</p>
+
+<p>最简单的echo server</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/usr/bin/env ruby
+</span><span class='line'>
+</span><span class='line'>require 'rubygems'
+</span><span class='line'>require 'eventmachine'
+</span><span class='line'>
+</span><span class='line'>module EchoServer
+</span><span class='line'>  def post_init
+</span><span class='line'>    puts &quot;-- someone connected to the echo server!&quot;
+</span><span class='line'>  end
+</span><span class='line'>
+</span><span class='line'>  def receive_data data
+</span><span class='line'>    send_data &quot;&gt;&gt;&gt;you sent: #{data}&quot;
+</span><span class='line'>    close_connection if data =~ /quit/i
+</span><span class='line'>  end
+</span><span class='line'>
+</span><span class='line'>  def unbind
+</span><span class='line'>    puts &quot;-- someone disconnected from the echo server!&quot;
+</span><span class='line'>  end
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>EventMachine::run {
+</span><span class='line'>  EventMachine::start_server &quot;127.0.0.1&quot;, 8081, EchoServer
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>一个简单的http client</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/usr/bin/env ruby
+</span><span class='line'>
+</span><span class='line'>require 'rubygems'
+</span><span class='line'>require 'eventmachine'
+</span><span class='line'>
+</span><span class='line'>module HttpClient
+</span><span class='line'>  def post_init
+</span><span class='line'>    puts &quot;sending request to server&quot;
+</span><span class='line'>    send_data &quot;GET / HTTP/1.1\r\nHost: www.baidu.com\r\nConnection: close\r\n\r\n&quot;
+</span><span class='line'>  end
+</span><span class='line'>
+</span><span class='line'>  def receive_data data
+</span><span class='line'>    puts &quot;recv: #{data}&quot;
+</span><span class='line'>  end
+</span><span class='line'>
+</span><span class='line'>  def unbind
+</span><span class='line'>    puts &quot;connection closed&quot;
+</span><span class='line'>    EventMachine::stop
+</span><span class='line'>  end
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>EventMachine::run {
+</span><span class='line'>  EventMachine::connect &quot;www.baidu.com&quot;, 80, HttpClient
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>连接失败的例子:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/usr/bin/env ruby
+</span><span class='line'>
+</span><span class='line'>require 'rubygems'
+</span><span class='line'>require 'eventmachine'
+</span><span class='line'>
+</span><span class='line'>module Client
+</span><span class='line'>  def connection_completed
+</span><span class='line'>    puts &quot;connected&quot;
+</span><span class='line'>  end
+</span><span class='line'>
+</span><span class='line'>  def post_init
+</span><span class='line'>    puts &quot;handler inited&quot;
+</span><span class='line'>  end
+</span><span class='line'>
+</span><span class='line'>  def receive_data data
+</span><span class='line'>    puts &quot;recv: #{data}&quot;
+</span><span class='line'>  end
+</span><span class='line'>
+</span><span class='line'>  def unbind
+</span><span class='line'>    puts &quot;connection closed&quot;
+</span><span class='line'>    EventMachine::stop
+</span><span class='line'>  end
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>EventMachine::run {
+</span><span class='line'>  EventMachine::connect &quot;api.jquery.com&quot;, 8088, Client
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Qpid ruby client]]></title>
+    <link href="http://zzzhc.github.com/blogs/17"/>
+    <updated>2011-03-31T00:00:00+08:00</updated>
+    <id>http://zzzhc.github.com/blogs/17</id>
+    <content type="html"><![CDATA[<p>Qpid对ruby的官方支持：<a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/" target="_blank">https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/</a></p>
+
+<p>感觉是对python client的port, 代码风格看起来很不ruby, 用了挺多锁，信号，线程，想要停止一个connection都比较困难。对AMQP协议的实现细节被序列化到一个spec_cache下，不可读。基本没有文档，总体来说不像是一个可以正式用的东西。</p>
+
+<p>大概的用法，用rake gem生成gem包，安装gem install pkg/qpid-0.10.2.gem</p>
+
+<p>用qpid java broker的时候要注意下，创建connection的时候要指定用户名密码。
+conn = Qpid::Connection.new(TCPSocket.new(&#8220;localhost&#8221;, 5672),
+:username =&gt; &#8220;guest&#8221;,
+:password =&gt; &#8220;guest&#8221;)</p>
+
+<p>参考example写了两个简单例子
+producer.rb</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/usr/bin/env ruby
+</span><span class='line'>
+</span><span class='line'>require &quot;rubygems&quot;
+</span><span class='line'>require &quot;qpid&quot;
+</span><span class='line'>require &quot;socket&quot;
+</span><span class='line'>
+</span><span class='line'>conn = Qpid::Connection.new(TCPSocket.new(&quot;localhost&quot;, 5672),
+</span><span class='line'>                                         :username =&gt; &quot;guest&quot;,
+</span><span class='line'>                                         :password =&gt; &quot;guest&quot;)
+</span><span class='line'>conn.start(10)
+</span><span class='line'>
+</span><span class='line'>ssn = conn.session(&quot;test_producer&quot;)
+</span><span class='line'>
+</span><span class='line'># create a queue
+</span><span class='line'>ssn.queue_declare(&quot;test-queue&quot;)
+</span><span class='line'>ssn.exchange_declare(&quot;test-exchange&quot;, :type =&gt; &quot;direct&quot;)
+</span><span class='line'>
+</span><span class='line'>dp = ssn.delivery_properties(:routing_key =&gt; &quot;test-queue&quot;)
+</span><span class='line'>mp = ssn.message_properties(:content_type =&gt; &quot;text/plain&quot;)
+</span><span class='line'>
+</span><span class='line'>ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;Hello QPID!&quot;))
+</span><span class='line'>ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;Hello RUBY!&quot;))
+</span><span class='line'>while line = gets.strip
+</span><span class='line'>  break if line =~ /^(exit|done)$/i
+</span><span class='line'>  ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, line.strip))
+</span><span class='line'>end
+</span><span class='line'>ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;done&quot;))
+</span><span class='line'>ssn.sync
+</span><span class='line'>
+</span><span class='line'>ssn.close()
+</span><span class='line'>conn.close()</span></code></pre></td></tr></table></div></figure>
+
+
+<p>consumer.rb</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/usr/bin/env ruby
+</span><span class='line'>
+</span><span class='line'>require &quot;rubygems&quot;
+</span><span class='line'>require &quot;qpid&quot;
+</span><span class='line'>require &quot;socket&quot;
+</span><span class='line'>
+</span><span class='line'>conn = Qpid::Connection.new(TCPSocket.new(&quot;localhost&quot;, 5672),
+</span><span class='line'>                                         :username =&gt; &quot;guest&quot;,
+</span><span class='line'>                                         :password =&gt; &quot;guest&quot;)
+</span><span class='line'>conn.start(10)
+</span><span class='line'>
+</span><span class='line'>ssn = conn.session(&quot;test_consumer&quot;)
+</span><span class='line'>
+</span><span class='line'>incoming = ssn.incoming(&quot;messages&quot;)
+</span><span class='line'>ssn.message_subscribe(
+</span><span class='line'>  :destination =&gt; &quot;messages&quot;,
+</span><span class='line'>  :queue =&gt; &quot;test-queue&quot;,
+</span><span class='line'>  :accept_mode =&gt; ssn.message_accept_mode.none
+</span><span class='line'>)
+</span><span class='line'>
+</span><span class='line'># start incoming message flow
+</span><span class='line'>incoming.start()
+</span><span class='line'>
+</span><span class='line'>while true
+</span><span class='line'> body = incoming.get().body
+</span><span class='line'> puts body
+</span><span class='line'> break if body == &quot;done&quot;
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>ssn.close()
+</span><span class='line'>conn.close()</span></code></pre></td></tr></table></div></figure>
+
+
+<p>另一个ruby AMQP协议的实现是<a href="https://github.com/ruby-amqp/amqp">ruby-amqp</a> ,基于event-machine, 目前只支持amqp 0-8.</p>
+
+<p>主要是为与rabbitmq通讯打造，简单试了下simple example也可用在qpid上，其它自动的example基本跑不过。现在开发比较活跃，更看好它。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[AMQP]]></title>
+    <link href="http://zzzhc.github.com/blogs/4"/>
+    <updated>2011-03-30T00:00:00+08:00</updated>
+    <id>http://zzzhc.github.com/blogs/4</id>
+    <content type="html"><![CDATA[<p><a href="http://www.amqp.org/">AMQP</a>(Advanced Message Queuing Protocol) 是一个为消息驱动中间件提供的应用层协议，binary protocol. <a href="http://www.amqp.org/confluence/display/AMQP/AMQP+Specification">协议规范</a>有多个版本，0-8版本是支持得最多的。</p>
+
+<p>AMQP的原始用途只是为金融界提供一个可以彼此协作的消息协议，而现在的目标则是为通用消息队列架构提供通用基础架构。因此，面向消息的中间件 （MOM）系统，例如发布/订阅队列，没有作为基本元素实现，而是通过发送简化的AMQ实体来完成。这些实体也是规范的一 部分，形成了在线路层协议顶端的一个层级：AMQP模型。这个模型统一了消息模式，包括发布/订阅，队列，事务以及流数据，路由等。</p>
+
+<h2>几个主要概念:</h2>
+
+<ul>
+<li>broker，即AMQP server</li>
+<li>message, 内容不可变，没有长度限制</li>
+<li>queue, message最终总会进入一个queue</li>
+<li>exchange, 为message提供分发服务，按binding规则将message分发到一个或多个queue, 有多种类型，如direct, fanout, topic</li>
+<li>binding,　消息路由规则</li>
+</ul>
+
+
+<h2>exchange的类型说明:</h2>
+
+<p><img class="size-full wp-image-5" title="direct exchange" src="http://zzzhc.github.com/images/posts/direct.jpg" alt="" width="450" height="300" />
+<img class="size-full wp-image-7" title="topic exchange" src="http://zzzhc.github.com/images/posts/topic.jpg" alt="" width="550" height="350" />
+<img class="size-full wp-image-6" title="fanout exchange" src="http://zzzhc.github.com/images/posts/fanout.jpg" alt="" width="450" height="300" /></p>
+
+<p>&nbsp;</p>
+
+<h2>brokers</h2>
+
+<ul>
+<li><a href="http://qpid.apache.org/">Apache Qpid</a> 性能很好</li>
+<li><a href="http://www.rabbitmq.com/">RabbitMQ</a></li>
+<li><a href="http://www.redhat.com/mrg">Red Hat Enterprise MRG</a></li>
+<li>&#8230;</li>
+</ul>
+
+
+<h2>Qpid c++ broker性能测试结果</h2>
+
+<p>qpid-perftest &#8211;worker-threads 16 &#8211;default-queue-limit 1024000 &#8211;queue-purge-interval 30 &#8211;tcp-nodelay &#8211;mgmt-enable no</p>
+
+<table>
+<tbody>
+<tr>
+<th><span style="color: #333333;">Message size (bytes)</span></th>
+<th><span style="color: #333333;">Total transfers/sec</span></th>
+<th> Total Mbytes/sec</th>
+</tr>
+<tr>
+<td>32</td>
+<td>708,159</td>
+<td>21.6113</td>
+</tr>
+<tr>
+<td>64</td>
+<td>627,766</td>
+<td>38.3158</td>
+</tr>
+<tr>
+<td>128</td>
+<td>537,001</td>
+<td>65.5519</td>
+</tr>
+<tr>
+<td>256</td>
+<td>487,070</td>
+<td>118.914</td>
+</tr>
+<tr>
+<td>512</td>
+<td>278,192</td>
+<td>135.445</td>
+</tr>
+<tr>
+<td>1024</td>
+<td>176,901</td>
+<td>172.755</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>ruby client</h2>
+
+<ul>
+<li><a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/">qpid ruby client</a></li>
+<li><a href="https://github.com/ruby-amqp/amqp">ruby-amqp</a> 只支持AMQP 0-8</li>
+</ul>
+
+]]></content>
+  </entry>
   
 </feed>
