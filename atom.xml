@@ -4,7 +4,7 @@
   <title><![CDATA[zzzhc's Blog]]></title>
   <link href="http://blog.zzzhc.com/atom.xml" rel="self"/>
   <link href="http://blog.zzzhc.com/"/>
-  <updated>2011-10-29T19:32:55+08:00</updated>
+  <updated>2011-12-09T19:25:11+08:00</updated>
   <id>http://blog.zzzhc.com/</id>
   <author>
     <name><![CDATA[zzzhc]]></name>
@@ -12,6 +12,25 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[rvm global gems]]></title>
+    <link href="http://blog.zzzhc.com/posts/2011/12/09/rvm-global-gems/"/>
+    <updated>2011-12-09T19:07:00+08:00</updated>
+    <id>http://blog.zzzhc.com/posts/2011/12/09/rvm-global-gems</id>
+    <content type="html"><![CDATA[<p>用rvm安装多了ruby版本后，一些经常用的gem需要在多个版本下都重装一次，很费事。不过还好rvm早有<a href="http://beginrescueend.com/gemsets/initial/">解决方案</a>，可以通过编辑~/.rvm/gemsets/global.gems来添加全局的gemsets, 比如必不可少的bundler</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bundler</span></code></pre></td></tr></table></div></figure>
+
+
+<p>也可以指定版本</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bundler -v~&gt;1.0.21</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[lucene 3下最快的中文分词器]]></title>

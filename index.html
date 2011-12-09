@@ -9,12 +9,9 @@
   <meta name="author" content="zzzhc">
 
   
-  <meta name="description" content="包包分词器 - 一个基于字典的快速中文分词器 source code github project features 简单 1000LOC
-高效 7M+ chars/second
-支持中文，英语，数字
-自动识别未登录词
-支持OffsetAttribute
-支持TypeAttribute &hellip;">
+  <meta name="description" content="用rvm安装多了ruby版本后，一些经常用的gem需要在多个版本下都重装一次，很费事。不过还好rvm早有解决方案，可以通过编辑~/.rvm/gemsets/global.gems来添加全局的gemsets, 比如必不可少的bundler 1
+bundler 也可以指定版本 1
+bundler -v &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +76,47 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/posts/2011/12/09/rvm-global-gems/">Rvm Global Gems</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+  
+
+<time datetime="2011-12-09T19:07:00+08:00" pubdate>Dec 9<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>用rvm安装多了ruby版本后，一些经常用的gem需要在多个版本下都重装一次，很费事。不过还好rvm早有<a href="http://beginrescueend.com/gemsets/initial/">解决方案</a>，可以通过编辑~/.rvm/gemsets/global.gems来添加全局的gemsets, 比如必不可少的bundler</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bundler</span></code></pre></td></tr></table></div></figure>
+
+
+<p>也可以指定版本</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bundler -v~&gt;1.0.21</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1214,183 +1252,6 @@ Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blogs/17">Qpid Ruby Client</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-  
-
-<time datetime="2011-03-31T00:00:00+08:00" pubdate>Mar 31<span>st</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Qpid对ruby的官方支持：<a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/" target="_blank">https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/</a></p>
-
-<p>感觉是对python client的port, 代码风格看起来很不ruby, 用了挺多锁，信号，线程，想要停止一个connection都比较困难。对AMQP协议的实现细节被序列化到一个spec_cache下，不可读。基本没有文档，总体来说不像是一个可以正式用的东西。</p>
-
-<p>大概的用法，用rake gem生成gem包，安装gem install pkg/qpid-0.10.2.gem</p>
-
-<p>用qpid java broker的时候要注意下，创建connection的时候要指定用户名密码。
-conn = Qpid::Connection.new(TCPSocket.new(&#8220;localhost&#8221;, 5672),
-:username =&gt; &#8220;guest&#8221;,
-:password =&gt; &#8220;guest&#8221;)</p>
-
-<p>参考example写了两个简单例子
-producer.rb</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/usr/bin/env ruby
-</span><span class='line'>
-</span><span class='line'>require &quot;rubygems&quot;
-</span><span class='line'>require &quot;qpid&quot;
-</span><span class='line'>require &quot;socket&quot;
-</span><span class='line'>
-</span><span class='line'>conn = Qpid::Connection.new(TCPSocket.new(&quot;localhost&quot;, 5672),
-</span><span class='line'>                                         :username =&gt; &quot;guest&quot;,
-</span><span class='line'>                                         :password =&gt; &quot;guest&quot;)
-</span><span class='line'>conn.start(10)
-</span><span class='line'>
-</span><span class='line'>ssn = conn.session(&quot;test_producer&quot;)
-</span><span class='line'>
-</span><span class='line'># create a queue
-</span><span class='line'>ssn.queue_declare(&quot;test-queue&quot;)
-</span><span class='line'>ssn.exchange_declare(&quot;test-exchange&quot;, :type =&gt; &quot;direct&quot;)
-</span><span class='line'>
-</span><span class='line'>dp = ssn.delivery_properties(:routing_key =&gt; &quot;test-queue&quot;)
-</span><span class='line'>mp = ssn.message_properties(:content_type =&gt; &quot;text/plain&quot;)
-</span><span class='line'>
-</span><span class='line'>ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;Hello QPID!&quot;))
-</span><span class='line'>ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;Hello RUBY!&quot;))
-</span><span class='line'>while line = gets.strip
-</span><span class='line'>  break if line =~ /^(exit|done)$/i
-</span><span class='line'>  ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, line.strip))
-</span><span class='line'>end
-</span><span class='line'>ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;done&quot;))
-</span><span class='line'>ssn.sync
-</span><span class='line'>
-</span><span class='line'>ssn.close()
-</span><span class='line'>conn.close()</span></code></pre></td></tr></table></div></figure>
-
-
-<p>consumer.rb</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/usr/bin/env ruby
-</span><span class='line'>
-</span><span class='line'>require &quot;rubygems&quot;
-</span><span class='line'>require &quot;qpid&quot;
-</span><span class='line'>require &quot;socket&quot;
-</span><span class='line'>
-</span><span class='line'>conn = Qpid::Connection.new(TCPSocket.new(&quot;localhost&quot;, 5672),
-</span><span class='line'>                                         :username =&gt; &quot;guest&quot;,
-</span><span class='line'>                                         :password =&gt; &quot;guest&quot;)
-</span><span class='line'>conn.start(10)
-</span><span class='line'>
-</span><span class='line'>ssn = conn.session(&quot;test_consumer&quot;)
-</span><span class='line'>
-</span><span class='line'>incoming = ssn.incoming(&quot;messages&quot;)
-</span><span class='line'>ssn.message_subscribe(
-</span><span class='line'>  :destination =&gt; &quot;messages&quot;,
-</span><span class='line'>  :queue =&gt; &quot;test-queue&quot;,
-</span><span class='line'>  :accept_mode =&gt; ssn.message_accept_mode.none
-</span><span class='line'>)
-</span><span class='line'>
-</span><span class='line'># start incoming message flow
-</span><span class='line'>incoming.start()
-</span><span class='line'>
-</span><span class='line'>while true
-</span><span class='line'> body = incoming.get().body
-</span><span class='line'> puts body
-</span><span class='line'> break if body == &quot;done&quot;
-</span><span class='line'>end
-</span><span class='line'>
-</span><span class='line'>ssn.close()
-</span><span class='line'>conn.close()</span></code></pre></td></tr></table></div></figure>
-
-
-<p>另一个ruby AMQP协议的实现是<a href="https://github.com/ruby-amqp/amqp">ruby-amqp</a> ,基于event-machine, 目前只支持amqp 0-8.</p>
-
-<p>主要是为与rabbitmq通讯打造，简单试了下simple example也可用在qpid上，其它自动的example基本跑不过。现在开发比较活跃，更看好它。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1406,6 +1267,10 @@ producer.rb</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/posts/2011/12/09/rvm-global-gems/">rvm global gems</a>
+      </li>
+    
+      <li class="post">
         <a href="/blogs/115">lucene 3下最快的中文分词器</a>
       </li>
     
@@ -1419,10 +1284,6 @@ producer.rb</p>
     
       <li class="post">
         <a href="/blogs/86">lucene中文分词器比较</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blogs/77">solr faceted search</a>
       </li>
     
   </ul>
@@ -1456,7 +1317,6 @@ producer.rb</p>
   </script>
   <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
-
 
 
 <section>
