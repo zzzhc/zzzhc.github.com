@@ -9,22 +9,10 @@
   <meta name="author" content="zzzhc">
 
   
-  <meta name="description" content="crontab command 1
-2
-3
-4
-5
-6
-7
-8
-# 设置编辑器
-$ export EDITOR=vim
-# 编辑
-$ crontab -e [-u user]
-# 列出crontab内容
-$ crontab -l [-u user]
-# 删除crontab文件
-$ crontab &hellip;">
+  <meta name="description" content="Seven habits of effective text editing 编辑单个文件 1. 快速移动 查找光标下单词在当前文件的其它位置 * 向后查找
+# 向前查找 搜索文本, /pattern
+使用%跳转到对应块的结尾/开头，安装matchit插件效果更好
+使用gd跳转到变量定义 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +77,109 @@ $ crontab &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/posts/2011/12/10/gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+  
+
+<time datetime="2011-12-10T12:59:00+08:00" pubdate>Dec 10<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://www.moolenaar.net/habits.html">Seven habits of effective text editing</a></p>
+
+<h2>编辑单个文件</h2>
+
+<h3>1. 快速移动</h3>
+
+<ul>
+<li>查找光标下单词在当前文件的其它位置
+
+<ol>
+<li>* 向后查找</li>
+<li># 向前查找</li>
+</ol>
+</li>
+<li>搜索文本, /pattern</li>
+<li>使用%跳转到对应块的结尾/开头，安装<a href="http://www.vim.org/scripts/script.php?script_id=39">matchit</a>插件效果更好</li>
+<li>使用gd跳转到变量定义</li>
+</ul>
+
+
+<p>掌握更多高效编辑命令的三个基本步骤:
+* 留意编辑过程中的重复动作和花时间较多的地方
+* 找出一个可以更快完成这些操作的命令
+* 反复练习，直到形成习惯，不需要思考靠直觉就能敲出命令</p>
+
+<h3>2. 不要重复输入两次</h3>
+
+<ul>
+<li>善用.命令重做前一个修改</li>
+<li>使用自动补全, 安装<a href="https://github.com/ervandew/supertab">supertab</a>后可用tab键补全</li>
+<li>录制宏, qa开始录制，q结束宏, @a重放宏</li>
+</ul>
+
+
+<h3>3. 自动修复拼写错误</h3>
+
+<ul>
+<li>abbr</li>
+<li>syntax hightlight</li>
+</ul>
+
+
+<h2>编辑多个文件</h2>
+
+<h3>4. 很少只在单独一个文件上工作</h3>
+
+<ul>
+<li>ctags, Ctrl+] 跳转到定义处</li>
+<li>:grep, :cn</li>
+</ul>
+
+
+<h3>5. 与其它程序协同工作</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:!command</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>6. Text is structured</h3>
+
+<p>自动化编译，修改过程</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:make
+</span><span class='line'>:set errorformat=xxx</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>磨快你的矩</h2>
+
+<h3>7. 养成习惯</h3>
+
+<p>这一点最重要，花大把时间找到合适的命令但很快就忘掉是很不划算的。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -998,51 +1089,6 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blogs/42">Wiki Markup</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-  
-
-<time datetime="2011-04-09T00:00:00+08:00" pubdate>Apr 9<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>wordpress的编辑器实在不怎么样，想念<a href="http://confluence.atlassian.com/">conflucene</a>的<a href="http://confluence.atlassian.com/renderer/notationhelp.action?section=all">wiki markup</a>.</p>
-
-<p>confluence的wiki markup是从<a href="http://textile.thresholdstate.com/">textile</a>改进过来的，在plugins里找了会，没有好用的textile plugin，像textile 2会把原来的内容变成乱七八遭的，没法忍。</p>
-
-<p>接着试了下markdown, 因为在github的项目上经常看到README.md, 知道是用markdown语法写的。<a href="http://wordpress.org/extend/plugins/markdown-on-save/">markdown on save</a>看起来是没有侵入性的, markdown version放post_content_formatted字段里，对于wordpress 3.1来说放在meta里更好. 参考<a href="http://daringfireball.net/projects/markdown/syntax">markdown syntax</a>练习了一下，基本还好，有两个地方不太满意：</p>
-
-<ul>
-<li>ordered list要自己用数字开头,像1.这样来写，同时又忽略这些值的内容，相当反直觉，还是textile里的#爽快</li>
-<li>不直接支持table, 虽然可以自己直接写
-   &lt;table&gt;&#8230;&lt;/table&gt;
-confluence里的||column||column||很简单快捷。</li>
-</ul>
-
-
-<p>先用它了。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1058,6 +1104,10 @@ confluence里的||column||column||很简单快捷。</li>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/posts/2011/12/10/gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a>
+      </li>
+    
+      <li class="post">
         <a href="/posts/2011/12/10/crontab-tips/">crontab tips</a>
       </li>
     
@@ -1071,10 +1121,6 @@ confluence里的||column||column||很简单快捷。</li>
     
       <li class="post">
         <a href="/blogs/115">lucene 3下最快的中文分词器</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blogs/107">mysqld 5.1.41的一个神奇bug</a>
       </li>
     
   </ul>

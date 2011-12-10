@@ -9,7 +9,7 @@
   <meta name="author" content="zzzhc">
 
   
-  <meta name="description" content="nodejs Evented I/O for V8 JavaScript. node的目标是提供一种简单的方式来构建可伸缩的网络程序。在node里几乎没有函数会直接执行IO操作，进程从不会阻塞在某个IO等待上。event, callback是node中两个主要的概念，因为IO操作不阻塞， &hellip;">
+  <meta name="description" content="wordpress的编辑器实在不怎么样，想念conflucene的wiki markup. confluence的wiki markup是从textile改进过来的，在plugins里找了会，没有好用的textile plugin，像textile 2会把原来的内容变成乱七八遭的，没法忍。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blogs/42">Wiki Markup</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+  
+
+<time datetime="2011-04-09T00:00:00+08:00" pubdate>Apr 9<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>wordpress的编辑器实在不怎么样，想念<a href="http://confluence.atlassian.com/">conflucene</a>的<a href="http://confluence.atlassian.com/renderer/notationhelp.action?section=all">wiki markup</a>.</p>
+
+<p>confluence的wiki markup是从<a href="http://textile.thresholdstate.com/">textile</a>改进过来的，在plugins里找了会，没有好用的textile plugin，像textile 2会把原来的内容变成乱七八遭的，没法忍。</p>
+
+<p>接着试了下markdown, 因为在github的项目上经常看到README.md, 知道是用markdown语法写的。<a href="http://wordpress.org/extend/plugins/markdown-on-save/">markdown on save</a>看起来是没有侵入性的, markdown version放post_content_formatted字段里，对于wordpress 3.1来说放在meta里更好. 参考<a href="http://daringfireball.net/projects/markdown/syntax">markdown syntax</a>练习了一下，基本还好，有两个地方不太满意：</p>
+
+<ul>
+<li>ordered list要自己用数字开头,像1.这样来写，同时又忽略这些值的内容，相当反直觉，还是textile里的#爽快</li>
+<li>不直接支持table, 虽然可以自己直接写
+   &lt;table&gt;&#8230;&lt;/table&gt;
+confluence里的||column||column||很简单快捷。</li>
+</ul>
+
+
+<p>先用它了。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -773,6 +818,10 @@ producer.rb</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/posts/2011/12/10/gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a>
+      </li>
+    
+      <li class="post">
         <a href="/posts/2011/12/10/crontab-tips/">crontab tips</a>
       </li>
     
@@ -786,10 +835,6 @@ producer.rb</p>
     
       <li class="post">
         <a href="/blogs/115">lucene 3下最快的中文分词器</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blogs/107">mysqld 5.1.41的一个神奇bug</a>
       </li>
     
   </ul>
