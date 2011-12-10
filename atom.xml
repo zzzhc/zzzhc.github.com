@@ -4,7 +4,7 @@
   <title><![CDATA[zzzhc's Blog]]></title>
   <link href="http://blog.zzzhc.com/atom.xml" rel="self"/>
   <link href="http://blog.zzzhc.com/"/>
-  <updated>2011-12-09T20:22:38+08:00</updated>
+  <updated>2011-12-10T12:32:03+08:00</updated>
   <id>http://blog.zzzhc.com/</id>
   <author>
     <name><![CDATA[zzzhc]]></name>
@@ -12,6 +12,90 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[crontab tips]]></title>
+    <link href="http://blog.zzzhc.com/posts/2011/12/10/crontab-tips/"/>
+    <updated>2011-12-10T12:02:00+08:00</updated>
+    <id>http://blog.zzzhc.com/posts/2011/12/10/crontab-tips</id>
+    <content type="html"><![CDATA[<h2>crontab command</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 设置编辑器</span>
+</span><span class='line'><span class="nv">$ </span><span class="nb">export </span><span class="nv">EDITOR</span><span class="o">=</span>vim
+</span><span class='line'><span class="c"># 编辑</span>
+</span><span class='line'><span class="nv">$ </span>crontab -e <span class="o">[</span>-u user<span class="o">]</span>
+</span><span class='line'><span class="c"># 列出crontab内容</span>
+</span><span class='line'><span class="nv">$ </span>crontab -l <span class="o">[</span>-u user<span class="o">]</span>
+</span><span class='line'><span class="c"># 删除crontab文件</span>
+</span><span class='line'><span class="nv">$ </span>crontab -r <span class="o">[</span>-u user<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>crontab syntax</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>* * * * *  <span class="nb">command</span>
+</span><span class='line'>| | | | |
+</span><span class='line'>| | | | |- day of week<span class="o">(</span>0-6<span class="o">)</span> 0 means sunday
+</span><span class='line'>| | | |--- month<span class="o">(</span>1-12<span class="o">)</span>
+</span><span class='line'>| | |----- day of month<span class="o">(</span>1-31<span class="o">)</span>
+</span><span class='line'>| |------- hour
+</span><span class='line'>|--------- minute<span class="o">(</span>0-59<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>* 表示的项可以用,分隔指定多个值<span class="o">(</span>如5,15,25<span class="o">)</span>，也可以指定周期，如在minute项上写*/5表示每5分钟执行一次
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>crontab environment</h2>
+
+<p>cron脚本执行的环境跟正常用户执行的有区别，~/.bashrc不会被执行, 这一点经常会引起问题, 可以在crontab里设置环境变量来减少影响.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># PATH, SHELL, MAILTO比较常用, 如</span>
+</span><span class='line'><span class="nv">PATH</span><span class="o">=</span>/usr/bin:/usr/sbin:/bin:/sbin
+</span><span class='line'><span class="nv">SHELL</span><span class="o">=</span>/bin/bash
+</span><span class='line'><span class="nv">MAILTO</span><span class="o">=</span>xxx@xxx.com
+</span><span class='line'>
+</span><span class='line'>1 * * * * find /var/data/upload/ -mtime 30 -exec rm -- <span class="o">{}</span> +
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>默认情况crontab按OS时区调度, 而不是用户时区，可以通过指定TZ环境变量设实际要用的时区</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">TZ</span><span class="o">=</span>UTC
+</span><span class='line'>1 * * * * find /var/data/upload/ -mtime 30 -exec rm -- <span class="o">{}</span> +
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>crontab notification</h1>
+
+<p>如果command有输出(stdout/stderr)，crond会发送通知邮件, 具体发送给谁可以通过MAILTO定义，默认发送给当前用户。
+一般情况stdout可以忽略，所以经常会看到crontab里有 command >/dev/null; stderr一定不要忽略，否则cron job有错误无法正常执行都不知道。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[bash tips - 0]]></title>

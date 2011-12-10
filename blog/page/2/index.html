@@ -9,7 +9,7 @@
   <meta name="author" content="zzzhc">
 
   
-  <meta name="description" content="eventmachine 是一个快速轻量的网络协议框架，有不少ruby应用基于它实现，如thin, ruby-amqp. eventmachine在不同os上自动选择最佳的底层网络通知机制，在linux上用epoll，freebsd上用kqueue. eventmachine对网络事件进行封装， &hellip;">
+  <meta name="description" content="nodejs Evented I/O for V8 JavaScript. node的目标是提供一种简单的方式来构建可伸缩的网络程序。在node里几乎没有函数会直接执行IO操作，进程从不会阻塞在某个IO等待上。event, callback是node中两个主要的概念，因为IO操作不阻塞， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,170 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blogs/31">Nodejs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+  
+
+<time datetime="2011-04-09T00:00:00+08:00" pubdate>Apr 9<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://nodejs.org/" target="_blank">nodejs</a> Evented I/O for         <a href="http://code.google.com/p/v8/">V8 JavaScript</a>.</p>
+
+<p>node的目标是提供一种简单的方式来构建可伸缩的网络程序。在node里几乎没有函数会直接执行IO操作，进程从不会阻塞在某个IO等待上。event, callback是node中两个主要的概念，因为IO操作不阻塞，通过event, callback来实现是很自然的。</p>
+
+<p>这一两年node发展很快，有了包管理器(<a href="http://github.com/isaacs/npm" target="_blank">npm</a>)，也出现了各种各样的module, 如</p>
+
+<ul>
+    <li>Web Framework: <a href="http://github.com/visionmedia/express" target="_blank">Express</a>, node的<a href="http://www.sinatrarb.com/" target="_blank">sinatra</a></li>
+    <li>template engine: <a href="https://github.com/visionmedia/haml.js" target="_blank">hamljs</a></li>
+    <li>mysql driver:<a href="http://github.com/felixge/node-mysql" target="_blank">node-mysql</a></li>
+    <li>mongodb client: <a href="https://github.com/christkv/node-mongodb-native" target="_blank">node-mongodb-native</a></li>
+    <li>redis client: <a href="https://github.com/mranney/node_redis" target="_blank">node_redis</a></li>
+</ul>
+
+
+<p>有了这些之后要用javascript开发一个web app相对容易多了。</p>
+
+<p>这两天简单试了下，用express, hamljs, node-mongodb-native写了一个最简单的blog app.</p>
+
+<p>安装环境</p>
+
+<ul>
+    <li>install node [code language=&#8221;bash&#8221;] #download source code from http://nodejs.org/dist/
+ wget http://nodejs.org/dist/node-v0.4.5.tar.gz
+tar -xf node-v0.4.5.tar.gz
+cd node-v0.4.5
+./configure &amp;&amp; make &amp;&amp; sudo make install
+[/code]</li>
+    <li>install mongodb
+[code language=&#8221;bash&#8221;] #http://www.mongodb.org/downloads
+wget http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.8.1.tgz
+tar -xf mongodb-linux-i686-1.8.1.tgz
+cd mongodb-linux-i686-1.8.1
+sudo mkdir -p /data/db
+sudo chown `id -u` -R /data
+bin/mongod # start mongodb server
+[/code]</li>
+    <li>install npm [code language=&#8221;bash&#8221;]git clone http://github.com/isaacs/npm.git
+cd npm
+sudo make install
+[/code]</li>
+    <li>install modules [code language=&#8221;bash&#8221;] sudo npm install express
+sudo npm install hamljs
+sudo npm install mongodb
+[/code]</li>
+</ul>
+
+
+<p>express指南见<a href="http://expressjs.com/guide.html" target="_blank">http://expressjs.com/guide.html</a>，它的route方式跟rails比算很弱的，没有对restful的直接支持，但在加上methodOverride后都可以自己定义出来。
+模板引擎用hamljs, 通过app.register(&#8216;.haml&#8217;, require(&#8216;hamljs&#8217;))指定。在hamljs layout里要嵌入其它模板内容时可以用!= body。partial可以用!= partial(&#8220;post.haml&#8221;, posts)。!=的意思是对后面的内容不作escape, 细节可以看hamljs代码，很短，不到700行。
+mongodb client用起来比较费劲，一层一层的callback, 适当封装下应该会好使点。
+最终的代码放在<a href="https://github.com/nodepress/draft">https://github.com/nodepress/draft</a>
+性能看起来还是很好的，production模式下(NODE_ENV=production node blog.js) 并发５个连接(ab -c 5 -n 1000 http://localhost:3000/posts/)的结果
+Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ ab -c 5 -n 1000 http://localhost:3000/posts/
+</span><span class='line'>....
+</span><span class='line'>Server Software:        
+</span><span class='line'>Server Hostname:        localhost
+</span><span class='line'>Server Port:            3000
+</span><span class='line'>
+</span><span class='line'>Document Path:          /posts/
+</span><span class='line'>Document Length:        2950 bytes
+</span><span class='line'>
+</span><span class='line'>Concurrency Level:      5
+</span><span class='line'>Time taken for tests:   1.145 seconds
+</span><span class='line'>Complete requests:      1000
+</span><span class='line'>Failed requests:        0
+</span><span class='line'>Write errors:           0
+</span><span class='line'>Total transferred:      3073000 bytes
+</span><span class='line'>HTML transferred:       2950000 bytes
+</span><span class='line'>Requests per second:    873.02 [#/sec] (mean)
+</span><span class='line'>Time per request:       5.727 [ms] (mean)
+</span><span class='line'>Time per request:       1.145 [ms] (mean, across all concurrent requests)
+</span><span class='line'>Transfer rate:          2619.90 [Kbytes/sec] received
+</span><span class='line'>
+</span><span class='line'>Connection Times (ms)
+</span><span class='line'>              min  mean[+/-sd] median   max
+</span><span class='line'>Connect:        0    0   0.0      0       0
+</span><span class='line'>Processing:     3    6   1.8      5      22
+</span><span class='line'>Waiting:        3    6   1.8      5      22
+</span><span class='line'>Total:          3    6   1.8      5      22
+</span><span class='line'>
+</span><span class='line'>Percentage of the requests served within a certain time (ms)
+</span><span class='line'>  50%      5
+</span><span class='line'>  66%      5
+</span><span class='line'>  75%      6
+</span><span class='line'>  80%      6
+</span><span class='line'>  90%      7
+</span><span class='line'>  95%      8
+</span><span class='line'>  98%     14
+</span><span class='line'>  99%     16
+</span><span class='line'> 100%     22 (longest request)</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -609,6 +773,10 @@ producer.rb</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/posts/2011/12/10/crontab-tips/">crontab tips</a>
+      </li>
+    
+      <li class="post">
         <a href="/posts/2011/12/09/bash-tips-0/">bash tips - 0</a>
       </li>
     
@@ -622,10 +790,6 @@ producer.rb</p>
     
       <li class="post">
         <a href="/blogs/107">mysqld 5.1.41的一个神奇bug</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blogs/101">做事</a>
       </li>
     
   </ul>

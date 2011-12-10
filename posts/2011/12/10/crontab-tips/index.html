@@ -5,16 +5,26 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>lucene 3下最快的中文分词器 - zzzhc's Blog</title>
+  <title>crontab tips - zzzhc's Blog</title>
   <meta name="author" content="zzzhc">
 
   
-  <meta name="description" content="包包分词器 - 一个基于字典的快速中文分词器 source code github project features 简单 1000LOC
-高效 7M+ chars/second
-支持中文，英语，数字
-自动识别未登录词
-支持OffsetAttribute
-支持TypeAttribute &hellip;">
+  <meta name="description" content="crontab command 1
+2
+3
+4
+5
+6
+7
+8
+# 设置编辑器
+$ export EDITOR=vim
+# 编辑
+$ crontab -e [-u user]
+# 列出crontab内容
+$ crontab -l [-u user]
+# 删除crontab文件
+$ crontab &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -23,7 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.zzzhc.com/blogs/115">
+  <link rel="canonical" href="http://blog.zzzhc.com/posts/2011/12/10/crontab-tips">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +92,7 @@
   
   <header>
     
-      <h1 class="entry-title">Lucene 3下最快的中文分词器</h1>
+      <h1 class="entry-title">Crontab Tips</h1>
     
     
       <p class="meta">
@@ -93,38 +103,16 @@
 
   
 
-<time datetime="2011-06-19T00:00:00+08:00" pubdate>Jun 19<span>th</span>, 2011</time>
+<time datetime="2011-12-10T12:02:00+08:00" pubdate>Dec 10<span>th</span>, 2011</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h1>包包分词器 - 一个基于字典的快速中文分词器</h1>
+<div class="entry-content"><h2>crontab command</h2>
 
-<h2>source code</h2>
-
-<ul>
-<li><a href="https://github.com/zzzhc/baobao-analyzer">github project</a></li>
-</ul>
-
-
-<h2>features</h2>
-
-<ul>
-<li>简单 1000LOC</li>
-<li>高效 7M+ chars/second</li>
-<li>支持中文，英语，数字</li>
-<li>自动识别未登录词</li>
-<li>支持OffsetAttribute</li>
-<li>支持TypeAttribute</li>
-<li>支持PositionIncrementAttribute</li>
-</ul>
-
-
-<h2>usage</h2>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -132,21 +120,20 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Dict dict = new Dict();
-</span><span class='line'>    dict.addAllSpecialTypes();
-</span><span class='line'>    BufferedReader dictReader = new BufferedReader(new InputStreamReader(
-</span><span class='line'>        new FileInputStream("dict.txt"), "UTF-8"));
-</span><span class='line'>    dict.load(dictReader);
-</span><span class='line'>    dictReader.close();
-</span><span class='line'>    dict.optimize();
-</span><span class='line'>    DictAnalyzer dictAnalyzer = new DictAnalyzer(dict);</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 设置编辑器</span>
+</span><span class='line'><span class="nv">$ </span><span class="nb">export </span><span class="nv">EDITOR</span><span class="o">=</span>vim
+</span><span class='line'><span class="c"># 编辑</span>
+</span><span class='line'><span class="nv">$ </span>crontab -e <span class="o">[</span>-u user<span class="o">]</span>
+</span><span class='line'><span class="c"># 列出crontab内容</span>
+</span><span class='line'><span class="nv">$ </span>crontab -l <span class="o">[</span>-u user<span class="o">]</span>
+</span><span class='line'><span class="c"># 删除crontab文件</span>
+</span><span class='line'><span class="nv">$ </span>crontab -r <span class="o">[</span>-u user<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<h2>benchmark</h2>
+<h2>crontab syntax</h2>
 
-<p>ant benchmark</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -155,62 +142,50 @@
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>supported features:
-</span><span class='line'>                  CharTerm  Offset  PositionIncrement  Term  Type
-</span><span class='line'>      IKAnalyzer         Y       Y                  N     Y     N
-</span><span class='line'>   MMSegAnalyzer         Y       Y                  N     Y     Y
-</span><span class='line'> PaodingAnalyzer         Y       Y                  N     Y     Y
-</span><span class='line'>StandardAnalyzer         Y       Y                  Y     Y     Y
-</span><span class='line'>  BaoBaoAnalyzer         Y       Y                  Y     Y     Y
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>* * * * *  <span class="nb">command</span>
+</span><span class='line'>| | | | |
+</span><span class='line'>| | | | |- day of week<span class="o">(</span>0-6<span class="o">)</span> 0 means sunday
+</span><span class='line'>| | | |--- month<span class="o">(</span>1-12<span class="o">)</span>
+</span><span class='line'>| | |----- day of month<span class="o">(</span>1-31<span class="o">)</span>
+</span><span class='line'>| |------- hour
+</span><span class='line'>|--------- minute<span class="o">(</span>0-59<span class="o">)</span>
 </span><span class='line'>
-</span><span class='line'>test 1, sample length=26265
-</span><span class='line'>            name          chars           time         tokens speed(chars/second)
-</span><span class='line'> PaodingAnalyzer          26265          0.610          12542            43036.87
-</span><span class='line'>   MMSegAnalyzer          26265          0.314          14007            83566.52
-</span><span class='line'>      IKAnalyzer          26265          0.262          16016           100177.91
-</span><span class='line'>StandardAnalyzer          26265          0.141          22366           185727.87
-</span><span class='line'>  BaoBaoAnalyzer          26265          0.038          18185           695682.16
-</span><span class='line'>
-</span><span class='line'>test 2, sample length=262650
-</span><span class='line'>            name          chars           time         tokens speed(chars/second)
-</span><span class='line'> PaodingAnalyzer         262650          0.187         125420          1402139.61
-</span><span class='line'>      IKAnalyzer         262650          0.163         160160          1613693.16
-</span><span class='line'>   MMSegAnalyzer         262650          0.158         140070          1664009.53
-</span><span class='line'>  BaoBaoAnalyzer         262650          0.041         181850          6362134.44
-</span><span class='line'>StandardAnalyzer         262650          0.020         223660         12905789.80
-</span><span class='line'>
-</span><span class='line'>test 3, sample length=2626500
-</span><span class='line'>            name          chars           time         tokens speed(chars/second)
-</span><span class='line'>      IKAnalyzer        2626500          2.251        1601600          1166564.72
-</span><span class='line'> PaodingAnalyzer        2626500          1.462        1254200          1796381.55
-</span><span class='line'>   MMSegAnalyzer        2626500          1.043        1400700          2519010.94
-</span><span class='line'>  BaoBaoAnalyzer        2626500          0.352        1818500          7458959.20
-</span><span class='line'>StandardAnalyzer        2626500          0.202        2236600         13015280.16</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>* 表示的项可以用,分隔指定多个值<span class="o">(</span>如5,15,25<span class="o">)</span>，也可以指定周期，如在minute项上写*/5表示每5分钟执行一次
+</span></code></pre></td></tr></table></div></figure>
 
 
+<h2>crontab environment</h2>
 
+<p>cron脚本执行的环境跟正常用户执行的有区别，~/.bashrc不会被执行, 这一点经常会引起问题, 可以在crontab里设置环境变量来减少影响.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># PATH, SHELL, MAILTO比较常用, 如</span>
+</span><span class='line'><span class="nv">PATH</span><span class="o">=</span>/usr/bin:/usr/sbin:/bin:/sbin
+</span><span class='line'><span class="nv">SHELL</span><span class="o">=</span>/bin/bash
+</span><span class='line'><span class="nv">MAILTO</span><span class="o">=</span>xxx@xxx.com
+</span><span class='line'>
+</span><span class='line'>1 * * * * find /var/data/upload/ -mtime 30 -exec rm -- <span class="o">{}</span> +
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>默认情况crontab按OS时区调度, 而不是用户时区，可以通过指定TZ环境变量设实际要用的时区</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">TZ</span><span class="o">=</span>UTC
+</span><span class='line'>1 * * * * find /var/data/upload/ -mtime 30 -exec rm -- <span class="o">{}</span> +
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>crontab notification</h1>
+
+<p>如果command有输出(stdout/stderr)，crond会发送通知邮件, 具体发送给谁可以通过MAILTO定义，默认发送给当前用户。
+一般情况stdout可以忽略，所以经常会看到crontab里有 command >/dev/null; stderr一定不要忽略，否则cron job有错误无法正常执行都不知道。</p>
 </div>
 
 
@@ -228,15 +203,21 @@
 
   
 
-<time datetime="2011-06-19T00:00:00+08:00" pubdate>Jun 19<span>th</span>, 2011</time>
+<time datetime="2011-12-10T12:02:00+08:00" pubdate>Dec 10<span>th</span>, 2011</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/shell/'>shell</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.zzzhc.com/blogs/115" data-via="" data-counturl="http://blog.zzzhc.com/blogs/115" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.zzzhc.com/posts/2011/12/10/crontab-tips/" data-via="" data-counturl="http://blog.zzzhc.com/posts/2011/12/10/crontab-tips/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -249,10 +230,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blogs/107" title="Previous Post: mysqld 5.1.41的一个神奇bug">&laquo; mysqld 5.1.41的一个神奇bug</a>
+        <a class="basic-alignment left" href="/posts/2011/12/09/bash-tips-0/" title="Previous Post: bash tips - 0">&laquo; bash tips - 0</a>
       
-      
-        <a class="basic-alignment right" href="/posts/2011/12/09/rvm-global-gems/" title="next Post: rvm global gems">rvm global gems &raquo;</a>
       
     </p>
   </footer>
@@ -355,8 +334,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://blog.zzzhc.com/blogs/115';
-        var disqus_url = 'http://blog.zzzhc.com/blogs/115';
+        var disqus_identifier = 'http://blog.zzzhc.com/posts/2011/12/10/crontab-tips';
+        var disqus_url = 'http://blog.zzzhc.com/posts/2011/12/10/crontab-tips';
         var disqus_script = 'embed.js';
       
     (function () {
