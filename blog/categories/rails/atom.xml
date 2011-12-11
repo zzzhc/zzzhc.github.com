@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: rails | zzzhc's Blog]]></title>
+  <link href="http://blog.zzzhc.com/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://blog.zzzhc.com/"/>
+  <updated>2011-12-11T21:34:07+08:00</updated>
+  <id>http://blog.zzzhc.com/</id>
+  <author>
+    <name><![CDATA[zzzhc]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[speed up rails asset pipeline]]></title>
+    <link href="http://blog.zzzhc.com/posts/2011/12/11/speed-up-rails-asset-pipeline/"/>
+    <updated>2011-12-11T20:48:00+08:00</updated>
+    <id>http://blog.zzzhc.com/posts/2011/12/11/speed-up-rails-asset-pipeline</id>
+    <content type="html"><![CDATA[<p><a href="http://guides.rubyonrails.org/asset_pipeline.html">Asset pipeline</a>是Rails 3.1里引入的一个特性, 用来帮助拼接，压缩js/css,同时对缓存asset提供了更好的支持.</p>
+
+<p>Asset pipe本身只是对<a href="https://github.com/sstephenson/sprockets">Sprockets</a>做了一层封装, 通过<code>Rails.application.assets</code>可以得到Sprockets自己的rack app.</p>
+
+<p>如果application.js里用到了一堆的js, 在development模式下会发现页面很慢, 即使用了<a href="https://github.com/paneq/active_reload">active_reload</a>来加速.在chrome console里看下network tab，每次js请求都在100ms以上。慢的原因在于每次请求都要过一次Rails/application里定义的middleware, 跳过这些middleware之后就快多了. 改下config.ru, 世界又和谐了:</p>
+
+<p>```ruby</p>
+
+<h1>This file is used by Rack-based servers to start the application.</h1>
+
+<p>require ::File.expand_path('../config/environment',  <strong>FILE</strong>)</p>
+
+<p>map '/assets' do
+  assets = Rails.application.assets
+  run assets
+end</p>
+
+<p>map '/' do
+  run Rails.application
+end
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

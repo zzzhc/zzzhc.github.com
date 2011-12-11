@@ -9,10 +9,7 @@
   <meta name="author" content="zzzhc">
 
   
-  <meta name="description" content="Seven habits of effective text editing 编辑单个文件 1. 快速移动 查找光标下单词在当前文件的其它位置 * 向后查找
-# 向前查找 搜索文本, /pattern
-使用%跳转到对应块的结尾/开头，安装matchit插件效果更好
-使用gd跳转到变量定义 &hellip;">
+  <meta name="description" content="Asset pipeline是Rails 3.1里引入的一个特性, 用来帮助拼接，压缩js/css,同时对缓存asset提供了更好的支持. Asset pipe本身只是对Sprockets做了一层封装, 通过Rails.application.assets可以得到Sprockets自己的rack &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +74,66 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/posts/2011/12/11/speed-up-rails-asset-pipeline/">Speed Up Rails Asset Pipeline</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+  
+
+<time datetime="2011-12-11T20:48:00+08:00" pubdate>Dec 11<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://guides.rubyonrails.org/asset_pipeline.html">Asset pipeline</a>是Rails 3.1里引入的一个特性, 用来帮助拼接，压缩js/css,同时对缓存asset提供了更好的支持.</p>
+
+<p>Asset pipe本身只是对<a href="https://github.com/sstephenson/sprockets">Sprockets</a>做了一层封装, 通过<code>Rails.application.assets</code>可以得到Sprockets自己的rack app.</p>
+
+<p>如果application.js里用到了一堆的js, 在development模式下会发现页面很慢, 即使用了<a href="https://github.com/paneq/active_reload">active_reload</a>来加速.在chrome console里看下network tab，每次js请求都在100ms以上。慢的原因在于每次请求都要过一次Rails/application里定义的middleware, 跳过这些middleware之后就快多了. 改下config.ru, 世界又和谐了:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># This file is used by Rack-based servers to start the application.</span>
+</span><span class='line'><span class="nb">require</span> <span class="o">::</span><span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s1">&#39;../config/environment&#39;</span><span class="p">,</span>  <span class="bp">__FILE__</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">map</span> <span class="s1">&#39;/assets&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">assets</span> <span class="o">=</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">assets</span>
+</span><span class='line'>  <span class="n">run</span> <span class="n">assets</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">map</span> <span class="s1">&#39;/&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">run</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1032,63 +1089,6 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blogs/69">Solr</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-  
-
-<time datetime="2011-04-11T00:00:00+08:00" pubdate>Apr 11<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://lucene.apache.org/solr/">solr</a>是一个基于<a href="http://lucene.apache.org/">lucene</a>，高度可配置的企业级搜索平台。它自己的介绍:</p>
-
-<blockquote>
-  Solr is the popular, blazing fast open source enterprise search platform from the Apache Lucene project. Its major features include powerful full-text search, hit highlighting, faceted search, dynamic clustering, database integration, rich document (e.g., Word, PDF) handling, and geospatial search. Solr is highly scalable, providing distributed search and index replication, and it powers the search and navigation features of many of the world&#8217;s largest internet sites.
-</blockquote>
-
-
-<p><a href="http://lucene.apache.org/solr/features.html">Features</a>有一堆,觉得比较实用的几点有</p>
-
-<ul>
-<li>高度可配置，index和query的各部分都能通过配置定制</li>
-<li>与数据库表结构类似的索引定义，支持主键，支持基本数据类型(如int), 很容易与表结构关联起来，更新方便</li>
-<li>支持<a href="http://wiki.apache.org/solr/MultipleIndexes">multiple indexes</a>, 方便对多个表分别建索引</li>
-<li>简单的HTTP接口，开发改进client都很方便</li>
-<li>支持replication, 对HA和search scalability提供了一些安慰</li>
-<li>简单的后台管理界面，支持查看索引(<a href="http://wiki.apache.org/solr/LukeRequestHandler">LukeRequestHandler</a>),执行查询，有助于debug</li>
-<li>丰富的文档，主要是<a href="http://wiki.apache.org/solr/FrontPage">wiki</a></li>
-</ul>
-
-
-<p>几个不足的地方：</p>
-
-<ul>
-<li>配置太繁琐，需要反复查文档</li>
-<li>管理界面太简陋</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1104,6 +1104,10 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/posts/2011/12/11/speed-up-rails-asset-pipeline/">speed up rails asset pipeline</a>
+      </li>
+    
+      <li class="post">
         <a href="/posts/2011/12/10/gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a>
       </li>
     
@@ -1117,10 +1121,6 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
     
       <li class="post">
         <a href="/posts/2011/12/09/rvm-global-gems/">rvm global gems</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blogs/115">lucene 3下最快的中文分词器</a>
       </li>
     
   </ul>
