@@ -5,21 +5,22 @@ date: 2011-6-9
 wordpress_id: 107
 permalink: /blogs/107
 comments: true
+categories: MySQL
 ---
 
 今天打算在本地装两个数据库，方便测试，用mysql_install_db --datadir=/opt/mysql初始化mysql data directory, 死活都不成功，/opt, /opt/mysql的权限都改成0777也是一样
 
 OS:
 
-{% codeblock %}
+``` bash
 $ cat /etc/lsb-release 
 DISTRIB_ID=Ubuntu
 DISTRIB_RELEASE=10.04
 DISTRIB_CODENAME=lucid
 DISTRIB_DESCRIPTION="Ubuntu 10.04.1 LTS"
-{% endcodeblock %}
+```
 
-{% codeblock %}
+``` bash
 $ mysql_install_db --datadir=/opt/mysql/
 Installing MySQL system tables...
 110609 20:59:26 [Warning] Can't create test file /opt/mysql/zzzhc-laptop.lower-test
@@ -28,13 +29,13 @@ Installing MySQL system tables...
 Installation of system tables failed!  Examine the logs in
 /opt/mysql/ for more information.
 ...
-{% endcodeblock %}
+```
 
 换成/tmp目录,mysql_install_db --datadir=/tmp，神奇地成功了。
 
 bash -x mysql_install_db --datadir=/opt/mysql/发现问题在这:
 
-{% codeblock %}
+``` bash
 + mysqld_install_cmd_line='/usr/sbin/mysqld  --language=/usr/share/mysql/english --bootstrap   --basedir=/usr --datadir=/opt/mysql/ --log-warnings=0 --loose-skip-innodb   --loose-skip-ndbcluster  --user=mysql --max_allowed_packet=8M   --default-storage-engine=myisam   --net_buffer_length=16K'
 + s_echo 'Installing MySQL system tables...'
 + test 0 -eq 0 -a 0 -eq 0
@@ -54,11 +55,11 @@ Installation of system tables failed!  Examine the logs in
 + echo '/opt/mysql/ for more information.'
 /opt/mysql/ for more information.
 
-{% endcodeblock %}
+```
 
 strace /usr/sbin/mysqld --language=/usr/share/mysql/english --bootstrap --basedir=/usr --datadir=/opt/mysql/ --log-warnings=0 --loose-skip-innodb --loose-skip-ndbcluster --user=mysql --max_allowed_packet=8M --default-storage-engine=myisam --net_buffer_length=16K 2>&amp;1 |tee strace.log
 
-{% codeblock %}
+```
 stat64("/usr/share/mysql/charsets/Index.xml", {st_mode=S_IFREG|0644, st_size=18261, ...}) = 0 
 brk(0x22064000)                         = 0x22064000
 open("/usr/share/mysql/charsets/Index.xml", O_RDONLY|O_LARGEFILE) = 3 
@@ -75,7 +76,7 @@ time(NULL)                              = 1307624820
 write(2, "110609 21:07:00 [Warning] Can't "..., 84110609 21:07:00 [Warning] Can't create test file /opt/mysql/zzzhc-laptop.lower-test
 ) = 84
 
-{% endcodeblock %}
+```
 
 open("/opt/mysql/zzzhc-laptop.lower-test", O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied) 这个太没道理了。。。比较了/tmp和/opt/mysql两种情况下的strace结果，没发现什么可疑的地方，难道是/tmp目录有什么奇怪的特性??
 

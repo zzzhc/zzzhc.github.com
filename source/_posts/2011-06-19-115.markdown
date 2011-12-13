@@ -5,6 +5,8 @@ date: 2011-6-19
 wordpress_id: 115
 permalink: /blogs/115
 comments: true
+categories: 
+- lucene
 ---
 
 # 包包分词器 - 一个基于字典的快速中文分词器
@@ -24,7 +26,7 @@ comments: true
 
 ## usage
 
-{% codeblock %}
+``` java
     Dict dict = new Dict();
     dict.addAllSpecialTypes();
     BufferedReader dictReader = new BufferedReader(new InputStreamReader(
@@ -33,13 +35,13 @@ comments: true
     dictReader.close();
     dict.optimize();
     DictAnalyzer dictAnalyzer = new DictAnalyzer(dict);
-{% endcodeblock %}
+```
 
 ## benchmark
 
 ant benchmark
 
-{% codeblock %}
+```
 supported features:
                   CharTerm  Offset  PositionIncrement  Term  Type
       IKAnalyzer         Y       Y                  N     Y     N
@@ -71,4 +73,4 @@ test 3, sample length=2626500
    MMSegAnalyzer        2626500          1.043        1400700          2519010.94
   BaoBaoAnalyzer        2626500          0.352        1818500          7458959.20
 StandardAnalyzer        2626500          0.202        2236600         13015280.16
-{% endcodeblock %}
+```

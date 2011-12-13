@@ -5,6 +5,7 @@ date: 2011-3-31
 wordpress_id: 17
 permalink: /blogs/17
 comments: true
+categories: AMQP
 ---
 Qpid对ruby的官方支持：<a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/" target="_blank">https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/</a>
 
@@ -14,68 +15,68 @@ Qpid对ruby的官方支持：<a href="https://svn.apache.org/repos/asf/qpid/trun
 
 用qpid java broker的时候要注意下，创建connection的时候要指定用户名密码。
 conn = Qpid::Connection.new(TCPSocket.new("localhost", 5672),
-:username =&gt; "guest",
-:password =&gt; "guest")
+:username => "guest",
+:password => "guest")
 
 参考example写了两个简单例子
 producer.rb
 
-{% codeblock %}
+``` ruby
 #!/usr/bin/env ruby
 
-require &quot;rubygems&quot;
-require &quot;qpid&quot;
-require &quot;socket&quot;
+require "rubygems"
+require "qpid"
+require "socket"
 
-conn = Qpid::Connection.new(TCPSocket.new(&quot;localhost&quot;, 5672),
-                                         :username =&gt; &quot;guest&quot;,
-                                         :password =&gt; &quot;guest&quot;)
+conn = Qpid::Connection.new(TCPSocket.new("localhost", 5672),
+                                         :username => "guest",
+                                         :password => "guest")
 conn.start(10)
 
-ssn = conn.session(&quot;test_producer&quot;)
+ssn = conn.session("test_producer")
 
 # create a queue
-ssn.queue_declare(&quot;test-queue&quot;)
-ssn.exchange_declare(&quot;test-exchange&quot;, :type =&gt; &quot;direct&quot;)
+ssn.queue_declare("test-queue")
+ssn.exchange_declare("test-exchange", :type => "direct")
 
-dp = ssn.delivery_properties(:routing_key =&gt; &quot;test-queue&quot;)
-mp = ssn.message_properties(:content_type =&gt; &quot;text/plain&quot;)
+dp = ssn.delivery_properties(:routing_key => "test-queue")
+mp = ssn.message_properties(:content_type => "text/plain")
 
-ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;Hello QPID!&quot;))
-ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;Hello RUBY!&quot;))
+ssn.message_transfer(:message => Qpid::Message.new(dp, mp, "Hello QPID!"))
+ssn.message_transfer(:message => Qpid::Message.new(dp, mp, "Hello RUBY!"))
 while line = gets.strip
   break if line =~ /^(exit|done)$/i
-  ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, line.strip))
+  ssn.message_transfer(:message => Qpid::Message.new(dp, mp, line.strip))
 end
-ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;done&quot;))
+ssn.message_transfer(:message => Qpid::Message.new(dp, mp, "done"))
 ssn.sync
 
 ssn.close()
 conn.close()
 
-{% endcodeblock %}
+```
 
 consumer.rb
 
-{% codeblock %}
+``` ruby
 #!/usr/bin/env ruby
 
-require &quot;rubygems&quot;
-require &quot;qpid&quot;
-require &quot;socket&quot;
+require "rubygems"
+require "qpid"
+require "socket"
 
-conn = Qpid::Connection.new(TCPSocket.new(&quot;localhost&quot;, 5672),
-                                         :username =&gt; &quot;guest&quot;,
-                                         :password =&gt; &quot;guest&quot;)
+conn = Qpid::Connection.new(TCPSocket.new("localhost", 5672),
+                                         :username => "guest",
+                                         :password => "guest")
 conn.start(10)
 
-ssn = conn.session(&quot;test_consumer&quot;)
+ssn = conn.session("test_consumer")
 
-incoming = ssn.incoming(&quot;messages&quot;)
+incoming = ssn.incoming("messages")
 ssn.message_subscribe(
-  :destination =&gt; &quot;messages&quot;,
-  :queue =&gt; &quot;test-queue&quot;,
-  :accept_mode =&gt; ssn.message_accept_mode.none
+  :destination => "messages",
+  :queue => "test-queue",
+  :accept_mode => ssn.message_accept_mode.none
 )
 
 # start incoming message flow
@@ -84,12 +85,12 @@ incoming.start()
 while true
  body = incoming.get().body
  puts body
- break if body == &quot;done&quot;
+ break if body == "done"
 end
 
 ssn.close()
 conn.close()
-{% endcodeblock %}
+```
 
 另一个ruby AMQP协议的实现是[ruby-amqp](https://github.com/ruby-amqp/amqp) ,基于event-machine, 目前只支持amqp 0-8.
 

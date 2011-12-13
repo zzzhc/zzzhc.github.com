@@ -12,7 +12,7 @@ categories: misc
 
 * 打包的时候连.svn目录都没放过
 
-```
+``` bash
 $ svn info
 Path: .
 URL: https://dev.corp.youdao.com/svn/outfox/products/desktop/incubator/mac/GetWordExtension/Chrome/extension
@@ -28,7 +28,7 @@ Last Changed Date: 2011-09-13 14:00:17 +0800 (二, 13  9 2011)
 
 * 取词的时候调用的是本机有道字典app提供的http接口
 
-```
+``` javascript
 //in background.html
      function SendResult(word, pos, type) {
          var s = new XMLHttpRequest;
@@ -40,7 +40,7 @@ Last Changed Date: 2011-09-13 14:00:17 +0800 (二, 13  9 2011)
 
 用curl试了下，可以发送请求，但响应为空
 
-```
+``` bash
 $ curl -vv 'http://localhost:32445/getword?word=for%20suppliers&pos=8&type=0'
 * About to connect() to localhost port 32445 (#0)
 *   Trying ::1... Connection refused
@@ -61,7 +61,7 @@ word, pos, type这三个参数只要少一个有道字典就会crash
 
 这次http request只是一个trigger, 有道字典会向dict.youdao.com发一个request:
 
-```
+``` bash
 $ curl -vv 'http://dict.youdao.com/fsearch?q=for%20suppliers&pos=8&keyfrom=mac.scrtrans.0&id=E33EC7736AFDCABB184051CD3757CA73&vendor=cidian.youdao.com&client=macdict'
 * About to connect() to dict.youdao.com port 80 (#0)
 *   Trying 61.135.218.32... connected

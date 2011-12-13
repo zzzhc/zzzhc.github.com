@@ -5,6 +5,9 @@ date: 2011-4-2
 wordpress_id: 25
 permalink: /blogs/25
 comments: true
+categories:
+  - ruby
+  - network
 ---
 [eventmachine](https://github.com/eventmachine/eventmachine) 是一个快速轻量的网络协议框架，有不少ruby应用基于它实现，如thin, ruby-amqp. eventmachine在不同os上自动选择最佳的底层网络通知机制，在linux上用epoll，freebsd上用kqueue.
 
@@ -12,29 +15,29 @@ eventmachine对网络事件进行封装，有事件发生时回调预设的handl
 
 事件处理都需要放在EventMachine::run里，可以分server, client两种模式
 
-{% codeblock %}
+``` ruby
 #server
 EventMachine::run {
-  EventMachine::start_server &quot;0.0.0.0&quot;, port, ServerHandler
+  EventMachine::start_server "0.0.0.0", port, ServerHandler
 }
 #client
 EventMachine::run {
   EventMachine::connect remote_server, port, ClientHandler #client
 }
-{% endcodeblock %}
+```
 
 在一个网络连接的生存周期中，可能发生的回调事件有：
-<ol>
-	<li>post_init　handler对象创建后，注意client模式时，即使连接还未建立也会被调用</li>
-	<li>connection_completed　主动连接远端服务器，连接建立时</li>
-	<li>receive_data　有数据可读时, 在这里需要处理协议细节</li>
-	<li>unbind　连接关闭，主动关闭，对方关闭或网络错误</li>
-</ol>
+
+1. post_init　handler对象创建后，注意client模式时，即使连接还未建立也会被调用</li>
+2. connection_completed　主动连接远端服务器，连接建立时</li>
+3. receive_data　有数据可读时, 在这里需要处理协议细节</li>
+4. unbind　连接关闭，主动关闭，对方关闭或网络错误</li>
+
 在handler上可以使用send_data发送数据.
 
 最简单的echo server
 
-{% codeblock %}
+``` ruby
 #!/usr/bin/env ruby
 
 require 'rubygems'
@@ -42,27 +45,27 @@ require 'eventmachine'
 
 module EchoServer
   def post_init
-    puts &quot;-- someone connected to the echo server!&quot;
+    puts "-- someone connected to the echo server!"
   end
 
   def receive_data data
-    send_data &quot;&gt;&gt;&gt;you sent: #{data}&quot;
+    send_data ">>>you sent: #{data}"
     close_connection if data =~ /quit/i
   end
 
   def unbind
-    puts &quot;-- someone disconnected from the echo server!&quot;
+    puts "-- someone disconnected from the echo server!"
   end
 end
 
 EventMachine::run {
-  EventMachine::start_server &quot;127.0.0.1&quot;, 8081, EchoServer
+  EventMachine::start_server "127.0.0.1", 8081, EchoServer
 }
-{% endcodeblock %}
+```
 
 一个简单的http client
 
-{% codeblock %}
+``` ruby
 #!/usr/bin/env ruby
 
 require 'rubygems'
@@ -70,28 +73,28 @@ require 'eventmachine'
 
 module HttpClient
   def post_init
-    puts &quot;sending request to server&quot;
-    send_data &quot;GET / HTTP/1.1\r\nHost: www.baidu.com\r\nConnection: close\r\n\r\n&quot;
+    puts "sending request to server"
+    send_data "GET / HTTP/1.1\r\nHost: www.baidu.com\r\nConnection: close\r\n\r\n"
   end
 
   def receive_data data
-    puts &quot;recv: #{data}&quot;
+    puts "recv: #{data}"
   end
 
   def unbind
-    puts &quot;connection closed&quot;
+    puts "connection closed"
     EventMachine::stop
   end
 end
 
 EventMachine::run {
-  EventMachine::connect &quot;www.baidu.com&quot;, 80, HttpClient
+  EventMachine::connect "www.baidu.com", 80, HttpClient
 }
-{% endcodeblock %}
+```
 
 连接失败的例子:
 
-{% codeblock %}
+``` ruby
 #!/usr/bin/env ruby
 
 require 'rubygems'
@@ -99,24 +102,25 @@ require 'eventmachine'
 
 module Client
   def connection_completed
-    puts &quot;connected&quot;
+    puts "connected"
   end
 
   def post_init
-    puts &quot;handler inited&quot;
+    puts "handler inited"
   end
 
   def receive_data data
-    puts &quot;recv: #{data}&quot;
+    puts "recv: #{data}"
   end
 
   def unbind
-    puts &quot;connection closed&quot;
+    puts "connection closed"
     EventMachine::stop
   end
 end
 
 EventMachine::run {
-  EventMachine::connect &quot;api.jquery.com&quot;, 8088, Client
+  EventMachine::connect "api.jquery.com", 8088, Client
 }
-{% endcodeblock %}
+```
+

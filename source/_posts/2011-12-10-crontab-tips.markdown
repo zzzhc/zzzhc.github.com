@@ -8,7 +8,7 @@ categories: shell
 
 ## crontab command
 
-```bash
+``` bash
 # 设置编辑器
 $ export EDITOR=vim
 # 编辑
@@ -37,7 +37,7 @@ $ crontab -r [-u user]
 
 cron脚本执行的环境跟正常用户执行的有区别，~/.bashrc不会被执行, 这一点经常会引起问题, 可以在crontab里设置环境变量来减少影响.
 
-```bash
+``` bash
 # PATH, SHELL, MAILTO比较常用, 如
 PATH=/usr/bin:/usr/sbin:/bin:/sbin
 SHELL=/bin/bash
@@ -48,7 +48,7 @@ MAILTO=xxx@xxx.com
 
 默认情况crontab按OS时区调度, 而不是用户时区，可以通过指定TZ环境变量设实际要用的时区
 
-```bash
+``` bash
 TZ=UTC
 1 * * * * find /var/data/upload/ -mtime 30 -exec rm -- {} +
 ```

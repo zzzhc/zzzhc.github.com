@@ -5,6 +5,7 @@ date: 2011-3-30
 wordpress_id: 4
 permalink: /blogs/4
 comments: true
+categories: AMQP
 ---
 
 [AMQP](http://www.amqp.org/)(Advanced Message Queuing Protocol) 是一个为消息驱动中间件提供的应用层协议，binary protocol. [协议规范](http://www.amqp.org/confluence/display/AMQP/AMQP+Specification)有多个版本，0-8版本是支持得最多的。

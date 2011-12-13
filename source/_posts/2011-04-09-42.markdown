@@ -5,6 +5,7 @@ date: 2011-4-9
 wordpress_id: 42
 permalink: /blogs/42
 comments: true
+categories: markup
 ---
 wordpress的编辑器实在不怎么样，想念<a href="http://confluence.atlassian.com/">conflucene</a>的<a href="http://confluence.atlassian.com/renderer/notationhelp.action?section=all">wiki markup</a>.
 

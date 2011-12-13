@@ -5,6 +5,7 @@ date: 2011-5-19
 wordpress_id: 101
 permalink: /blogs/101
 comments: true
+categories: misc
 ---
 做好一件事和用正确的方法做好一件事，看起来是一样的结果，实际上如果每次做的事都留下一两个坑，几年之后会再也无法移动。
 但什么是正确的方法？这也没有定论，不同的阶段会不一样。

@@ -5,6 +5,7 @@ date: 2011-5-3
 wordpress_id: 86
 permalink: /blogs/86
 comments: true
+categories: search
 ---
 # 当前支持lucene 3.1的中文分词器
 
@@ -100,8 +101,8 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
 
 测试代码:
 
-{% codeblock %}
-[code lang="java"]//CNAnalyzerBenchmark.java
+``` java
+//CNAnalyzerBenchmark.java
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashSet;
@@ -136,41 +137,40 @@ public class CNAnalyzerBenchmark {
         testAnalyzer(smartChineseAnalyzer);
 
         StandardAnalyzer standardAnalyzer = new StandardAnalyzer(
-                Version.LUCENE_31, new HashSet&lt;String&gt;());
+                Version.LUCENE_31, new HashSet<String>());
         testAnalyzer(standardAnalyzer);
     }
 
     static void testAnalyzer(Analyzer a) throws IOException {
-        String data = &quot;中文(chinese)与西方语言最大的区别&quot; + &quot;就在于语句的词汇之间没有明显的分词界限，&quot;
-                + &quot;但是计算机自然语言处理是按词汇来进行分析的，&quot; + &quot;因此中文分词的效果直接影响中文检索和自然语言处理的准确性。&quot;;
+        String data = "中文(chinese)与西方语言最大的区别" + "就在于语句的词汇之间没有明显的分词界限，"
+                + "但是计算机自然语言处理是按词汇来进行分析的，" + "因此中文分词的效果直接影响中文检索和自然语言处理的准确性。";
         StringBuilder ss = new StringBuilder();
-        for (int i = 0; i &lt; 10000; i++) {
+        for (int i = 0; i < 10000; i++) {
             ss.append(data);
         }
         String s = ss.toString();
 
         long startTime = System.currentTimeMillis();
 
-        String attributes = &quot;&quot;;
-        TokenStream stream = a.tokenStream(&quot;&quot;, new StringReader(s));
-        Iterator&lt;Class&lt;? extends Attribute&gt;&gt; iterator = stream
+        String attributes = "";
+        TokenStream stream = a.tokenStream("", new StringReader(s));
+        Iterator<Class<? extends Attribute>> iterator = stream
                 .getAttributeClassesIterator();
         while (iterator.hasNext()) {
-            Class&lt;? extends Attribute&gt; attrClass = iterator.next();
-            attributes += &quot; &quot; + attrClass.getSimpleName();
+            Class<? extends Attribute> attrClass = iterator.next();
+            attributes += " " + attrClass.getSimpleName();
         }
-        stream = a.tokenStream(&quot;&quot;, new StringReader(s));
+        stream = a.tokenStream("", new StringReader(s));
         while (stream.incrementToken()) {
         }
         long endTime = System.currentTimeMillis();
-               System.out.println(a.getClass().getSimpleName() + &quot; attributes: &quot;
+               System.out.println(a.getClass().getSimpleName() + " attributes: "
                    + attributes);
                double seconds = (endTime - startTime) / 1000.0;
-               System.out.println(&quot;chars=&quot; + s.length() + 
-                       &quot;,time=&quot; + seconds + &quot;seconds&quot; + 
-                      &quot;,speed=&quot; + (int) (s.length() / seconds) + &quot;chars/second&quot;
+               System.out.println("chars=" + s.length() + 
+                       ",time=" + seconds + "seconds" + 
+                      ",speed=" + (int) (s.length() / seconds) + "chars/second"
                );
     }
 }
-[/code]
-{% endcodeblock %}
+```
