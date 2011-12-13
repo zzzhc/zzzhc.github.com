@@ -5,11 +5,26 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>solr - zzzhc's Blog</title>
+  <title>crontab tips - zzzhc's Blog</title>
   <meta name="author" content="zzzhc">
 
   
-  <meta name="description" content="solr是一个基于lucene，高度可配置的企业级搜索平台。它自己的介绍: Solr is the popular, blazing fast open source enterprise search platform from the Apache Lucene project. Its &hellip;">
+  <meta name="description" content="crontab command 1
+2
+3
+4
+5
+6
+7
+8
+# 设置编辑器
+$ export EDITOR=vim
+# 编辑
+$ crontab -e [-u user]
+# 列出crontab内容
+$ crontab -l [-u user]
+# 删除crontab文件
+$ crontab &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.zzzhc.com/blogs/69">
+  <link rel="canonical" href="http://blog.zzzhc.com/posts/2011-12-10-crontab-tips">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +97,7 @@
   
   <header>
     
-      <h1 class="entry-title">Solr</h1>
+      <h1 class="entry-title">Crontab Tips</h1>
     
     
       <p class="meta">
@@ -93,37 +108,89 @@
 
   
 
-<time datetime="2011-04-11T00:00:00+08:00" pubdate>Apr 11<span>th</span>, 2011</time>
+<time datetime="2011-12-10T12:02:00+08:00" pubdate>Dec 10<span>th</span>, 2011</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p><a href="http://lucene.apache.org/solr/">solr</a>是一个基于<a href="http://lucene.apache.org/">lucene</a>，高度可配置的企业级搜索平台。它自己的介绍:</p>
+<div class="entry-content"><h2>crontab command</h2>
 
-<blockquote><p> Solr is the popular, blazing fast open source enterprise search platform from the Apache Lucene project. Its major features include powerful full-text search, hit highlighting, faceted search, dynamic clustering, database integration, rich document (e.g., Word, PDF) handling, and geospatial search. Solr is highly scalable, providing distributed search and index replication, and it powers the search and navigation features of many of the world&#8217;s largest internet sites.</p></blockquote>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 设置编辑器</span>
+</span><span class='line'><span class="nv">$ </span><span class="nb">export </span><span class="nv">EDITOR</span><span class="o">=</span>vim
+</span><span class='line'><span class="c"># 编辑</span>
+</span><span class='line'><span class="nv">$ </span>crontab -e <span class="o">[</span>-u user<span class="o">]</span>
+</span><span class='line'><span class="c"># 列出crontab内容</span>
+</span><span class='line'><span class="nv">$ </span>crontab -l <span class="o">[</span>-u user<span class="o">]</span>
+</span><span class='line'><span class="c"># 删除crontab文件</span>
+</span><span class='line'><span class="nv">$ </span>crontab -r <span class="o">[</span>-u user<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p><a href="http://lucene.apache.org/solr/features.html">Features</a>有一堆,觉得比较实用的几点有</p>
 
-<ul>
-<li>高度可配置，index和query的各部分都能通过配置定制</li>
-<li>与数据库表结构类似的索引定义，支持主键，支持基本数据类型(如int), 很容易与表结构关联起来，更新方便</li>
-<li>支持<a href="http://wiki.apache.org/solr/MultipleIndexes">multiple indexes</a>, 方便对多个表分别建索引</li>
-<li>简单的HTTP接口，开发改进client都很方便</li>
-<li>支持replication, 对HA和search scalability提供了一些安慰</li>
-<li>简单的后台管理界面，支持查看索引(<a href="http://wiki.apache.org/solr/LukeRequestHandler">LukeRequestHandler</a>),执行查询，有助于debug</li>
-<li>丰富的文档，主要是<a href="http://wiki.apache.org/solr/FrontPage">wiki</a></li>
-</ul>
+<h2>crontab syntax</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>* * * * *  <span class="nb">command</span>
+</span><span class='line'>| | | | |
+</span><span class='line'>| | | | |- day of week<span class="o">(</span>0-6<span class="o">)</span> 0 means sunday
+</span><span class='line'>| | | |--- month<span class="o">(</span>1-12<span class="o">)</span>
+</span><span class='line'>| | |----- day of month<span class="o">(</span>1-31<span class="o">)</span>
+</span><span class='line'>| |------- hour
+</span><span class='line'>|--------- minute<span class="o">(</span>0-59<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>* 表示的项可以用,分隔指定多个值<span class="o">(</span>如5,15,25<span class="o">)</span>，也可以指定周期，如在minute项上写*/5表示每5分钟执行一次
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>几个不足的地方：</p>
+<h2>crontab environment</h2>
 
-<ul>
-<li>配置太繁琐，需要反复查文档</li>
-<li>管理界面太简陋</li>
-</ul>
+<p>cron脚本执行的环境跟正常用户执行的有区别，~/.bashrc不会被执行, 这一点经常会引起问题, 可以在crontab里设置环境变量来减少影响.</p>
 
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># PATH, SHELL, MAILTO比较常用, 如</span>
+</span><span class='line'><span class="nv">PATH</span><span class="o">=</span>/usr/bin:/usr/sbin:/bin:/sbin
+</span><span class='line'><span class="nv">SHELL</span><span class="o">=</span>/bin/bash
+</span><span class='line'><span class="nv">MAILTO</span><span class="o">=</span>xxx@xxx.com
+</span><span class='line'>
+</span><span class='line'>1 * * * * find /var/data/upload/ -mtime 30 -exec rm -- <span class="o">{}</span> +
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>默认情况crontab按OS时区调度, 而不是用户时区，可以通过指定TZ环境变量设实际要用的时区</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">TZ</span><span class="o">=</span>UTC
+</span><span class='line'>1 * * * * find /var/data/upload/ -mtime 30 -exec rm -- <span class="o">{}</span> +
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>crontab notification</h1>
+
+<p>如果command有输出(stdout/stderr)，crond会发送通知邮件, 具体发送给谁可以通过MAILTO定义，默认发送给当前用户。
+一般情况stdout可以忽略，所以经常会看到crontab里有 command >/dev/null; stderr一定不要忽略，否则cron job有错误无法正常执行都不知道。</p>
 </div>
 
 
@@ -141,12 +208,12 @@
 
   
 
-<time datetime="2011-04-11T00:00:00+08:00" pubdate>Apr 11<span>th</span>, 2011</time>
+<time datetime="2011-12-10T12:02:00+08:00" pubdate>Dec 10<span>th</span>, 2011</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/categories/lucene/'>lucene</a>, <a class='category' href='/categories/solr/'>solr</a>
+    <a class='category' href='/categories/shell/'>shell</a>
   
 </span>
 
@@ -155,7 +222,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.zzzhc.com/blogs/69" data-via="" data-counturl="http://blog.zzzhc.com/blogs/69" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.zzzhc.com/posts/2011-12-10-crontab-tips/" data-via="" data-counturl="http://blog.zzzhc.com/posts/2011-12-10-crontab-tips/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -168,10 +235,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blogs/42" title="Previous Post: wiki markup">&laquo; wiki markup</a>
+        <a class="basic-alignment left" href="/posts/2011-12-09-bash-tips-0/" title="Previous Post: bash tips - 0">&laquo; bash tips - 0</a>
       
       
-        <a class="basic-alignment right" href="/blogs/77" title="next Post: solr faceted search">solr faceted search &raquo;</a>
+        <a class="basic-alignment right" href="/posts/2011-12-10-gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/" title="next Post: 高效能文本编辑的7个习惯">高效能文本编辑的7个习惯 &raquo;</a>
       
     </p>
   </footer>
@@ -271,8 +338,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://blog.zzzhc.com/blogs/69';
-        var disqus_url = 'http://blog.zzzhc.com/blogs/69';
+        var disqus_identifier = 'http://blog.zzzhc.com/posts/2011-12-10-crontab-tips';
+        var disqus_url = 'http://blog.zzzhc.com/posts/2011-12-10-crontab-tips';
         var disqus_script = 'embed.js';
       
     (function () {

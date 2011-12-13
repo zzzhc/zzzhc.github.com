@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: search | zzzhc's Blog]]></title>
+  <link href="http://blog.zzzhc.com/categories/search/atom.xml" rel="self"/>
+  <link href="http://blog.zzzhc.com/"/>
+  <updated>2011-12-13T19:07:41+08:00</updated>
+  <id>http://blog.zzzhc.com/</id>
+  <author>
+    <name><![CDATA[zzzhc]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[lucene中文分词器比较]]></title>
+    <link href="http://blog.zzzhc.com/blogs/86"/>
+    <updated>2011-05-03T00:00:00+08:00</updated>
+    <id>http://blog.zzzhc.com/blogs/86</id>
+    <content type="html"><![CDATA[<h1>当前支持lucene 3.1的中文分词器</h1>
+
+<ul>
+<li><a href="http://code.google.com/p/mmseg4j/">mmseg4j</a>
+mmseg4j 用 Chih-Hao Tsai 的 MMSeg 算法(http://technology.chtsai.org/mmseg/ )实现的中文分词器，并实现 lucene 的 analyzer 和 solr 的TokenizerFactory 以方便在Lucene和Solr中使用。 </li>
+<li><a href="http://code.google.com/p/paoding/">paoding</a>
+Paoding's Knives 中文分词具有极 高效率 和 高扩展性 。引入隐喻，采用完全的面向对象设计，构思先进。
+高效率：在PIII 1G内存个人机器上，1秒 可准确分词 100万 汉字。
+采用基于 不限制个数 的词典文件对文章进行有效切分，使能够将对词汇分类定义。
+能够对未知的词汇进行合理解析 </li>
+<li><a href="http://code.google.com/p/ik-analyzer/">ik-analyzer</a>
+IKAnalyzer是一个开源的，基于java语言开发的轻量级的中文分词工具包。从2006年12月推出1.0版开始，IKAnalyzer已经推出了3个大版本。最初，它是以开源项目Luence为应用主体的，结合词典分词和文法分析算法的中文分词组件。新版本的IKAnalyzer3.0则发展为面向Java的公用分词组件，独立于Lucene项目，同时提供了对Lucene的默认优化实现。</li>
+<li><a href="http://code.google.com/p/imdict-chinese-analyzer/">imdict</a>
+imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算法基于隐马尔科夫模型(Hidden Markov Model, HMM)，是中国科学院计算技术研究所的ictclas中文分词程序的重新实现（基于Java），可以直接为lucene搜索引擎提供简体中文分词支持。 已加入lucene contributor, smartcn.</li>
+</ul>
+
+
+<h1>支持的特性</h1>
+
+<table>
+  <thead>
+     <td>name</td>
+     <td>CharTermAttribute</td>
+     <td>OffsetAttribute</td>
+     <td>TypeAttribute</td>
+     <td>PositionIncrementAttribute</td>
+     <td>KeywordAttribute</td>
+  </thead>
+  <tr>
+     <td>mmseg4j</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>N</td>
+     <td>N</td>
+  </tr>
+  <tr>
+     <td>paoding</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>N</td>
+     <td>N</td>
+  </tr>
+  <tr>
+     <td>ik-analyzer</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>N</td>
+     <td>N</td>
+     <td>N</td>
+  </tr>
+  <tr>
+     <td>imdict</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>N</td>
+     <td>Y</td>
+  </tr>
+</table>
+
+
+<h1>性能比较</h1>
+
+<p>本机cpu: Intel(R) Core(TM)2 Duo CPU     P8600  @ 2.40GHz</p>
+
+<table>
+  <thead>
+     <td>name</td>
+     <td>speed(chars/second)</td>
+  </thead>
+  <tr>
+     <td>StandardAnalyzer</td>
+     <td>5227272</td>
+  </tr>
+  <tr>
+     <td>mmseg4j</td>
+     <td>771812</td>
+  </tr>
+  <tr>
+     <td>paoding</td>
+     <td>847145</td>
+  </tr>
+  <tr>
+     <td>ik-analyzer</td>
+     <td>657142</td>
+  </tr>
+  <tr>
+     <td>imdict</td>
+     <td>269242</td>
+  </tr>
+</table>
+
+
+<p>测试代码:</p>
+
+<p>``` java
+//CNAnalyzerBenchmark.java
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.HashSet;
+import java.util.Iterator;</p>
+
+<p>import net.paoding.analysis.analyzer.PaodingAnalyzer;</p>
+
+<p>import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.util.Attribute;
+import org.apache.lucene.util.Version;
+import org.wltea.analyzer.lucene.IKAnalyzer;</p>
+
+<p>import com.chenlb.mmseg4j.analysis.MMSegAnalyzer;</p>
+
+<p>public class CNAnalyzerBenchmark {</p>
+
+<pre><code>public static void main(String[] args) throws IOException {
+    IKAnalyzer ikAnalyzer = new IKAnalyzer();
+    testAnalyzer(ikAnalyzer);
+
+    MMSegAnalyzer mmsegAnalyzer = new MMSegAnalyzer();
+    testAnalyzer(mmsegAnalyzer);
+
+    PaodingAnalyzer paodingAnalyzer = new PaodingAnalyzer();
+    testAnalyzer(paodingAnalyzer);
+
+    SmartChineseAnalyzer smartChineseAnalyzer = new SmartChineseAnalyzer(
+            Version.LUCENE_31, false);
+    testAnalyzer(smartChineseAnalyzer);
+
+    StandardAnalyzer standardAnalyzer = new StandardAnalyzer(
+            Version.LUCENE_31, new HashSet&lt;String&gt;());
+    testAnalyzer(standardAnalyzer);
+}
+
+static void testAnalyzer(Analyzer a) throws IOException {
+    String data = "中文(chinese)与西方语言最大的区别" + "就在于语句的词汇之间没有明显的分词界限，"
+            + "但是计算机自然语言处理是按词汇来进行分析的，" + "因此中文分词的效果直接影响中文检索和自然语言处理的准确性。";
+    StringBuilder ss = new StringBuilder();
+    for (int i = 0; i &lt; 10000; i++) {
+        ss.append(data);
+    }
+    String s = ss.toString();
+
+    long startTime = System.currentTimeMillis();
+
+    String attributes = "";
+    TokenStream stream = a.tokenStream("", new StringReader(s));
+    Iterator&lt;Class&lt;? extends Attribute&gt;&gt; iterator = stream
+            .getAttributeClassesIterator();
+    while (iterator.hasNext()) {
+        Class&lt;? extends Attribute&gt; attrClass = iterator.next();
+        attributes += " " + attrClass.getSimpleName();
+    }
+    stream = a.tokenStream("", new StringReader(s));
+    while (stream.incrementToken()) {
+    }
+    long endTime = System.currentTimeMillis();
+           System.out.println(a.getClass().getSimpleName() + " attributes: "
+               + attributes);
+           double seconds = (endTime - startTime) / 1000.0;
+           System.out.println("chars=" + s.length() + 
+                   ",time=" + seconds + "seconds" + 
+                  ",speed=" + (int) (s.length() / seconds) + "chars/second"
+           );
+}
+</code></pre>
+
+<p>}
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

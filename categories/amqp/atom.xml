@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: AMQP | zzzhc's Blog]]></title>
+  <link href="http://blog.zzzhc.com/categories/amqp/atom.xml" rel="self"/>
+  <link href="http://blog.zzzhc.com/"/>
+  <updated>2011-12-13T19:07:41+08:00</updated>
+  <id>http://blog.zzzhc.com/</id>
+  <author>
+    <name><![CDATA[zzzhc]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Qpid ruby client]]></title>
+    <link href="http://blog.zzzhc.com/blogs/17"/>
+    <updated>2011-03-31T00:00:00+08:00</updated>
+    <id>http://blog.zzzhc.com/blogs/17</id>
+    <content type="html"><![CDATA[<p>Qpid对ruby的官方支持：<a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/" target="_blank">https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/</a></p>
+
+<p>感觉是对python client的port, 代码风格看起来很不ruby, 用了挺多锁，信号，线程，想要停止一个connection都比较困难。对AMQP协议的实现细节被序列化到一个spec_cache下，不可读。基本没有文档，总体来说不像是一个可以正式用的东西。</p>
+
+<p>大概的用法，用rake gem生成gem包，安装gem install pkg/qpid-0.10.2.gem</p>
+
+<p>用qpid java broker的时候要注意下，创建connection的时候要指定用户名密码。
+conn = Qpid::Connection.new(TCPSocket.new("localhost", 5672),
+:username => "guest",
+:password => "guest")</p>
+
+<p>参考example写了两个简单例子
+producer.rb</p>
+
+<p>``` ruby</p>
+
+<h1>!/usr/bin/env ruby</h1>
+
+<p>require "rubygems"
+require "qpid"
+require "socket"</p>
+
+<p>conn = Qpid::Connection.new(TCPSocket.new("localhost", 5672),</p>
+
+<pre><code>                                     :username =&gt; "guest",
+                                     :password =&gt; "guest")
+</code></pre>
+
+<p>conn.start(10)</p>
+
+<p>ssn = conn.session("test_producer")</p>
+
+<h1>create a queue</h1>
+
+<p>ssn.queue_declare("test-queue")
+ssn.exchange_declare("test-exchange", :type => "direct")</p>
+
+<p>dp = ssn.delivery_properties(:routing_key => "test-queue")
+mp = ssn.message_properties(:content_type => "text/plain")</p>
+
+<p>ssn.message_transfer(:message => Qpid::Message.new(dp, mp, "Hello QPID!"))
+ssn.message_transfer(:message => Qpid::Message.new(dp, mp, "Hello RUBY!"))
+while line = gets.strip
+  break if line =~ /<sup>(exit|done)$/i</sup>
+  ssn.message_transfer(:message => Qpid::Message.new(dp, mp, line.strip))
+end
+ssn.message_transfer(:message => Qpid::Message.new(dp, mp, "done"))
+ssn.sync</p>
+
+<p>ssn.close()
+conn.close()</p>
+
+<p>```</p>
+
+<p>consumer.rb</p>
+
+<p>``` ruby</p>
+
+<h1>!/usr/bin/env ruby</h1>
+
+<p>require "rubygems"
+require "qpid"
+require "socket"</p>
+
+<p>conn = Qpid::Connection.new(TCPSocket.new("localhost", 5672),</p>
+
+<pre><code>                                     :username =&gt; "guest",
+                                     :password =&gt; "guest")
+</code></pre>
+
+<p>conn.start(10)</p>
+
+<p>ssn = conn.session("test_consumer")</p>
+
+<p>incoming = ssn.incoming("messages")
+ssn.message_subscribe(
+  :destination => "messages",
+  :queue => "test-queue",
+  :accept_mode => ssn.message_accept_mode.none
+)</p>
+
+<h1>start incoming message flow</h1>
+
+<p>incoming.start()</p>
+
+<p>while true
+ body = incoming.get().body
+ puts body
+ break if body == "done"
+end</p>
+
+<p>ssn.close()
+conn.close()
+```</p>
+
+<p>另一个ruby AMQP协议的实现是<a href="https://github.com/ruby-amqp/amqp">ruby-amqp</a> ,基于event-machine, 目前只支持amqp 0-8.</p>
+
+<p>主要是为与rabbitmq通讯打造，简单试了下simple example也可用在qpid上，其它自动的example基本跑不过。现在开发比较活跃，更看好它。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[AMQP]]></title>
+    <link href="http://blog.zzzhc.com/blogs/4"/>
+    <updated>2011-03-30T00:00:00+08:00</updated>
+    <id>http://blog.zzzhc.com/blogs/4</id>
+    <content type="html"><![CDATA[<p><a href="http://www.amqp.org/">AMQP</a>(Advanced Message Queuing Protocol) 是一个为消息驱动中间件提供的应用层协议，binary protocol. <a href="http://www.amqp.org/confluence/display/AMQP/AMQP+Specification">协议规范</a>有多个版本，0-8版本是支持得最多的。</p>
+
+<p>AMQP的原始用途只是为金融界提供一个可以彼此协作的消息协议，而现在的目标则是为通用消息队列架构提供通用基础架构。因此，面向消息的中间件 （MOM）系统，例如发布/订阅队列，没有作为基本元素实现，而是通过发送简化的AMQ实体来完成。这些实体也是规范的一 部分，形成了在线路层协议顶端的一个层级：AMQP模型。这个模型统一了消息模式，包括发布/订阅，队列，事务以及流数据，路由等。</p>
+
+<h2>几个主要概念:</h2>
+
+<ul>
+<li>broker，即AMQP server</li>
+<li>message, 内容不可变，没有长度限制</li>
+<li>queue, message最终总会进入一个queue</li>
+<li>exchange, 为message提供分发服务，按binding规则将message分发到一个或多个queue, 有多种类型，如direct, fanout, topic</li>
+<li>binding,　消息路由规则</li>
+</ul>
+
+
+<h2>exchange的类型说明:</h2>
+
+<p><img class="size-full wp-image-5" title="direct exchange" src="http://blog.zzzhc.com/images/posts/direct.jpg" alt="" width="450" height="300" />
+<img class="size-full wp-image-7" title="topic exchange" src="http://blog.zzzhc.com/images/posts/topic.jpg" alt="" width="550" height="350" />
+<img class="size-full wp-image-6" title="fanout exchange" src="http://blog.zzzhc.com/images/posts/fanout.jpg" alt="" width="450" height="300" /></p>
+
+<p>&nbsp;</p>
+
+<h2>brokers</h2>
+
+<ul>
+<li><a href="http://qpid.apache.org/">Apache Qpid</a> 性能很好</li>
+<li><a href="http://www.rabbitmq.com/">RabbitMQ</a></li>
+<li><a href="http://www.redhat.com/mrg">Red Hat Enterprise MRG</a></li>
+<li>...</li>
+</ul>
+
+
+<h2>Qpid c++ broker性能测试结果</h2>
+
+<p>qpid-perftest --worker-threads 16 --default-queue-limit 1024000 --queue-purge-interval 30 --tcp-nodelay --mgmt-enable no</p>
+
+<table>
+<tbody>
+<tr>
+<th><span style="color: #333333;">Message size (bytes)</span></th>
+<th><span style="color: #333333;">Total transfers/sec</span></th>
+<th> Total Mbytes/sec</th>
+</tr>
+<tr>
+<td>32</td>
+<td>708,159</td>
+<td>21.6113</td>
+</tr>
+<tr>
+<td>64</td>
+<td>627,766</td>
+<td>38.3158</td>
+</tr>
+<tr>
+<td>128</td>
+<td>537,001</td>
+<td>65.5519</td>
+</tr>
+<tr>
+<td>256</td>
+<td>487,070</td>
+<td>118.914</td>
+</tr>
+<tr>
+<td>512</td>
+<td>278,192</td>
+<td>135.445</td>
+</tr>
+<tr>
+<td>1024</td>
+<td>176,901</td>
+<td>172.755</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>ruby client</h2>
+
+<ul>
+<li><a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/">qpid ruby client</a></li>
+<li><a href="https://github.com/ruby-amqp/amqp">ruby-amqp</a> 只支持AMQP 0-8</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

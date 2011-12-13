@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: solr | zzzhc's Blog]]></title>
+  <link href="http://blog.zzzhc.com/categories/solr/atom.xml" rel="self"/>
+  <link href="http://blog.zzzhc.com/"/>
+  <updated>2011-12-13T19:07:41+08:00</updated>
+  <id>http://blog.zzzhc.com/</id>
+  <author>
+    <name><![CDATA[zzzhc]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[solr faceted search]]></title>
+    <link href="http://blog.zzzhc.com/blogs/77"/>
+    <updated>2011-04-24T00:00:00+08:00</updated>
+    <id>http://blog.zzzhc.com/blogs/77</id>
+    <content type="html"><![CDATA[<p>从用户角度看，<a href="http://wiki.apache.org/solr/SolrFacetingOverview">faceted search</a>把搜索结果分入多个类别(一般还会显示各个类别下有多少结果)，并允许用户分类别查看。在电子商务类网站经常可以看到，如</p>
+
+<ul>
+<li><a href="http://s.taobao.com/search?q=%C9%CF%CD%F8%B1%BE">淘宝</a> 显示全部分类</li>
+<li><a href="http://www.amazon.cn/s/ref=nb_ss?url=search-alias%3Daps&amp;amp;keywords=%E4%B8%8A%E7%BD%91%E6%9C%AC&amp;amp;x=0&amp;amp;y=0">卓越</a> 左侧</li>
+<li><a href="http://search.360buy.com/Search?keyword=%C9%CF%CD%F8%B1%BE">京东商城</a> 顶部</li>
+</ul>
+
+
+<p>FacetFields有两种，枚举型和分词型。枚举型适合类别比较少的场景，如卓越。分词型适合于类别很多，但每个document所属的类别较少的情况。Facet field不需要定义成stored,但需要是indexed. facet主要是用在drill-down到搜索结果的一个子集，实际查询是会生成一个对应类别的filter query.</p>
+
+<p>实现原理，枚举型与分词型有些区别</p>
+
+<ul>
+<li>枚举型，遍历field的所有terms, 得到各个term对应的document BitSet, 这个结果与query result作与</li>
+<li>分词型，遍历搜索结果中的每个document, 从field cache里得到它对应的terms, 累加terms出现次数</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[solr]]></title>
+    <link href="http://blog.zzzhc.com/blogs/69"/>
+    <updated>2011-04-11T00:00:00+08:00</updated>
+    <id>http://blog.zzzhc.com/blogs/69</id>
+    <content type="html"><![CDATA[<p><a href="http://lucene.apache.org/solr/">solr</a>是一个基于<a href="http://lucene.apache.org/">lucene</a>，高度可配置的企业级搜索平台。它自己的介绍:</p>
+
+<blockquote><p> Solr is the popular, blazing fast open source enterprise search platform from the Apache Lucene project. Its major features include powerful full-text search, hit highlighting, faceted search, dynamic clustering, database integration, rich document (e.g., Word, PDF) handling, and geospatial search. Solr is highly scalable, providing distributed search and index replication, and it powers the search and navigation features of many of the world's largest internet sites.</p></blockquote>
+
+<p><a href="http://lucene.apache.org/solr/features.html">Features</a>有一堆,觉得比较实用的几点有</p>
+
+<ul>
+<li>高度可配置，index和query的各部分都能通过配置定制</li>
+<li>与数据库表结构类似的索引定义，支持主键，支持基本数据类型(如int), 很容易与表结构关联起来，更新方便</li>
+<li>支持<a href="http://wiki.apache.org/solr/MultipleIndexes">multiple indexes</a>, 方便对多个表分别建索引</li>
+<li>简单的HTTP接口，开发改进client都很方便</li>
+<li>支持replication, 对HA和search scalability提供了一些安慰</li>
+<li>简单的后台管理界面，支持查看索引(<a href="http://wiki.apache.org/solr/LukeRequestHandler">LukeRequestHandler</a>),执行查询，有助于debug</li>
+<li>丰富的文档，主要是<a href="http://wiki.apache.org/solr/FrontPage">wiki</a></li>
+</ul>
+
+
+<p>几个不足的地方：</p>
+
+<ul>
+<li>配置太繁琐，需要反复查文档</li>
+<li>管理界面太简陋</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

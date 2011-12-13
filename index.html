@@ -65,7 +65,12 @@
   </fieldset>
 </form>
 <ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
+  <li><a href="/">Home</a></li>
+  <li><a class='category' href='/categories/rails/'>Rails</a></li>
+  <li><a class='category' href='/categories/vim/'>Vim</a></li>
+  <li><a class='category' href='/categories/lucene/'>Lucene</a></li>
+  <li><a class='category' href='/categories/amqp/'>AMQP</a></li>
+  <li><a class='category' href='/categories/misc/'>Misc</a></li>
   <li><a href="/blog/archives">Archives</a></li>
 </ul>
 
@@ -80,7 +85,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/posts/2011/12/12/you-dao-zi-dian-httpjie-kou/">有道字典 Chrome Extension</a></h1>
+      <h1 class="entry-title"><a href="/posts/2011-12-12-you-dao-zi-dian-httpjie-kou/">有道字典 Chrome Extension</a></h1>
     
     
       <p class="meta">
@@ -107,7 +112,7 @@
 </ul>
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -118,7 +123,7 @@
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ svn info
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>svn info
 </span><span class='line'>Path: .
 </span><span class='line'>URL: https://dev.corp.youdao.com/svn/outfox/products/desktop/incubator/mac/GetWordExtension/Chrome/extension
 </span><span class='line'>Repository Root: https://dev.corp.youdao.com/svn/outfox
@@ -128,7 +133,8 @@
 </span><span class='line'>Schedule: normal
 </span><span class='line'>Last Changed Author: huangdx
 </span><span class='line'>Last Changed Rev: 277738
-</span><span class='line'>Last Changed Date: 2011-09-13 14:00:17 +0800 (二, 13  9 2011)</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>Last Changed Date: 2011-09-13 14:00:17 +0800 <span class="o">(</span>二, 13  9 2011<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
@@ -136,25 +142,26 @@
 </ul>
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>//in background.html
-</span><span class='line'>     function SendResult(word, pos, type) {
-</span><span class='line'>         var s = new XMLHttpRequest;
-</span><span class='line'>         s.open("GET", "http://localhost:32445/getword?word=" + word + "&pos=" + pos + "&type=" + type, true);
-</span><span class='line'>         //console.log('sending...')
-</span><span class='line'>         s.send()
-</span><span class='line'>     };</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//in background.html</span>
+</span><span class='line'>     <span class="kd">function</span> <span class="nx">SendResult</span><span class="p">(</span><span class="nx">word</span><span class="p">,</span> <span class="nx">pos</span><span class="p">,</span> <span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>         <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">;</span>
+</span><span class='line'>         <span class="nx">s</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;http://localhost:32445/getword?word=&quot;</span> <span class="o">+</span> <span class="nx">word</span> <span class="o">+</span> <span class="s2">&quot;&amp;pos=&quot;</span> <span class="o">+</span> <span class="nx">pos</span> <span class="o">+</span> <span class="s2">&quot;&amp;type=&quot;</span> <span class="o">+</span> <span class="nx">type</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>         <span class="c1">//console.log(&#39;sending...&#39;)</span>
+</span><span class='line'>         <span class="nx">s</span><span class="p">.</span><span class="nx">send</span><span class="p">()</span>
+</span><span class='line'>     <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>用curl试了下，可以发送请求，但响应为空</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -168,27 +175,28 @@
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -vv 'http://localhost:32445/getword?word=for%20suppliers&pos=8&type=0'
-</span><span class='line'>* About to connect() to localhost port 32445 (#0)
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -vv <span class="s1">&#39;http://localhost:32445/getword?word=for%20suppliers&amp;pos=8&amp;type=0&#39;</span>
+</span><span class='line'>* About to connect<span class="o">()</span> to localhost port 32445 <span class="o">(</span><span class="c">#0)</span>
 </span><span class='line'>*   Trying ::1... Connection refused
 </span><span class='line'>*   Trying 127.0.0.1... connected
-</span><span class='line'>* Connected to localhost (127.0.0.1) port 32445 (#0)
-</span><span class='line'>&gt; GET /getword?word=for%20suppliers&pos=8&type=0 HTTP/1.1
-</span><span class='line'>&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
+</span><span class='line'>* Connected to localhost <span class="o">(</span>127.0.0.1<span class="o">)</span> port 32445 <span class="o">(</span><span class="c">#0)</span>
+</span><span class='line'>&gt; GET /getword?word<span class="o">=</span><span class="k">for</span>%20suppliers&amp;pos<span class="o">=</span>8&amp;type<span class="o">=</span>0 HTTP/1.1
+</span><span class='line'>&gt; User-Agent: curl/7.21.4 <span class="o">(</span>universal-apple-darwin11.0<span class="o">)</span> libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
 </span><span class='line'>&gt; Host: localhost:32445
 </span><span class='line'>&gt; Accept: */*
-</span><span class='line'>&gt; 
+</span><span class='line'>&gt;
 </span><span class='line'>* Empty reply from server
-</span><span class='line'>* Connection #0 to host localhost left intact
-</span><span class='line'>curl: (52) Empty reply from server
-</span><span class='line'>* Closing connection #0</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>* Connection <span class="c">#0 to host localhost left intact</span>
+</span><span class='line'>curl: <span class="o">(</span>52<span class="o">)</span> Empty reply from server
+</span><span class='line'>* Closing connection <span class="c">#0</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>word, pos, type这三个参数只要少一个有道字典就会crash</p>
 
 <p>这次http request只是一个trigger, 有道字典会向dict.youdao.com发一个request:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -244,62 +252,63 @@
 <span class='line-number'>54</span>
 <span class='line-number'>55</span>
 <span class='line-number'>56</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -vv 'http://dict.youdao.com/fsearch?q=for%20suppliers&pos=8&keyfrom=mac.scrtrans.0&id=E33EC7736AFDCABB184051CD3757CA73&vendor=cidian.youdao.com&client=macdict'
-</span><span class='line'>* About to connect() to dict.youdao.com port 80 (#0)
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -vv <span class="s1">&#39;http://dict.youdao.com/fsearch?q=for%20suppliers&amp;pos=8&amp;keyfrom=mac.scrtrans.0&amp;id=E33EC7736AFDCABB184051CD3757CA73&amp;vendor=cidian.youdao.com&amp;client=macdict&#39;</span>
+</span><span class='line'>* About to connect<span class="o">()</span> to dict.youdao.com port 80 <span class="o">(</span><span class="c">#0)</span>
 </span><span class='line'>*   Trying 61.135.218.32... connected
-</span><span class='line'>* Connected to dict.youdao.com (61.135.218.32) port 80 (#0)
-</span><span class='line'>&gt; GET /fsearch?q=for%20suppliers&pos=8&keyfrom=mac.scrtrans.0&id=E33EC7736AFDCABB184051CD3757CA73&vendor=cidian.youdao.com&client=macdict HTTP/1.1
-</span><span class='line'>&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
+</span><span class='line'>* Connected to dict.youdao.com <span class="o">(</span>61.135.218.32<span class="o">)</span> port 80 <span class="o">(</span><span class="c">#0)</span>
+</span><span class='line'>&gt; GET /fsearch?q<span class="o">=</span><span class="k">for</span>%20suppliers&amp;pos<span class="o">=</span>8&amp;keyfrom<span class="o">=</span>mac.scrtrans.0&amp;id<span class="o">=</span>E33EC7736AFDCABB184051CD3757CA73&amp;vendor<span class="o">=</span>cidian.youdao.com&amp;client<span class="o">=</span>macdict HTTP/1.1
+</span><span class='line'>&gt; User-Agent: curl/7.21.4 <span class="o">(</span>universal-apple-darwin11.0<span class="o">)</span> libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
 </span><span class='line'>&gt; Host: dict.youdao.com
 </span><span class='line'>&gt; Accept: */*
-</span><span class='line'>&gt; 
+</span><span class='line'>&gt;
 </span><span class='line'>&lt; HTTP/1.1 200 OK
 </span><span class='line'>&lt; Server: nginx
 </span><span class='line'>&lt; Date: Tue, 13 Dec 2011 07:10:55 GMT
-</span><span class='line'>&lt; Content-Type: text/xml; charset=utf-8
+</span><span class='line'>&lt; Content-Type: text/xml; <span class="nv">charset</span><span class="o">=</span>utf-8
 </span><span class='line'>&lt; Connection: keep-alive
 </span><span class='line'>&lt; Cache-Control: private
 </span><span class='line'>&lt; Content-Language: en-US
-</span><span class='line'>&lt; Set-Cookie: OUTFOX_SEARCH_USER_ID=-447518408@123.117.56.163; domain=.youdao.com; expires=Thu, 05-Dec-2041 07:10:55 GMT
-</span><span class='line'>&lt; Set-Cookie: JSESSIONID=abcdjNBcCWPPK4igOq2qt; domain=youdao.com; path=/
+</span><span class='line'>&lt; Set-Cookie: <span class="nv">OUTFOX_SEARCH_USER_ID</span><span class="o">=</span>-447518408@123.117.56.163; <span class="nv">domain</span><span class="o">=</span>.youdao.com; <span class="nv">expires</span><span class="o">=</span>Thu, 05-Dec-2041 07:10:55 GMT
+</span><span class='line'>&lt; Set-Cookie: <span class="nv">JSESSIONID</span><span class="o">=</span>abcdjNBcCWPPK4igOq2qt; <span class="nv">domain</span><span class="o">=</span>youdao.com; <span class="nv">path</span><span class="o">=</span>/
 </span><span class='line'>&lt; Vary: Accept-Encoding
 </span><span class='line'>&lt; Content-Length: 1477
-</span><span class='line'>&lt; 
-</span><span class='line'>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+</span><span class='line'>&lt;
+</span><span class='line'>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span>?&gt;
 </span><span class='line'>
 </span><span class='line'>&lt;yodaodict&gt;
-</span><span class='line'>  &lt;return-phrase&gt;&lt;![CDATA[suppliers]]&gt;&lt;/return-phrase&gt;
-</span><span class='line'>  
-</span><span class='line'>                            &lt;phonetic-symbol&gt;sə'plaiəz&lt;/phonetic-symbol&gt;
+</span><span class='line'>  &lt;<span class="k">return</span>-phrase&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>suppliers<span class="o">]]</span>&gt;&lt;/return-phrase&gt;
+</span><span class='line'>
+</span><span class='line'>                            &lt;phonetic-symbol&gt;sə<span class="err">&#39;</span>plaiəz&lt;/phonetic-symbol&gt;
 </span><span class='line'>                  &lt;dictcn-speach&gt;suppliers&lt;/dictcn-speach&gt;
 </span><span class='line'>                          &lt;custom-translation&gt;
-</span><span class='line'>        &lt;type&gt;ec&lt;/type&gt;
-</span><span class='line'>                  &lt;translation&gt;&lt;content&gt;&lt;![CDATA[n. 供应商（supplier的复数）]]&gt;&lt;/content&gt;&lt;/translation&gt;
+</span><span class='line'>        &lt;<span class="nb">type</span>&gt;ec&lt;/type&gt;
+</span><span class='line'>                  &lt;translation&gt;&lt;content&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>n. 供应商（supplier的复数）<span class="o">]]</span>&gt;&lt;/content&gt;&lt;/translation&gt;
 </span><span class='line'>                &lt;/custom-translation&gt;
-</span><span class='line'>          
+</span><span class='line'>
 </span><span class='line'>              &lt;yodao-web-dict&gt;
 </span><span class='line'>                    &lt;web-translation&gt;
-</span><span class='line'>                &lt;key&gt;&lt;![CDATA[Suppliers]]&gt;&lt;/key&gt;
-</span><span class='line'>                          &lt;trans&gt;&lt;value&gt;&lt;![CDATA[供应商]]&gt;&lt;/value&gt;&lt;/trans&gt;
-</span><span class='line'>                  &lt;trans&gt;&lt;value&gt;&lt;![CDATA[供货商]]&gt;&lt;/value&gt;&lt;/trans&gt;
-</span><span class='line'>                  &lt;trans&gt;&lt;value&gt;&lt;![CDATA[数据库]]&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                &lt;key&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>Suppliers<span class="o">]]</span>&gt;&lt;/key&gt;
+</span><span class='line'>                          &lt;trans&gt;&lt;value&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>供应商<span class="o">]]</span>&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                  &lt;trans&gt;&lt;value&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>供货商<span class="o">]]</span>&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                  &lt;trans&gt;&lt;value&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>数据库<span class="o">]]</span>&gt;&lt;/value&gt;&lt;/trans&gt;
 </span><span class='line'>                &lt;/web-translation&gt;
 </span><span class='line'>              &lt;web-translation&gt;
-</span><span class='line'>                &lt;key&gt;&lt;![CDATA[Overview Suppliers]]&gt;&lt;/key&gt;
-</span><span class='line'>                          &lt;trans&gt;&lt;value&gt;&lt;![CDATA[概览]]&gt;&lt;/value&gt;&lt;/trans&gt;
-</span><span class='line'>                  &lt;trans&gt;&lt;value&gt;&lt;![CDATA[供应商]]&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                &lt;key&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>Overview Suppliers<span class="o">]]</span>&gt;&lt;/key&gt;
+</span><span class='line'>                          &lt;trans&gt;&lt;value&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>概览<span class="o">]]</span>&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                  &lt;trans&gt;&lt;value&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>供应商<span class="o">]]</span>&gt;&lt;/value&gt;&lt;/trans&gt;
 </span><span class='line'>                &lt;/web-translation&gt;
 </span><span class='line'>              &lt;web-translation&gt;
-</span><span class='line'>                &lt;key&gt;&lt;![CDATA[select suppliers]]&gt;&lt;/key&gt;
-</span><span class='line'>                          &lt;trans&gt;&lt;value&gt;&lt;![CDATA[挑选供应商]]&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                &lt;key&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span><span class="k">select </span>suppliers<span class="o">]]</span>&gt;&lt;/key&gt;
+</span><span class='line'>                          &lt;trans&gt;&lt;value&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>挑选供应商<span class="o">]]</span>&gt;&lt;/value&gt;&lt;/trans&gt;
 </span><span class='line'>                &lt;/web-translation&gt;
 </span><span class='line'>            &lt;/yodao-web-dict&gt;
-</span><span class='line'>    
-</span><span class='line'>                               &lt;recommend&gt;&lt;![CDATA[supplier]]&gt;&lt;/recommend&gt;
+</span><span class='line'>
+</span><span class='line'>                               &lt;recommend&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>supplier<span class="o">]]</span>&gt;&lt;/recommend&gt;
 </span><span class='line'>                    &lt;sexp&gt;0&lt;/sexp&gt;
 </span><span class='line'>&lt;/yodaodict&gt;
-</span><span class='line'>* Connection #0 to host dict.youdao.com left intact
-</span><span class='line'>* Closing connection #0</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>* Connection <span class="c">#0 to host dict.youdao.com left intact</span>
+</span><span class='line'>* Closing connection <span class="c">#0</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>拿到结果后由有道字典显示一个提示窗口.</p>
@@ -317,7 +326,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/posts/2011/12/11/speed-up-rails-asset-pipeline/">Speed Up Rails Asset Pipeline</a></h1>
+      <h1 class="entry-title"><a href="/posts/2011-12-11-speed-up-rails-asset-pipeline/">Speed Up Rails Asset Pipeline</a></h1>
     
     
       <p class="meta">
@@ -377,7 +386,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/posts/2011/12/10/gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a></h1>
+      <h1 class="entry-title"><a href="/posts/2011-12-10-gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a></h1>
     
     
       <p class="meta">
@@ -480,7 +489,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/posts/2011/12/10/crontab-tips/">Crontab Tips</a></h1>
+      <h1 class="entry-title"><a href="/posts/2011-12-10-crontab-tips/">Crontab Tips</a></h1>
     
     
       <p class="meta">
@@ -586,7 +595,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/posts/2011/12/09/bash-tips-0/">Bash Tips - 0</a></h1>
+      <h1 class="entry-title"><a href="/posts/2011-12-09-bash-tips-0/">Bash Tips - 0</a></h1>
     
     
       <p class="meta">
@@ -649,7 +658,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/posts/2011/12/09/rvm-global-gems/">Rvm Global Gems</a></h1>
+      <h1 class="entry-title"><a href="/posts/2011-12-09-rvm-global-gems/">Rvm Global Gems</a></h1>
     
     
       <p class="meta">
@@ -732,7 +741,7 @@
 
 <h2>usage</h2>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -740,21 +749,22 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Dict dict = new Dict();
-</span><span class='line'>    dict.addAllSpecialTypes();
-</span><span class='line'>    BufferedReader dictReader = new BufferedReader(new InputStreamReader(
-</span><span class='line'>        new FileInputStream("dict.txt"), "UTF-8"));
-</span><span class='line'>    dict.load(dictReader);
-</span><span class='line'>    dictReader.close();
-</span><span class='line'>    dict.optimize();
-</span><span class='line'>    DictAnalyzer dictAnalyzer = new DictAnalyzer(dict);</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Dict</span> <span class="n">dict</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Dict</span><span class="o">();</span>
+</span><span class='line'><span class="n">dict</span><span class="o">.</span><span class="na">addAllSpecialTypes</span><span class="o">();</span>
+</span><span class='line'><span class="n">BufferedReader</span> <span class="n">dictReader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="n">InputStreamReader</span><span class="o">(</span>
+</span><span class='line'>    <span class="k">new</span> <span class="nf">FileInputStream</span><span class="o">(</span><span class="s">&quot;dict.txt&quot;</span><span class="o">),</span> <span class="s">&quot;UTF-8&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="n">dict</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="n">dictReader</span><span class="o">);</span>
+</span><span class='line'><span class="n">dictReader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'><span class="n">dict</span><span class="o">.</span><span class="na">optimize</span><span class="o">();</span>
+</span><span class='line'><span class="n">DictAnalyzer</span> <span class="n">dictAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DictAnalyzer</span><span class="o">(</span><span class="n">dict</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h2>benchmark</h2>
 
 <p>ant benchmark</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -785,39 +795,38 @@
 <span class='line-number'>29</span>
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>supported features:
-</span><span class='line'>                  CharTerm  Offset  PositionIncrement  Term  Type
-</span><span class='line'>      IKAnalyzer         Y       Y                  N     Y     N
-</span><span class='line'>   MMSegAnalyzer         Y       Y                  N     Y     Y
-</span><span class='line'> PaodingAnalyzer         Y       Y                  N     Y     Y
-</span><span class='line'>StandardAnalyzer         Y       Y                  Y     Y     Y
-</span><span class='line'>  BaoBaoAnalyzer         Y       Y                  Y     Y     Y
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">supported</span> <span class="nl">features:</span>
+</span><span class='line'>                  <span class="n">CharTerm</span>  <span class="n">Offset</span>  <span class="n">PositionIncrement</span>  <span class="n">Term</span>  <span class="n">Type</span>
+</span><span class='line'>      <span class="n">IKAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">N</span>     <span class="n">Y</span>     <span class="n">N</span>
+</span><span class='line'>   <span class="n">MMSegAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">N</span>     <span class="n">Y</span>     <span class="n">Y</span>
+</span><span class='line'> <span class="n">PaodingAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">N</span>     <span class="n">Y</span>     <span class="n">Y</span>
+</span><span class='line'><span class="n">StandardAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">Y</span>     <span class="n">Y</span>     <span class="n">Y</span>
+</span><span class='line'>  <span class="n">BaoBaoAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">Y</span>     <span class="n">Y</span>     <span class="n">Y</span>
 </span><span class='line'>
-</span><span class='line'>test 1, sample length=26265
-</span><span class='line'>            name          chars           time         tokens speed(chars/second)
-</span><span class='line'> PaodingAnalyzer          26265          0.610          12542            43036.87
-</span><span class='line'>   MMSegAnalyzer          26265          0.314          14007            83566.52
-</span><span class='line'>      IKAnalyzer          26265          0.262          16016           100177.91
-</span><span class='line'>StandardAnalyzer          26265          0.141          22366           185727.87
-</span><span class='line'>  BaoBaoAnalyzer          26265          0.038          18185           695682.16
+</span><span class='line'><span class="n">test</span> <span class="mi">1</span><span class="o">,</span> <span class="n">sample</span> <span class="n">length</span><span class="o">=</span><span class="mi">26265</span>
+</span><span class='line'>            <span class="n">name</span>          <span class="n">chars</span>           <span class="n">time</span>         <span class="n">tokens</span> <span class="nf">speed</span><span class="o">(</span><span class="n">chars</span><span class="o">/</span><span class="n">second</span><span class="o">)</span>
+</span><span class='line'> <span class="n">PaodingAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.610</span>          <span class="mi">12542</span>            <span class="mf">43036.87</span>
+</span><span class='line'>   <span class="n">MMSegAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.314</span>          <span class="mi">14007</span>            <span class="mf">83566.52</span>
+</span><span class='line'>      <span class="n">IKAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.262</span>          <span class="mi">16016</span>           <span class="mf">100177.91</span>
+</span><span class='line'><span class="n">StandardAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.141</span>          <span class="mi">22366</span>           <span class="mf">185727.87</span>
+</span><span class='line'>  <span class="n">BaoBaoAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.038</span>          <span class="mi">18185</span>           <span class="mf">695682.16</span>
 </span><span class='line'>
-</span><span class='line'>test 2, sample length=262650
-</span><span class='line'>            name          chars           time         tokens speed(chars/second)
-</span><span class='line'> PaodingAnalyzer         262650          0.187         125420          1402139.61
-</span><span class='line'>      IKAnalyzer         262650          0.163         160160          1613693.16
-</span><span class='line'>   MMSegAnalyzer         262650          0.158         140070          1664009.53
-</span><span class='line'>  BaoBaoAnalyzer         262650          0.041         181850          6362134.44
-</span><span class='line'>StandardAnalyzer         262650          0.020         223660         12905789.80
+</span><span class='line'><span class="n">test</span> <span class="mi">2</span><span class="o">,</span> <span class="n">sample</span> <span class="n">length</span><span class="o">=</span><span class="mi">262650</span>
+</span><span class='line'>            <span class="n">name</span>          <span class="n">chars</span>           <span class="n">time</span>         <span class="n">tokens</span> <span class="nf">speed</span><span class="o">(</span><span class="n">chars</span><span class="o">/</span><span class="n">second</span><span class="o">)</span>
+</span><span class='line'> <span class="n">PaodingAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.187</span>         <span class="mi">125420</span>          <span class="mf">1402139.61</span>
+</span><span class='line'>      <span class="n">IKAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.163</span>         <span class="mi">160160</span>          <span class="mf">1613693.16</span>
+</span><span class='line'>   <span class="n">MMSegAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.158</span>         <span class="mi">140070</span>          <span class="mf">1664009.53</span>
+</span><span class='line'>  <span class="n">BaoBaoAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.041</span>         <span class="mi">181850</span>          <span class="mf">6362134.44</span>
+</span><span class='line'><span class="n">StandardAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.020</span>         <span class="mi">223660</span>         <span class="mf">12905789.80</span>
 </span><span class='line'>
-</span><span class='line'>test 3, sample length=2626500
-</span><span class='line'>            name          chars           time         tokens speed(chars/second)
-</span><span class='line'>      IKAnalyzer        2626500          2.251        1601600          1166564.72
-</span><span class='line'> PaodingAnalyzer        2626500          1.462        1254200          1796381.55
-</span><span class='line'>   MMSegAnalyzer        2626500          1.043        1400700          2519010.94
-</span><span class='line'>  BaoBaoAnalyzer        2626500          0.352        1818500          7458959.20
-</span><span class='line'>StandardAnalyzer        2626500          0.202        2236600         13015280.16</span></code></pre></td></tr></table></div></figure>
-
-
+</span><span class='line'><span class="n">test</span> <span class="mi">3</span><span class="o">,</span> <span class="n">sample</span> <span class="n">length</span><span class="o">=</span><span class="mi">2626500</span>
+</span><span class='line'>            <span class="n">name</span>          <span class="n">chars</span>           <span class="n">time</span>         <span class="n">tokens</span> <span class="nf">speed</span><span class="o">(</span><span class="n">chars</span><span class="o">/</span><span class="n">second</span><span class="o">)</span>
+</span><span class='line'>      <span class="n">IKAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">2.251</span>        <span class="mi">1601600</span>          <span class="mf">1166564.72</span>
+</span><span class='line'> <span class="n">PaodingAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">1.462</span>        <span class="mi">1254200</span>          <span class="mf">1796381.55</span>
+</span><span class='line'>   <span class="n">MMSegAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">1.043</span>        <span class="mi">1400700</span>          <span class="mf">2519010.94</span>
+</span><span class='line'>  <span class="n">BaoBaoAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">0.352</span>        <span class="mi">1818500</span>          <span class="mf">7458959.20</span>
+</span><span class='line'><span class="n">StandardAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">0.202</span>        <span class="mi">2236600</span>         <span class="mf">13015280.16</span>
+</span></code></pre></td></tr></table></div></figure>
 
 </div>
   
@@ -853,21 +862,22 @@
 
 <p>OS:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ cat /etc/lsb-release 
-</span><span class='line'>DISTRIB_ID=Ubuntu
-</span><span class='line'>DISTRIB_RELEASE=10.04
-</span><span class='line'>DISTRIB_CODENAME=lucid
-</span><span class='line'>DISTRIB_DESCRIPTION="Ubuntu 10.04.1 LTS"</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat /etc/lsb-release
+</span><span class='line'><span class="nv">DISTRIB_ID</span><span class="o">=</span>Ubuntu
+</span><span class='line'><span class="nv">DISTRIB_RELEASE</span><span class="o">=</span>10.04
+</span><span class='line'><span class="nv">DISTRIB_CODENAME</span><span class="o">=</span>lucid
+</span><span class='line'><span class="nv">DISTRIB_DESCRIPTION</span><span class="o">=</span><span class="s2">&quot;Ubuntu 10.04.1 LTS&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -875,21 +885,22 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ mysql_install_db --datadir=/opt/mysql/
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mysql_install_db --datadir<span class="o">=</span>/opt/mysql/
 </span><span class='line'>Installing MySQL system tables...
-</span><span class='line'>110609 20:59:26 [Warning] Can't create test file /opt/mysql/zzzhc-laptop.lower-test
-</span><span class='line'>110609 20:59:26 [Warning] Can't create test file /opt/mysql/zzzhc-laptop.lower-test
+</span><span class='line'>110609 20:59:26 <span class="o">[</span>Warning<span class="o">]</span> Can<span class="s1">&#39;t create test file /opt/mysql/zzzhc-laptop.lower-test</span>
+</span><span class='line'><span class="s1">110609 20:59:26 [Warning] Can&#39;</span>t create <span class="nb">test </span>file /opt/mysql/zzzhc-laptop.lower-test
 </span><span class='line'>
 </span><span class='line'>Installation of system tables failed!  Examine the logs in
-</span><span class='line'>/opt/mysql/ for more information.
-</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>/opt/mysql/ <span class="k">for </span>more information.
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>换成/tmp目录,mysql_install_db &#8211;datadir=/tmp，神奇地成功了。</p>
 
 <p>bash -x mysql_install_db &#8211;datadir=/opt/mysql/发现问题在这:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -907,29 +918,30 @@
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>+ mysqld_install_cmd_line='/usr/sbin/mysqld  --language=/usr/share/mysql/english --bootstrap   --basedir=/usr --datadir=/opt/mysql/ --log-warnings=0 --loose-skip-innodb   --loose-skip-ndbcluster  --user=mysql --max_allowed_packet=8M   --default-storage-engine=myisam   --net_buffer_length=16K'
-</span><span class='line'>+ s_echo 'Installing MySQL system tables...'
-</span><span class='line'>+ test 0 -eq 0 -a 0 -eq 0
-</span><span class='line'>+ echo 'Installing MySQL system tables...'
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>+ <span class="nv">mysqld_install_cmd_line</span><span class="o">=</span><span class="s1">&#39;/usr/sbin/mysqld  --language=/usr/share/mysql/english --bootstrap   --basedir=/usr --datadir=/opt/mysql/ --log-warnings=0 --loose-skip-innodb   --loose-skip-ndbcluster  --user=mysql --max_allowed_packet=8M   --default-storage-engine=myisam   --net_buffer_length=16K&#39;</span>
+</span><span class='line'>+ s_echo <span class="s1">&#39;Installing MySQL system tables...&#39;</span>
+</span><span class='line'>+ <span class="nb">test </span>0 -eq 0 -a 0 -eq 0
+</span><span class='line'>+ <span class="nb">echo</span> <span class="s1">&#39;Installing MySQL system tables...&#39;</span>
 </span><span class='line'>Installing MySQL system tables...
-</span><span class='line'>+ /usr/sbin/mysqld --language=/usr/share/mysql/english --bootstrap --basedir=/usr --datadir=/opt/mysql/ --log-warnings=0 --loose-skip-innodb --loose-skip-ndbcluster --user=mysql --max_allowed_packet=8M --default-storage-engine=myisam --net_buffer_length=16K
-</span><span class='line'>+ echo 'use mysql;'
+</span><span class='line'>+ /usr/sbin/mysqld --language<span class="o">=</span>/usr/share/mysql/english --bootstrap --basedir<span class="o">=</span>/usr --datadir<span class="o">=</span>/opt/mysql/ --log-warnings<span class="o">=</span>0 --loose-skip-innodb --loose-skip-ndbcluster --user<span class="o">=</span>mysql --max_allowed_packet<span class="o">=</span>8M --default-storage-engine<span class="o">=</span>myisam --net_buffer_length<span class="o">=</span>16K
+</span><span class='line'>+ <span class="nb">echo</span> <span class="s1">&#39;use mysql;&#39;</span>
 </span><span class='line'>+ cat /usr/share/mysql/mysql_system_tables.sql /usr/share/mysql/mysql_system_tables_data.sql
-</span><span class='line'>110609 21:04:14 [Warning] Can't create test file /opt/mysql/zzzhc-laptop.lower-test
-</span><span class='line'>110609 21:04:14 [Warning] Can't create test file /opt/mysql/zzzhc-laptop.lower-test
-</span><span class='line'>+ eval cat
+</span><span class='line'>110609 21:04:14 <span class="o">[</span>Warning<span class="o">]</span> Can<span class="s1">&#39;t create test file /opt/mysql/zzzhc-laptop.lower-test</span>
+</span><span class='line'><span class="s1">110609 21:04:14 [Warning] Can&#39;</span>t create <span class="nb">test </span>file /opt/mysql/zzzhc-laptop.lower-test
+</span><span class='line'>+ <span class="nb">eval </span>cat
 </span><span class='line'>++ cat
-</span><span class='line'>+ echo
+</span><span class='line'>+ <span class="nb">echo</span>
 </span><span class='line'>
-</span><span class='line'>+ echo 'Installation of system tables failed!  Examine the logs in'
+</span><span class='line'>+ <span class="nb">echo</span> <span class="s1">&#39;Installation of system tables failed!  Examine the logs in&#39;</span>
 </span><span class='line'>Installation of system tables failed!  Examine the logs in
-</span><span class='line'>+ echo '/opt/mysql/ for more information.'
-</span><span class='line'>/opt/mysql/ for more information.</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>+ <span class="nb">echo</span> <span class="s1">&#39;/opt/mysql/ for more information.&#39;</span>
+</span><span class='line'>/opt/mysql/ <span class="k">for </span>more information.
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>strace /usr/sbin/mysqld &#8211;language=/usr/share/mysql/english &#8211;bootstrap &#8211;basedir=/usr &#8211;datadir=/opt/mysql/ &#8211;log-warnings=0 &#8211;loose-skip-innodb &#8211;loose-skip-ndbcluster &#8211;user=mysql &#8211;max_allowed_packet=8M &#8211;default-storage-engine=myisam &#8211;net_buffer_length=16K 2>&amp;1 |tee strace.log</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -944,21 +956,22 @@
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>stat64("/usr/share/mysql/charsets/Index.xml", {st_mode=S_IFREG|0644, st_size=18261, ...}) = 0 
-</span><span class='line'>brk(0x22064000)                         = 0x22064000
-</span><span class='line'>open("/usr/share/mysql/charsets/Index.xml", O_RDONLY|O_LARGEFILE) = 3 
-</span><span class='line'>read(3, "..., 18261) = 18261
-</span><span class='line'>close(3)                                = 0 
-</span><span class='line'>unlink("/opt/mysql/zzzhc-laptop.LOWER-TEST") = -1 ENOENT (No such file or directory)
-</span><span class='line'>open("/opt/mysql/zzzhc-laptop.lower-test", O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied)
-</span><span class='line'>time(NULL)                              = 1307624820
-</span><span class='line'>write(2, "110609 21:07:00 [Warning] Can't "..., 84110609 21:07:00 [Warning] Can't create test file /opt/mysql/zzzhc-laptop.lower-test
-</span><span class='line'>) = 84
-</span><span class='line'>unlink("/opt/mysql/zzzhc-laptop.LOWER-TEST") = -1 ENOENT (No such file or directory)
-</span><span class='line'>open("/opt/mysql/zzzhc-laptop.lower-test", O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied)
-</span><span class='line'>time(NULL)                              = 1307624820
-</span><span class='line'>write(2, "110609 21:07:00 [Warning] Can't "..., 84110609 21:07:00 [Warning] Can't create test file /opt/mysql/zzzhc-laptop.lower-test
-</span><span class='line'>) = 84</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>stat64<span class="o">(</span><span class="s2">&quot;/usr/share/mysql/charsets/Index.xml&quot;</span>, <span class="o">{</span><span class="nv">st_mode</span><span class="o">=</span>S_IFREG|0644, <span class="nv">st_size</span><span class="o">=</span>18261, ...<span class="o">})</span> <span class="o">=</span> 0
+</span><span class='line'>brk<span class="o">(</span>0x22064000<span class="o">)</span>                         <span class="o">=</span> 0x22064000
+</span><span class='line'>open<span class="o">(</span><span class="s2">&quot;/usr/share/mysql/charsets/Index.xml&quot;</span>, O_RDONLY|O_LARGEFILE<span class="o">)</span> <span class="o">=</span> 3
+</span><span class='line'><span class="nb">read</span><span class="o">(</span>3, <span class="s2">&quot;..., 18261) = 18261</span>
+</span><span class='line'><span class="s2">close(3)                                = 0 </span>
+</span><span class='line'><span class="s2">unlink(&quot;</span>/opt/mysql/zzzhc-laptop.LOWER-TEST<span class="s2">&quot;) = -1 ENOENT (No such file or directory)</span>
+</span><span class='line'><span class="s2">open(&quot;</span>/opt/mysql/zzzhc-laptop.lower-test<span class="s2">&quot;, O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied)</span>
+</span><span class='line'><span class="s2">time(NULL)                              = 1307624820</span>
+</span><span class='line'><span class="s2">write(2, &quot;</span>110609 21:07:00 <span class="o">[</span>Warning<span class="o">]</span> Can<span class="s1">&#39;t &quot;..., 84110609 21:07:00 [Warning] Can&#39;</span>t create <span class="nb">test </span>file /opt/mysql/zzzhc-laptop.lower-test
+</span><span class='line'><span class="o">)</span> <span class="o">=</span> 84
+</span><span class='line'>unlink<span class="o">(</span><span class="s2">&quot;/opt/mysql/zzzhc-laptop.LOWER-TEST&quot;</span><span class="o">)</span> <span class="o">=</span> -1 ENOENT <span class="o">(</span>No such file or directory<span class="o">)</span>
+</span><span class='line'>open<span class="o">(</span><span class="s2">&quot;/opt/mysql/zzzhc-laptop.lower-test&quot;</span>, O_RDWR|O_CREAT|O_LARGEFILE, 0666<span class="o">)</span> <span class="o">=</span> -1 EACCES <span class="o">(</span>Permission denied<span class="o">)</span>
+</span><span class='line'><span class="nb">time</span><span class="o">(</span>NULL<span class="o">)</span>                              <span class="o">=</span> 1307624820
+</span><span class='line'>write<span class="o">(</span>2, <span class="s2">&quot;110609 21:07:00 [Warning] Can&#39;t &quot;</span>..., 84110609 21:07:00 <span class="o">[</span>Warning<span class="o">]</span> Can<span class="err">&#39;</span>t create <span class="nb">test </span>file /opt/mysql/zzzhc-laptop.lower-test
+</span><span class='line'><span class="o">)</span> <span class="o">=</span> 84
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>open(&#8220;/opt/mysql/zzzhc-laptop.lower-test&#8221;, O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied) 这个太没道理了。。。比较了/tmp和/opt/mysql两种情况下的strace结果，没发现什么可疑的地方，难道是/tmp目录有什么奇怪的特性??</p>
@@ -1124,7 +1137,7 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
 
 <p>测试代码:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -1195,81 +1208,78 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
 <span class='line-number'>69</span>
 <span class='line-number'>70</span>
 <span class='line-number'>71</span>
-<span class='line-number'>72</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[code lang="java"]//CNAnalyzerBenchmark.java
-</span><span class='line'>import java.io.IOException;
-</span><span class='line'>import java.io.StringReader;
-</span><span class='line'>import java.util.HashSet;
-</span><span class='line'>import java.util.Iterator;
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">//CNAnalyzerBenchmark.java</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.io.StringReader</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.HashSet</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.Iterator</span><span class="o">;</span>
 </span><span class='line'>
-</span><span class='line'>import net.paoding.analysis.analyzer.PaodingAnalyzer;
+</span><span class='line'><span class="kn">import</span> <span class="nn">net.paoding.analysis.analyzer.PaodingAnalyzer</span><span class="o">;</span>
 </span><span class='line'>
-</span><span class='line'>import org.apache.lucene.analysis.Analyzer;
-</span><span class='line'>import org.apache.lucene.analysis.TokenStream;
-</span><span class='line'>import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
-</span><span class='line'>import org.apache.lucene.analysis.standard.StandardAnalyzer;
-</span><span class='line'>import org.apache.lucene.util.Attribute;
-</span><span class='line'>import org.apache.lucene.util.Version;
-</span><span class='line'>import org.wltea.analyzer.lucene.IKAnalyzer;
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.analysis.Analyzer</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.analysis.TokenStream</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.analysis.standard.StandardAnalyzer</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.util.Attribute</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.util.Version</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.wltea.analyzer.lucene.IKAnalyzer</span><span class="o">;</span>
 </span><span class='line'>
-</span><span class='line'>import com.chenlb.mmseg4j.analysis.MMSegAnalyzer;
+</span><span class='line'><span class="kn">import</span> <span class="nn">com.chenlb.mmseg4j.analysis.MMSegAnalyzer</span><span class="o">;</span>
 </span><span class='line'>
-</span><span class='line'>public class CNAnalyzerBenchmark {
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CNAnalyzerBenchmark</span> <span class="o">{</span>
 </span><span class='line'>
-</span><span class='line'>    public static void main(String[] args) throws IOException {
-</span><span class='line'>        IKAnalyzer ikAnalyzer = new IKAnalyzer();
-</span><span class='line'>        testAnalyzer(ikAnalyzer);
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">IKAnalyzer</span> <span class="n">ikAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">IKAnalyzer</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">ikAnalyzer</span><span class="o">);</span>
 </span><span class='line'>
-</span><span class='line'>        MMSegAnalyzer mmsegAnalyzer = new MMSegAnalyzer();
-</span><span class='line'>        testAnalyzer(mmsegAnalyzer);
+</span><span class='line'>        <span class="n">MMSegAnalyzer</span> <span class="n">mmsegAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MMSegAnalyzer</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">mmsegAnalyzer</span><span class="o">);</span>
 </span><span class='line'>
-</span><span class='line'>        PaodingAnalyzer paodingAnalyzer = new PaodingAnalyzer();
-</span><span class='line'>        testAnalyzer(paodingAnalyzer);
+</span><span class='line'>        <span class="n">PaodingAnalyzer</span> <span class="n">paodingAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PaodingAnalyzer</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">paodingAnalyzer</span><span class="o">);</span>
 </span><span class='line'>
-</span><span class='line'>        SmartChineseAnalyzer smartChineseAnalyzer = new SmartChineseAnalyzer(
-</span><span class='line'>                Version.LUCENE_31, false);
-</span><span class='line'>        testAnalyzer(smartChineseAnalyzer);
+</span><span class='line'>        <span class="n">SmartChineseAnalyzer</span> <span class="n">smartChineseAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SmartChineseAnalyzer</span><span class="o">(</span>
+</span><span class='line'>                <span class="n">Version</span><span class="o">.</span><span class="na">LUCENE_31</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">smartChineseAnalyzer</span><span class="o">);</span>
 </span><span class='line'>
-</span><span class='line'>        StandardAnalyzer standardAnalyzer = new StandardAnalyzer(
-</span><span class='line'>                Version.LUCENE_31, new HashSet&lt;String&gt;());
-</span><span class='line'>        testAnalyzer(standardAnalyzer);
-</span><span class='line'>    }
+</span><span class='line'>        <span class="n">StandardAnalyzer</span> <span class="n">standardAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StandardAnalyzer</span><span class="o">(</span>
+</span><span class='line'>                <span class="n">Version</span><span class="o">.</span><span class="na">LUCENE_31</span><span class="o">,</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;());</span>
+</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">standardAnalyzer</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
 </span><span class='line'>
-</span><span class='line'>    static void testAnalyzer(Analyzer a) throws IOException {
-</span><span class='line'>        String data = &quot;中文(chinese)与西方语言最大的区别&quot; + &quot;就在于语句的词汇之间没有明显的分词界限，&quot;
-</span><span class='line'>                + &quot;但是计算机自然语言处理是按词汇来进行分析的，&quot; + &quot;因此中文分词的效果直接影响中文检索和自然语言处理的准确性。&quot;;
-</span><span class='line'>        StringBuilder ss = new StringBuilder();
-</span><span class='line'>        for (int i = 0; i &lt; 10000; i++) {
-</span><span class='line'>            ss.append(data);
-</span><span class='line'>        }
-</span><span class='line'>        String s = ss.toString();
+</span><span class='line'>    <span class="kd">static</span> <span class="kt">void</span> <span class="nf">testAnalyzer</span><span class="o">(</span><span class="n">Analyzer</span> <span class="n">a</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">data</span> <span class="o">=</span> <span class="s">&quot;中文(chinese)与西方语言最大的区别&quot;</span> <span class="o">+</span> <span class="s">&quot;就在于语句的词汇之间没有明显的分词界限，&quot;</span>
+</span><span class='line'>                <span class="o">+</span> <span class="s">&quot;但是计算机自然语言处理是按词汇来进行分析的，&quot;</span> <span class="o">+</span> <span class="s">&quot;因此中文分词的效果直接影响中文检索和自然语言处理的准确性。&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">StringBuilder</span> <span class="n">ss</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">ss</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
 </span><span class='line'>
-</span><span class='line'>        long startTime = System.currentTimeMillis();
+</span><span class='line'>        <span class="kt">long</span> <span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
 </span><span class='line'>
-</span><span class='line'>        String attributes = &quot;&quot;;
-</span><span class='line'>        TokenStream stream = a.tokenStream(&quot;&quot;, new StringReader(s));
-</span><span class='line'>        Iterator&lt;Class&lt;? extends Attribute&gt;&gt; iterator = stream
-</span><span class='line'>                .getAttributeClassesIterator();
-</span><span class='line'>        while (iterator.hasNext()) {
-</span><span class='line'>            Class&lt;? extends Attribute&gt; attrClass = iterator.next();
-</span><span class='line'>            attributes += &quot; &quot; + attrClass.getSimpleName();
-</span><span class='line'>        }
-</span><span class='line'>        stream = a.tokenStream(&quot;&quot;, new StringReader(s));
-</span><span class='line'>        while (stream.incrementToken()) {
-</span><span class='line'>        }
-</span><span class='line'>        long endTime = System.currentTimeMillis();
-</span><span class='line'>               System.out.println(a.getClass().getSimpleName() + &quot; attributes: &quot;
-</span><span class='line'>                   + attributes);
-</span><span class='line'>               double seconds = (endTime - startTime) / 1000.0;
-</span><span class='line'>               System.out.println(&quot;chars=&quot; + s.length() + 
-</span><span class='line'>                       &quot;,time=&quot; + seconds + &quot;seconds&quot; + 
-</span><span class='line'>                      &quot;,speed=&quot; + (int) (s.length() / seconds) + &quot;chars/second&quot;
-</span><span class='line'>               );
-</span><span class='line'>    }
-</span><span class='line'>}
-</span><span class='line'>[/code]</span></code></pre></td></tr></table></div></figure>
-
-
+</span><span class='line'>        <span class="n">String</span> <span class="n">attributes</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">TokenStream</span> <span class="n">stream</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="na">tokenStream</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">StringReader</span><span class="o">(</span><span class="n">s</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">Attribute</span><span class="o">&gt;&gt;</span> <span class="n">iterator</span> <span class="o">=</span> <span class="n">stream</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">getAttributeClassesIterator</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">while</span> <span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">Attribute</span><span class="o">&gt;</span> <span class="n">attrClass</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">attributes</span> <span class="o">+=</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="n">attrClass</span><span class="o">.</span><span class="na">getSimpleName</span><span class="o">();</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="n">stream</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="na">tokenStream</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">StringReader</span><span class="o">(</span><span class="n">s</span><span class="o">));</span>
+</span><span class='line'>        <span class="k">while</span> <span class="o">(</span><span class="n">stream</span><span class="o">.</span><span class="na">incrementToken</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="kt">long</span> <span class="n">endTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+</span><span class='line'>               <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getSimpleName</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot; attributes: &quot;</span>
+</span><span class='line'>                   <span class="o">+</span> <span class="n">attributes</span><span class="o">);</span>
+</span><span class='line'>               <span class="kt">double</span> <span class="n">seconds</span> <span class="o">=</span> <span class="o">(</span><span class="n">endTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">)</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="o">;</span>
+</span><span class='line'>               <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;chars=&quot;</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">+</span>
+</span><span class='line'>                       <span class="s">&quot;,time=&quot;</span> <span class="o">+</span> <span class="n">seconds</span> <span class="o">+</span> <span class="s">&quot;seconds&quot;</span> <span class="o">+</span>
+</span><span class='line'>                      <span class="s">&quot;,speed=&quot;</span> <span class="o">+</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">/</span> <span class="n">seconds</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;chars/second&quot;</span>
+</span><span class='line'>               <span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 </div>
   
@@ -1280,7 +1290,7 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
   
   <div class="pagination">
     
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
+      <a class="prev" href="/page/2/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -1293,23 +1303,23 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/posts/2011/12/12/you-dao-zi-dian-httpjie-kou/">有道字典 chrome extension</a>
+        <a href="/posts/2011-12-12-you-dao-zi-dian-httpjie-kou/">有道字典 chrome extension</a>
       </li>
     
       <li class="post">
-        <a href="/posts/2011/12/11/speed-up-rails-asset-pipeline/">speed up rails asset pipeline</a>
+        <a href="/posts/2011-12-11-speed-up-rails-asset-pipeline/">speed up rails asset pipeline</a>
       </li>
     
       <li class="post">
-        <a href="/posts/2011/12/10/gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a>
+        <a href="/posts/2011-12-10-gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a>
       </li>
     
       <li class="post">
-        <a href="/posts/2011/12/10/crontab-tips/">crontab tips</a>
+        <a href="/posts/2011-12-10-crontab-tips/">crontab tips</a>
       </li>
     
       <li class="post">
-        <a href="/posts/2011/12/09/bash-tips-0/">bash tips - 0</a>
+        <a href="/posts/2011-12-09-bash-tips-0/">bash tips - 0</a>
       </li>
     
   </ul>
@@ -1348,12 +1358,9 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
 <section>
   <h1>On Delicious</h1>
   <div id="delicious"></div>
-  <script type="text/javascript" charset="utf-8" src="http://feeds.delicious.com/v2/json/zzzhc?count=10&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/zzzhc?count=10&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
   <p><a href="http://delicious.com/zzzhc">My Delicious Bookmarks &raquo;</a></p>
 </section>
-
-
-
 
 
   

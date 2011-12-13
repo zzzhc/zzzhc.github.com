@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: nodejs | zzzhc's Blog]]></title>
+  <link href="http://blog.zzzhc.com/categories/nodejs/atom.xml" rel="self"/>
+  <link href="http://blog.zzzhc.com/"/>
+  <updated>2011-12-13T19:07:41+08:00</updated>
+  <id>http://blog.zzzhc.com/</id>
+  <author>
+    <name><![CDATA[zzzhc]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[nodejs]]></title>
+    <link href="http://blog.zzzhc.com/blogs/31"/>
+    <updated>2011-04-09T00:00:00+08:00</updated>
+    <id>http://blog.zzzhc.com/blogs/31</id>
+    <content type="html"><![CDATA[<h2><a href="http://nodejs.org/">nodejs</a> Evented I/O for <a href="http://code.google.com/p/v8/">V8 JavaScript</a>.</h2>
+
+<p>node的目标是提供一种简单的方式来构建可伸缩的网络程序。在node里几乎没有函数会直接执行IO操作，进程从不会阻塞在某个IO等待上。event, callback是node中两个主要的概念，因为IO操作不阻塞，通过event, callback来实现是很自然的。</p>
+
+<p>这一两年node发展很快，有了包管理器(<a href="http://github.com/isaacs/npm">npm</a>)，也出现了各种各样的module, 如</p>
+
+<ul>
+<li>Web Framework: <a href="http://github.com/visionmedia/express">Express</a>, node的<a href="http://www.sinatrarb.com/">sinatra</a></li>
+<li>template engine: <a href="https://github.com/visionmedia/haml.js">hamljs</a></li>
+<li>mysql driver: <a href="http://github.com/felixge/node-mysql">node-mysql</a></li>
+<li>mongodb client: <a href="https://github.com/christkv/node-mongodb-native">node-mongodb-native</a></li>
+<li>redis client: <a href="https://github.com/mranney/node_redis">node_redis</a></li>
+</ul>
+
+
+<p>有了这些之后要用javascript开发一个web app相对容易多了。</p>
+
+<p>这两天简单试了下，用express, hamljs, node-mongodb-native写了一个最简单的blog app.</p>
+
+<p>安装环境
+* install node</p>
+
+<p>``` bash</p>
+
+<h1>download source code from http://nodejs.org/dist/</h1>
+
+<p>$ wget http://nodejs.org/dist/node-v0.4.5.tar.gz
+$ tar -xf node-v0.4.5.tar.gz
+$ cd node-v0.4.5
+$ ./configure &amp;&amp; make &amp;&amp; sudo make install
+```</p>
+
+<ul>
+<li>install mongodb</li>
+</ul>
+
+
+<p>``` bash</p>
+
+<h1>http://www.mongodb.org/downloads</h1>
+
+<p>$ wget http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.8.1.tgz
+$ tar -xf mongodb-linux-i686-1.8.1.tgz
+$ cd mongodb-linux-i686-1.8.1
+$ sudo mkdir -p /data/db
+$ sudo chown <code>id -u</code> -R /data
+$ bin/mongod # start mongodb server
+```</p>
+
+<ul>
+<li>install npm</li>
+</ul>
+
+
+<p><code>bash
+$ git clone http://github.com/isaacs/npm.git
+$ cd npm
+$ sudo make install
+</code></p>
+
+<ul>
+<li>install modules</li>
+</ul>
+
+
+<p><code>bash
+$ sudo npm install express
+$ sudo npm install hamljs
+$ sudo npm install mongodb
+</code></p>
+
+<p>express指南见<a href="http://expressjs.com/guide.html">http://expressjs.com/guide.html</a>，它的route方式跟rails比算很弱的，没有对restful的直接支持，但在加上methodOverride后都可以自己定义出来。
+模板引擎用hamljs, 通过app.register('.haml', require('hamljs'))指定。在hamljs layout里要嵌入其它模板内容时可以用!= body。partial可以用!= partial("post.haml", posts)。!=的意思是对后面的内容不作escape, 细节可以看hamljs代码，很短，不到700行。
+mongodb client用起来比较费劲，一层一层的callback, 适当封装下应该会好使点。
+最终的代码放在<a href="https://github.com/nodepress/draft">https://github.com/nodepress/draft</a>
+性能看起来还是很好的，production模式下(NODE_ENV=production node blog.js) 并发５个连接(ab -c 5 -n 1000 http://localhost:3000/posts/)的结果
+Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
+
+<p>``` bash
+$ ab -c 5 -n 1000 http://localhost:3000/posts/
+....
+Server Software:      <br/>
+Server Hostname:        localhost
+Server Port:            3000</p>
+
+<p>Document Path:          /posts/
+Document Length:        2950 bytes</p>
+
+<p>Concurrency Level:      5
+Time taken for tests:   1.145 seconds
+Complete requests:      1000
+Failed requests:        0
+Write errors:           0
+Total transferred:      3073000 bytes
+HTML transferred:       2950000 bytes
+Requests per second:    873.02 [#/sec] (mean)
+Time per request:       5.727 [ms] (mean)
+Time per request:       1.145 [ms] (mean, across all concurrent requests)
+Transfer rate:          2619.90 [Kbytes/sec] received</p>
+
+<p>Connection Times (ms)</p>
+
+<pre><code>          min  mean[+/-sd] median   max
+</code></pre>
+
+<p>Connect:        0    0   0.0      0       0
+Processing:     3    6   1.8      5      22
+Waiting:        3    6   1.8      5      22
+Total:          3    6   1.8      5      22</p>
+
+<p>Percentage of the requests served within a certain time (ms)
+  50%      5
+  66%      5
+  75%      6
+  80%      6
+  90%      7
+  95%      8
+  98%     14
+  99%     16
+  100%     22 (longest request)
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

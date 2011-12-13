@@ -70,7 +70,12 @@
   </fieldset>
 </form>
 <ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
+  <li><a href="/">Home</a></li>
+  <li><a class='category' href='/categories/rails/'>Rails</a></li>
+  <li><a class='category' href='/categories/vim/'>Vim</a></li>
+  <li><a class='category' href='/categories/lucene/'>Lucene</a></li>
+  <li><a class='category' href='/categories/amqp/'>AMQP</a></li>
+  <li><a class='category' href='/categories/misc/'>Misc</a></li>
   <li><a href="/blog/archives">Archives</a></li>
 </ul>
 
@@ -124,7 +129,7 @@
 
 <h2>usage</h2>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -132,21 +137,22 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Dict dict = new Dict();
-</span><span class='line'>    dict.addAllSpecialTypes();
-</span><span class='line'>    BufferedReader dictReader = new BufferedReader(new InputStreamReader(
-</span><span class='line'>        new FileInputStream("dict.txt"), "UTF-8"));
-</span><span class='line'>    dict.load(dictReader);
-</span><span class='line'>    dictReader.close();
-</span><span class='line'>    dict.optimize();
-</span><span class='line'>    DictAnalyzer dictAnalyzer = new DictAnalyzer(dict);</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Dict</span> <span class="n">dict</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Dict</span><span class="o">();</span>
+</span><span class='line'><span class="n">dict</span><span class="o">.</span><span class="na">addAllSpecialTypes</span><span class="o">();</span>
+</span><span class='line'><span class="n">BufferedReader</span> <span class="n">dictReader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="n">InputStreamReader</span><span class="o">(</span>
+</span><span class='line'>    <span class="k">new</span> <span class="nf">FileInputStream</span><span class="o">(</span><span class="s">&quot;dict.txt&quot;</span><span class="o">),</span> <span class="s">&quot;UTF-8&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="n">dict</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="n">dictReader</span><span class="o">);</span>
+</span><span class='line'><span class="n">dictReader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'><span class="n">dict</span><span class="o">.</span><span class="na">optimize</span><span class="o">();</span>
+</span><span class='line'><span class="n">DictAnalyzer</span> <span class="n">dictAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DictAnalyzer</span><span class="o">(</span><span class="n">dict</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h2>benchmark</h2>
 
 <p>ant benchmark</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -177,39 +183,38 @@
 <span class='line-number'>29</span>
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>supported features:
-</span><span class='line'>                  CharTerm  Offset  PositionIncrement  Term  Type
-</span><span class='line'>      IKAnalyzer         Y       Y                  N     Y     N
-</span><span class='line'>   MMSegAnalyzer         Y       Y                  N     Y     Y
-</span><span class='line'> PaodingAnalyzer         Y       Y                  N     Y     Y
-</span><span class='line'>StandardAnalyzer         Y       Y                  Y     Y     Y
-</span><span class='line'>  BaoBaoAnalyzer         Y       Y                  Y     Y     Y
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">supported</span> <span class="nl">features:</span>
+</span><span class='line'>                  <span class="n">CharTerm</span>  <span class="n">Offset</span>  <span class="n">PositionIncrement</span>  <span class="n">Term</span>  <span class="n">Type</span>
+</span><span class='line'>      <span class="n">IKAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">N</span>     <span class="n">Y</span>     <span class="n">N</span>
+</span><span class='line'>   <span class="n">MMSegAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">N</span>     <span class="n">Y</span>     <span class="n">Y</span>
+</span><span class='line'> <span class="n">PaodingAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">N</span>     <span class="n">Y</span>     <span class="n">Y</span>
+</span><span class='line'><span class="n">StandardAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">Y</span>     <span class="n">Y</span>     <span class="n">Y</span>
+</span><span class='line'>  <span class="n">BaoBaoAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">Y</span>     <span class="n">Y</span>     <span class="n">Y</span>
 </span><span class='line'>
-</span><span class='line'>test 1, sample length=26265
-</span><span class='line'>            name          chars           time         tokens speed(chars/second)
-</span><span class='line'> PaodingAnalyzer          26265          0.610          12542            43036.87
-</span><span class='line'>   MMSegAnalyzer          26265          0.314          14007            83566.52
-</span><span class='line'>      IKAnalyzer          26265          0.262          16016           100177.91
-</span><span class='line'>StandardAnalyzer          26265          0.141          22366           185727.87
-</span><span class='line'>  BaoBaoAnalyzer          26265          0.038          18185           695682.16
+</span><span class='line'><span class="n">test</span> <span class="mi">1</span><span class="o">,</span> <span class="n">sample</span> <span class="n">length</span><span class="o">=</span><span class="mi">26265</span>
+</span><span class='line'>            <span class="n">name</span>          <span class="n">chars</span>           <span class="n">time</span>         <span class="n">tokens</span> <span class="nf">speed</span><span class="o">(</span><span class="n">chars</span><span class="o">/</span><span class="n">second</span><span class="o">)</span>
+</span><span class='line'> <span class="n">PaodingAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.610</span>          <span class="mi">12542</span>            <span class="mf">43036.87</span>
+</span><span class='line'>   <span class="n">MMSegAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.314</span>          <span class="mi">14007</span>            <span class="mf">83566.52</span>
+</span><span class='line'>      <span class="n">IKAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.262</span>          <span class="mi">16016</span>           <span class="mf">100177.91</span>
+</span><span class='line'><span class="n">StandardAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.141</span>          <span class="mi">22366</span>           <span class="mf">185727.87</span>
+</span><span class='line'>  <span class="n">BaoBaoAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.038</span>          <span class="mi">18185</span>           <span class="mf">695682.16</span>
 </span><span class='line'>
-</span><span class='line'>test 2, sample length=262650
-</span><span class='line'>            name          chars           time         tokens speed(chars/second)
-</span><span class='line'> PaodingAnalyzer         262650          0.187         125420          1402139.61
-</span><span class='line'>      IKAnalyzer         262650          0.163         160160          1613693.16
-</span><span class='line'>   MMSegAnalyzer         262650          0.158         140070          1664009.53
-</span><span class='line'>  BaoBaoAnalyzer         262650          0.041         181850          6362134.44
-</span><span class='line'>StandardAnalyzer         262650          0.020         223660         12905789.80
+</span><span class='line'><span class="n">test</span> <span class="mi">2</span><span class="o">,</span> <span class="n">sample</span> <span class="n">length</span><span class="o">=</span><span class="mi">262650</span>
+</span><span class='line'>            <span class="n">name</span>          <span class="n">chars</span>           <span class="n">time</span>         <span class="n">tokens</span> <span class="nf">speed</span><span class="o">(</span><span class="n">chars</span><span class="o">/</span><span class="n">second</span><span class="o">)</span>
+</span><span class='line'> <span class="n">PaodingAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.187</span>         <span class="mi">125420</span>          <span class="mf">1402139.61</span>
+</span><span class='line'>      <span class="n">IKAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.163</span>         <span class="mi">160160</span>          <span class="mf">1613693.16</span>
+</span><span class='line'>   <span class="n">MMSegAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.158</span>         <span class="mi">140070</span>          <span class="mf">1664009.53</span>
+</span><span class='line'>  <span class="n">BaoBaoAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.041</span>         <span class="mi">181850</span>          <span class="mf">6362134.44</span>
+</span><span class='line'><span class="n">StandardAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.020</span>         <span class="mi">223660</span>         <span class="mf">12905789.80</span>
 </span><span class='line'>
-</span><span class='line'>test 3, sample length=2626500
-</span><span class='line'>            name          chars           time         tokens speed(chars/second)
-</span><span class='line'>      IKAnalyzer        2626500          2.251        1601600          1166564.72
-</span><span class='line'> PaodingAnalyzer        2626500          1.462        1254200          1796381.55
-</span><span class='line'>   MMSegAnalyzer        2626500          1.043        1400700          2519010.94
-</span><span class='line'>  BaoBaoAnalyzer        2626500          0.352        1818500          7458959.20
-</span><span class='line'>StandardAnalyzer        2626500          0.202        2236600         13015280.16</span></code></pre></td></tr></table></div></figure>
-
-
+</span><span class='line'><span class="n">test</span> <span class="mi">3</span><span class="o">,</span> <span class="n">sample</span> <span class="n">length</span><span class="o">=</span><span class="mi">2626500</span>
+</span><span class='line'>            <span class="n">name</span>          <span class="n">chars</span>           <span class="n">time</span>         <span class="n">tokens</span> <span class="nf">speed</span><span class="o">(</span><span class="n">chars</span><span class="o">/</span><span class="n">second</span><span class="o">)</span>
+</span><span class='line'>      <span class="n">IKAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">2.251</span>        <span class="mi">1601600</span>          <span class="mf">1166564.72</span>
+</span><span class='line'> <span class="n">PaodingAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">1.462</span>        <span class="mi">1254200</span>          <span class="mf">1796381.55</span>
+</span><span class='line'>   <span class="n">MMSegAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">1.043</span>        <span class="mi">1400700</span>          <span class="mf">2519010.94</span>
+</span><span class='line'>  <span class="n">BaoBaoAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">0.352</span>        <span class="mi">1818500</span>          <span class="mf">7458959.20</span>
+</span><span class='line'><span class="n">StandardAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">0.202</span>        <span class="mi">2236600</span>         <span class="mf">13015280.16</span>
+</span></code></pre></td></tr></table></div></figure>
 
 </div>
 
@@ -230,6 +235,12 @@
 
 <time datetime="2011-06-19T00:00:00+08:00" pubdate>Jun 19<span>th</span>, 2011</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/categories/lucene/'>lucene</a>
+  
+</span>
 
 
     </p>
@@ -252,7 +263,7 @@
         <a class="basic-alignment left" href="/blogs/107" title="Previous Post: mysqld 5.1.41的一个神奇bug">&laquo; mysqld 5.1.41的一个神奇bug</a>
       
       
-        <a class="basic-alignment right" href="/posts/2011/12/09/rvm-global-gems/" title="next Post: rvm global gems">rvm global gems &raquo;</a>
+        <a class="basic-alignment right" href="/posts/2011-12-09-rvm-global-gems/" title="next Post: rvm global gems">rvm global gems &raquo;</a>
       
     </p>
   </footer>
@@ -273,23 +284,23 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/posts/2011/12/12/you-dao-zi-dian-httpjie-kou/">有道字典 chrome extension</a>
+        <a href="/posts/2011-12-12-you-dao-zi-dian-httpjie-kou/">有道字典 chrome extension</a>
       </li>
     
       <li class="post">
-        <a href="/posts/2011/12/11/speed-up-rails-asset-pipeline/">speed up rails asset pipeline</a>
+        <a href="/posts/2011-12-11-speed-up-rails-asset-pipeline/">speed up rails asset pipeline</a>
       </li>
     
       <li class="post">
-        <a href="/posts/2011/12/10/gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a>
+        <a href="/posts/2011-12-10-gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a>
       </li>
     
       <li class="post">
-        <a href="/posts/2011/12/10/crontab-tips/">crontab tips</a>
+        <a href="/posts/2011-12-10-crontab-tips/">crontab tips</a>
       </li>
     
       <li class="post">
-        <a href="/posts/2011/12/09/bash-tips-0/">bash tips - 0</a>
+        <a href="/posts/2011-12-09-bash-tips-0/">bash tips - 0</a>
       </li>
     
   </ul>
@@ -328,12 +339,9 @@
 <section>
   <h1>On Delicious</h1>
   <div id="delicious"></div>
-  <script type="text/javascript" charset="utf-8" src="http://feeds.delicious.com/v2/json/zzzhc?count=10&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/zzzhc?count=10&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
   <p><a href="http://delicious.com/zzzhc">My Delicious Bookmarks &raquo;</a></p>
 </section>
-
-
-
 
 
   

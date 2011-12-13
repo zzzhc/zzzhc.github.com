@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: shell | zzzhc's Blog]]></title>
+  <link href="http://blog.zzzhc.com/categories/shell/atom.xml" rel="self"/>
+  <link href="http://blog.zzzhc.com/"/>
+  <updated>2011-12-13T19:07:41+08:00</updated>
+  <id>http://blog.zzzhc.com/</id>
+  <author>
+    <name><![CDATA[zzzhc]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[crontab tips]]></title>
+    <link href="http://blog.zzzhc.com/posts/2011-12-10-crontab-tips/"/>
+    <updated>2011-12-10T12:02:00+08:00</updated>
+    <id>http://blog.zzzhc.com/posts/crontab-tips</id>
+    <content type="html"><![CDATA[<h2>crontab command</h2>
+
+<p>``` bash</p>
+
+<h1>设置编辑器</h1>
+
+<p>$ export EDITOR=vim</p>
+
+<h1>编辑</h1>
+
+<p>$ crontab -e [-u user]</p>
+
+<h1>列出crontab内容</h1>
+
+<p>$ crontab -l [-u user]</p>
+
+<h1>删除crontab文件</h1>
+
+<p>$ crontab -r [-u user]
+```</p>
+
+<h2>crontab syntax</h2>
+
+<p>```
+* * * * *  command
+| | | | |
+| | | | |- day of week(0-6) 0 means sunday
+| | | |--- month(1-12)
+| | |----- day of month(1-31)
+| |------- hour
+|--------- minute(0-59)</p>
+
+<ul>
+<li>表示的项可以用,分隔指定多个值(如5,15,25)，也可以指定周期，如在minute项上写*/5表示每5分钟执行一次
+```</li>
+</ul>
+
+
+<h2>crontab environment</h2>
+
+<p>cron脚本执行的环境跟正常用户执行的有区别，~/.bashrc不会被执行, 这一点经常会引起问题, 可以在crontab里设置环境变量来减少影响.</p>
+
+<p>``` bash</p>
+
+<h1>PATH, SHELL, MAILTO比较常用, 如</h1>
+
+<p>PATH=/usr/bin:/usr/sbin:/bin:/sbin
+SHELL=/bin/bash
+MAILTO=xxx@xxx.com</p>
+
+<p>1 * * * * find /var/data/upload/ -mtime 30 -exec rm -- {} +
+```</p>
+
+<p>默认情况crontab按OS时区调度, 而不是用户时区，可以通过指定TZ环境变量设实际要用的时区</p>
+
+<p><code>bash
+TZ=UTC
+1 * * * * find /var/data/upload/ -mtime 30 -exec rm -- {} +
+</code></p>
+
+<h1>crontab notification</h1>
+
+<p>如果command有输出(stdout/stderr)，crond会发送通知邮件, 具体发送给谁可以通过MAILTO定义，默认发送给当前用户。
+一般情况stdout可以忽略，所以经常会看到crontab里有 command >/dev/null; stderr一定不要忽略，否则cron job有错误无法正常执行都不知道。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[bash tips - 0]]></title>
+    <link href="http://blog.zzzhc.com/posts/2011-12-09-bash-tips-0/"/>
+    <updated>2011-12-09T20:18:00+08:00</updated>
+    <id>http://blog.zzzhc.com/posts/bash-tips-0</id>
+    <content type="html"><![CDATA[<ul>
+<li>为变量设置缺省值</li>
+</ul>
+
+
+<p><code>bash
+: ${BIND_PORT:=9999}
+</code></p>
+
+<ul>
+<li>取得前一个在后台运行的进程pid</li>
+</ul>
+
+
+<p><code>bash
+$ sleep 10 &amp;
+$ echo $!
+</code></p>
+
+<ul>
+<li>当前脚本的绝对路径</li>
+</ul>
+
+
+<p><code>bash
+SCRIPT_PATH=`readlink -f "$0"`
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

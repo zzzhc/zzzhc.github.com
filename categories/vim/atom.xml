@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: vim | zzzhc's Blog]]></title>
+  <link href="http://blog.zzzhc.com/categories/vim/atom.xml" rel="self"/>
+  <link href="http://blog.zzzhc.com/"/>
+  <updated>2011-12-13T19:07:41+08:00</updated>
+  <id>http://blog.zzzhc.com/</id>
+  <author>
+    <name><![CDATA[zzzhc]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[高效能文本编辑的7个习惯]]></title>
+    <link href="http://blog.zzzhc.com/posts/2011-12-10-gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/"/>
+    <updated>2011-12-10T12:59:00+08:00</updated>
+    <id>http://blog.zzzhc.com/posts/gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan</id>
+    <content type="html"><![CDATA[<p><a href="http://www.moolenaar.net/habits.html">Seven habits of effective text editing</a></p>
+
+<h2>编辑单个文件</h2>
+
+<h3>1. 快速移动</h3>
+
+<ul>
+<li>查找光标下单词在当前文件的其它位置
+
+<ol>
+<li>* 向后查找</li>
+<li># 向前查找</li>
+</ol>
+</li>
+<li>搜索文本, /pattern</li>
+<li>使用%跳转到对应块的结尾/开头，安装<a href="http://www.vim.org/scripts/script.php?script_id=39">matchit</a>插件效果更好</li>
+<li>使用gd跳转到变量定义</li>
+</ul>
+
+
+<p>掌握更多高效编辑命令的三个基本步骤:
+* 留意编辑过程中的重复动作和花时间较多的地方
+* 找出一个可以更快完成这些操作的命令
+* 反复练习，直到形成习惯，不需要思考靠直觉就能敲出命令</p>
+
+<h3>2. 不要重复输入两次</h3>
+
+<ul>
+<li>善用.命令重做前一个修改</li>
+<li>使用自动补全, 安装<a href="https://github.com/ervandew/supertab">supertab</a>后可用tab键补全</li>
+<li>录制宏, qa开始录制，q结束宏, @a重放宏</li>
+</ul>
+
+
+<h3>3. 自动修复拼写错误</h3>
+
+<ul>
+<li>abbr</li>
+<li>syntax hightlight</li>
+</ul>
+
+
+<h2>编辑多个文件</h2>
+
+<h3>4. 很少只在单独一个文件上工作</h3>
+
+<ul>
+<li>ctags, Ctrl+] 跳转到定义处</li>
+<li>:grep, :cn</li>
+</ul>
+
+
+<h3>5. 与其它程序协同工作</h3>
+
+<p><code>
+:!command
+</code></p>
+
+<h3>6. Text is structured</h3>
+
+<p>自动化编译，修改过程
+<code>
+:make
+:set errorformat=xxx
+</code></p>
+
+<h2>磨快你的矩</h2>
+
+<h3>7. 养成习惯</h3>
+
+<p>这一点最重要，花大把时间找到合适的命令但很快就忘掉是很不划算的。</p>
+]]></content>
+  </entry>
+  
+</feed>

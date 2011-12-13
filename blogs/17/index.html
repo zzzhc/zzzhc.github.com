@@ -65,7 +65,12 @@
   </fieldset>
 </form>
 <ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
+  <li><a href="/">Home</a></li>
+  <li><a class='category' href='/categories/rails/'>Rails</a></li>
+  <li><a class='category' href='/categories/vim/'>Vim</a></li>
+  <li><a class='category' href='/categories/lucene/'>Lucene</a></li>
+  <li><a class='category' href='/categories/amqp/'>AMQP</a></li>
+  <li><a class='category' href='/categories/misc/'>Misc</a></li>
   <li><a href="/blog/archives">Archives</a></li>
 </ul>
 
@@ -103,13 +108,13 @@
 
 <p>用qpid java broker的时候要注意下，创建connection的时候要指定用户名密码。
 conn = Qpid::Connection.new(TCPSocket.new(&#8220;localhost&#8221;, 5672),
-:username =&gt; &#8220;guest&#8221;,
-:password =&gt; &#8220;guest&#8221;)</p>
+:username => &#8220;guest&#8221;,
+:password => &#8220;guest&#8221;)</p>
 
 <p>参考example写了两个简单例子
 producer.rb</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -140,42 +145,43 @@ producer.rb</p>
 <span class='line-number'>29</span>
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/usr/bin/env ruby
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
 </span><span class='line'>
-</span><span class='line'>require &quot;rubygems&quot;
-</span><span class='line'>require &quot;qpid&quot;
-</span><span class='line'>require &quot;socket&quot;
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;rubygems&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;qpid&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;socket&quot;</span>
 </span><span class='line'>
-</span><span class='line'>conn = Qpid::Connection.new(TCPSocket.new(&quot;localhost&quot;, 5672),
-</span><span class='line'>                                         :username =&gt; &quot;guest&quot;,
-</span><span class='line'>                                         :password =&gt; &quot;guest&quot;)
-</span><span class='line'>conn.start(10)
+</span><span class='line'><span class="n">conn</span> <span class="o">=</span> <span class="no">Qpid</span><span class="o">::</span><span class="no">Connection</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">TCPSocket</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">5672</span><span class="p">),</span>
+</span><span class='line'>                                         <span class="ss">:username</span> <span class="o">=&gt;</span> <span class="s2">&quot;guest&quot;</span><span class="p">,</span>
+</span><span class='line'>                                         <span class="ss">:password</span> <span class="o">=&gt;</span> <span class="s2">&quot;guest&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">conn</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'>ssn = conn.session(&quot;test_producer&quot;)
+</span><span class='line'><span class="n">ssn</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">session</span><span class="p">(</span><span class="s2">&quot;test_producer&quot;</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'># create a queue
-</span><span class='line'>ssn.queue_declare(&quot;test-queue&quot;)
-</span><span class='line'>ssn.exchange_declare(&quot;test-exchange&quot;, :type =&gt; &quot;direct&quot;)
+</span><span class='line'><span class="c1"># create a queue</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">queue_declare</span><span class="p">(</span><span class="s2">&quot;test-queue&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">exchange_declare</span><span class="p">(</span><span class="s2">&quot;test-exchange&quot;</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="s2">&quot;direct&quot;</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'>dp = ssn.delivery_properties(:routing_key =&gt; &quot;test-queue&quot;)
-</span><span class='line'>mp = ssn.message_properties(:content_type =&gt; &quot;text/plain&quot;)
+</span><span class='line'><span class="n">dp</span> <span class="o">=</span> <span class="n">ssn</span><span class="o">.</span><span class="n">delivery_properties</span><span class="p">(</span><span class="ss">:routing_key</span> <span class="o">=&gt;</span> <span class="s2">&quot;test-queue&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">mp</span> <span class="o">=</span> <span class="n">ssn</span><span class="o">.</span><span class="n">message_properties</span><span class="p">(</span><span class="ss">:content_type</span> <span class="o">=&gt;</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'>ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;Hello QPID!&quot;))
-</span><span class='line'>ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;Hello RUBY!&quot;))
-</span><span class='line'>while line = gets.strip
-</span><span class='line'>  break if line =~ /^(exit|done)$/i
-</span><span class='line'>  ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, line.strip))
-</span><span class='line'>end
-</span><span class='line'>ssn.message_transfer(:message =&gt; Qpid::Message.new(dp, mp, &quot;done&quot;))
-</span><span class='line'>ssn.sync
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="no">Qpid</span><span class="o">::</span><span class="no">Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="s2">&quot;Hello QPID!&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="no">Qpid</span><span class="o">::</span><span class="no">Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="s2">&quot;Hello RUBY!&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="k">while</span> <span class="n">line</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">strip</span>
+</span><span class='line'>  <span class="k">break</span> <span class="k">if</span> <span class="n">line</span> <span class="o">=~</span> <span class="sr">/^(exit|done)$/i</span>
+</span><span class='line'>  <span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="no">Qpid</span><span class="o">::</span><span class="no">Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">))</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="no">Qpid</span><span class="o">::</span><span class="no">Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="s2">&quot;done&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">sync</span>
 </span><span class='line'>
-</span><span class='line'>ssn.close()
-</span><span class='line'>conn.close()</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>consumer.rb</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -206,37 +212,38 @@ producer.rb</p>
 <span class='line-number'>29</span>
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/usr/bin/env ruby
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
 </span><span class='line'>
-</span><span class='line'>require &quot;rubygems&quot;
-</span><span class='line'>require &quot;qpid&quot;
-</span><span class='line'>require &quot;socket&quot;
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;rubygems&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;qpid&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;socket&quot;</span>
 </span><span class='line'>
-</span><span class='line'>conn = Qpid::Connection.new(TCPSocket.new(&quot;localhost&quot;, 5672),
-</span><span class='line'>                                         :username =&gt; &quot;guest&quot;,
-</span><span class='line'>                                         :password =&gt; &quot;guest&quot;)
-</span><span class='line'>conn.start(10)
+</span><span class='line'><span class="n">conn</span> <span class="o">=</span> <span class="no">Qpid</span><span class="o">::</span><span class="no">Connection</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">TCPSocket</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">5672</span><span class="p">),</span>
+</span><span class='line'>                                         <span class="ss">:username</span> <span class="o">=&gt;</span> <span class="s2">&quot;guest&quot;</span><span class="p">,</span>
+</span><span class='line'>                                         <span class="ss">:password</span> <span class="o">=&gt;</span> <span class="s2">&quot;guest&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">conn</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'>ssn = conn.session(&quot;test_consumer&quot;)
+</span><span class='line'><span class="n">ssn</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">session</span><span class="p">(</span><span class="s2">&quot;test_consumer&quot;</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'>incoming = ssn.incoming(&quot;messages&quot;)
-</span><span class='line'>ssn.message_subscribe(
-</span><span class='line'>  :destination =&gt; &quot;messages&quot;,
-</span><span class='line'>  :queue =&gt; &quot;test-queue&quot;,
-</span><span class='line'>  :accept_mode =&gt; ssn.message_accept_mode.none
-</span><span class='line'>)
+</span><span class='line'><span class="n">incoming</span> <span class="o">=</span> <span class="n">ssn</span><span class="o">.</span><span class="n">incoming</span><span class="p">(</span><span class="s2">&quot;messages&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">message_subscribe</span><span class="p">(</span>
+</span><span class='line'>  <span class="ss">:destination</span> <span class="o">=&gt;</span> <span class="s2">&quot;messages&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">:queue</span> <span class="o">=&gt;</span> <span class="s2">&quot;test-queue&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">:accept_mode</span> <span class="o">=&gt;</span> <span class="n">ssn</span><span class="o">.</span><span class="n">message_accept_mode</span><span class="o">.</span><span class="n">none</span>
+</span><span class='line'><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'># start incoming message flow
-</span><span class='line'>incoming.start()
+</span><span class='line'><span class="c1"># start incoming message flow</span>
+</span><span class='line'><span class="n">incoming</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </span><span class='line'>
-</span><span class='line'>while true
-</span><span class='line'> body = incoming.get().body
-</span><span class='line'> puts body
-</span><span class='line'> break if body == &quot;done&quot;
-</span><span class='line'>end
+</span><span class='line'><span class="k">while</span> <span class="kp">true</span>
+</span><span class='line'> <span class="n">body</span> <span class="o">=</span> <span class="n">incoming</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">body</span>
+</span><span class='line'> <span class="nb">puts</span> <span class="n">body</span>
+</span><span class='line'> <span class="k">break</span> <span class="k">if</span> <span class="n">body</span> <span class="o">==</span> <span class="s2">&quot;done&quot;</span>
+</span><span class='line'><span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'>ssn.close()
-</span><span class='line'>conn.close()</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>另一个ruby AMQP协议的实现是<a href="https://github.com/ruby-amqp/amqp">ruby-amqp</a> ,基于event-machine, 目前只支持amqp 0-8.</p>
@@ -261,6 +268,12 @@ producer.rb</p>
 
 <time datetime="2011-03-31T00:00:00+08:00" pubdate>Mar 31<span>st</span>, 2011</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/categories/amqp/'>AMQP</a>
+  
+</span>
 
 
     </p>
@@ -304,23 +317,23 @@ producer.rb</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/posts/2011/12/12/you-dao-zi-dian-httpjie-kou/">有道字典 chrome extension</a>
+        <a href="/posts/2011-12-12-you-dao-zi-dian-httpjie-kou/">有道字典 chrome extension</a>
       </li>
     
       <li class="post">
-        <a href="/posts/2011/12/11/speed-up-rails-asset-pipeline/">speed up rails asset pipeline</a>
+        <a href="/posts/2011-12-11-speed-up-rails-asset-pipeline/">speed up rails asset pipeline</a>
       </li>
     
       <li class="post">
-        <a href="/posts/2011/12/10/gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a>
+        <a href="/posts/2011-12-10-gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a>
       </li>
     
       <li class="post">
-        <a href="/posts/2011/12/10/crontab-tips/">crontab tips</a>
+        <a href="/posts/2011-12-10-crontab-tips/">crontab tips</a>
       </li>
     
       <li class="post">
-        <a href="/posts/2011/12/09/bash-tips-0/">bash tips - 0</a>
+        <a href="/posts/2011-12-09-bash-tips-0/">bash tips - 0</a>
       </li>
     
   </ul>
@@ -359,12 +372,9 @@ producer.rb</p>
 <section>
   <h1>On Delicious</h1>
   <div id="delicious"></div>
-  <script type="text/javascript" charset="utf-8" src="http://feeds.delicious.com/v2/json/zzzhc?count=10&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/zzzhc?count=10&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
   <p><a href="http://delicious.com/zzzhc">My Delicious Bookmarks &raquo;</a></p>
 </section>
-
-
-
 
 
   
