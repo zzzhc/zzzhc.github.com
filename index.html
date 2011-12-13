@@ -9,7 +9,7 @@
   <meta name="author" content="zzzhc">
 
   
-  <meta name="description" content="Asset pipeline是Rails 3.1里引入的一个特性, 用来帮助拼接，压缩js/css,同时对缓存asset提供了更好的支持. Asset pipe本身只是对Sprockets做了一层封装, 通过Rails.application.assets可以得到Sprockets自己的rack &hellip;">
+  <meta name="description" content="有道字典的chrome extension会把鼠标下的词log到console里，debug的时候让人烦, 看了下code, 直接用的console.log, 发布的时候也没注释掉. 跑到~/Library/Application Support/Google/Chrome/Default/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,243 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/posts/2011/12/12/you-dao-zi-dian-httpjie-kou/">有道字典 Chrome Extension</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+  
+
+<time datetime="2011-12-12T11:17:00+08:00" pubdate>Dec 12<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>有道字典的chrome extension会把鼠标下的词log到console里，debug的时候让人烦, 看了下code, 直接用的console.log, 发布的时候也没注释掉. 跑到~/Library/Application Support/Google/Chrome/Default/Extensions/nbndkplefmmhmcmfjanjaakhhkiegogd/1.0_0下把content.js,background.html里的console.log都注释掉，安静了。</p>
+
+<p>大概看了下extension code, 发现两个有意思的地方：</p>
+
+<ul>
+<li>打包的时候连.svn目录都没放过</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ svn info
+</span><span class='line'>Path: .
+</span><span class='line'>URL: https://dev.corp.youdao.com/svn/outfox/products/desktop/incubator/mac/GetWordExtension/Chrome/extension
+</span><span class='line'>Repository Root: https://dev.corp.youdao.com/svn/outfox
+</span><span class='line'>Repository UUID: 36a6777f-fe3c-0410-890b-904d6044f29d
+</span><span class='line'>Revision: 285097
+</span><span class='line'>Node Kind: directory
+</span><span class='line'>Schedule: normal
+</span><span class='line'>Last Changed Author: huangdx
+</span><span class='line'>Last Changed Rev: 277738
+</span><span class='line'>Last Changed Date: 2011-09-13 14:00:17 +0800 (二, 13  9 2011)</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>取词的时候调用的是本机有道字典app提供的http接口</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//in background.html
+</span><span class='line'>     function SendResult(word, pos, type) {
+</span><span class='line'>         var s = new XMLHttpRequest;
+</span><span class='line'>         s.open("GET", "http://localhost:32445/getword?word=" + word + "&pos=" + pos + "&type=" + type, true);
+</span><span class='line'>         //console.log('sending...')
+</span><span class='line'>         s.send()
+</span><span class='line'>     };</span></code></pre></td></tr></table></div></figure>
+
+
+<p>用curl试了下，可以发送请求，但响应为空</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -vv 'http://localhost:32445/getword?word=for%20suppliers&pos=8&type=0'
+</span><span class='line'>* About to connect() to localhost port 32445 (#0)
+</span><span class='line'>*   Trying ::1... Connection refused
+</span><span class='line'>*   Trying 127.0.0.1... connected
+</span><span class='line'>* Connected to localhost (127.0.0.1) port 32445 (#0)
+</span><span class='line'>&gt; GET /getword?word=for%20suppliers&pos=8&type=0 HTTP/1.1
+</span><span class='line'>&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
+</span><span class='line'>&gt; Host: localhost:32445
+</span><span class='line'>&gt; Accept: */*
+</span><span class='line'>&gt; 
+</span><span class='line'>* Empty reply from server
+</span><span class='line'>* Connection #0 to host localhost left intact
+</span><span class='line'>curl: (52) Empty reply from server
+</span><span class='line'>* Closing connection #0</span></code></pre></td></tr></table></div></figure>
+
+
+<p>word, pos, type这三个参数只要少一个有道字典就会crash</p>
+
+<p>这次http request只是一个trigger, 有道字典会向dict.youdao.com发一个request:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -vv 'http://dict.youdao.com/fsearch?q=for%20suppliers&pos=8&keyfrom=mac.scrtrans.0&id=E33EC7736AFDCABB184051CD3757CA73&vendor=cidian.youdao.com&client=macdict'
+</span><span class='line'>* About to connect() to dict.youdao.com port 80 (#0)
+</span><span class='line'>*   Trying 61.135.218.32... connected
+</span><span class='line'>* Connected to dict.youdao.com (61.135.218.32) port 80 (#0)
+</span><span class='line'>&gt; GET /fsearch?q=for%20suppliers&pos=8&keyfrom=mac.scrtrans.0&id=E33EC7736AFDCABB184051CD3757CA73&vendor=cidian.youdao.com&client=macdict HTTP/1.1
+</span><span class='line'>&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
+</span><span class='line'>&gt; Host: dict.youdao.com
+</span><span class='line'>&gt; Accept: */*
+</span><span class='line'>&gt; 
+</span><span class='line'>&lt; HTTP/1.1 200 OK
+</span><span class='line'>&lt; Server: nginx
+</span><span class='line'>&lt; Date: Tue, 13 Dec 2011 07:10:55 GMT
+</span><span class='line'>&lt; Content-Type: text/xml; charset=utf-8
+</span><span class='line'>&lt; Connection: keep-alive
+</span><span class='line'>&lt; Cache-Control: private
+</span><span class='line'>&lt; Content-Language: en-US
+</span><span class='line'>&lt; Set-Cookie: OUTFOX_SEARCH_USER_ID=-447518408@123.117.56.163; domain=.youdao.com; expires=Thu, 05-Dec-2041 07:10:55 GMT
+</span><span class='line'>&lt; Set-Cookie: JSESSIONID=abcdjNBcCWPPK4igOq2qt; domain=youdao.com; path=/
+</span><span class='line'>&lt; Vary: Accept-Encoding
+</span><span class='line'>&lt; Content-Length: 1477
+</span><span class='line'>&lt; 
+</span><span class='line'>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;yodaodict&gt;
+</span><span class='line'>  &lt;return-phrase&gt;&lt;![CDATA[suppliers]]&gt;&lt;/return-phrase&gt;
+</span><span class='line'>  
+</span><span class='line'>                            &lt;phonetic-symbol&gt;sə'plaiəz&lt;/phonetic-symbol&gt;
+</span><span class='line'>                  &lt;dictcn-speach&gt;suppliers&lt;/dictcn-speach&gt;
+</span><span class='line'>                          &lt;custom-translation&gt;
+</span><span class='line'>        &lt;type&gt;ec&lt;/type&gt;
+</span><span class='line'>                  &lt;translation&gt;&lt;content&gt;&lt;![CDATA[n. 供应商（supplier的复数）]]&gt;&lt;/content&gt;&lt;/translation&gt;
+</span><span class='line'>                &lt;/custom-translation&gt;
+</span><span class='line'>          
+</span><span class='line'>              &lt;yodao-web-dict&gt;
+</span><span class='line'>                    &lt;web-translation&gt;
+</span><span class='line'>                &lt;key&gt;&lt;![CDATA[Suppliers]]&gt;&lt;/key&gt;
+</span><span class='line'>                          &lt;trans&gt;&lt;value&gt;&lt;![CDATA[供应商]]&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                  &lt;trans&gt;&lt;value&gt;&lt;![CDATA[供货商]]&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                  &lt;trans&gt;&lt;value&gt;&lt;![CDATA[数据库]]&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                &lt;/web-translation&gt;
+</span><span class='line'>              &lt;web-translation&gt;
+</span><span class='line'>                &lt;key&gt;&lt;![CDATA[Overview Suppliers]]&gt;&lt;/key&gt;
+</span><span class='line'>                          &lt;trans&gt;&lt;value&gt;&lt;![CDATA[概览]]&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                  &lt;trans&gt;&lt;value&gt;&lt;![CDATA[供应商]]&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                &lt;/web-translation&gt;
+</span><span class='line'>              &lt;web-translation&gt;
+</span><span class='line'>                &lt;key&gt;&lt;![CDATA[select suppliers]]&gt;&lt;/key&gt;
+</span><span class='line'>                          &lt;trans&gt;&lt;value&gt;&lt;![CDATA[挑选供应商]]&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                &lt;/web-translation&gt;
+</span><span class='line'>            &lt;/yodao-web-dict&gt;
+</span><span class='line'>    
+</span><span class='line'>                               &lt;recommend&gt;&lt;![CDATA[supplier]]&gt;&lt;/recommend&gt;
+</span><span class='line'>                    &lt;sexp&gt;0&lt;/sexp&gt;
+</span><span class='line'>&lt;/yodaodict&gt;
+</span><span class='line'>* Connection #0 to host dict.youdao.com left intact
+</span><span class='line'>* Closing connection #0</span></code></pre></td></tr></table></div></figure>
+
+
+<p>拿到结果后由有道字典显示一个提示窗口.</p>
+
+<p>这种实现方式倒也算精巧, 其他app要用这个http接口也比较方便，只是32445端口连个http 200都不返回粗暴了点.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1041,54 +1278,6 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blogs/77">Solr Faceted Search</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-  
-
-<time datetime="2011-04-24T00:00:00+08:00" pubdate>Apr 24<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>从用户角度看，<a href="http://wiki.apache.org/solr/SolrFacetingOverview">faceted search</a>把搜索结果分入多个类别(一般还会显示各个类别下有多少结果)，并允许用户分类别查看。在电子商务类网站经常可以看到，如</p>
-
-<ul>
-<li><a href="http://s.taobao.com/search?q=%C9%CF%CD%F8%B1%BE">淘宝</a>，显示全部分类</li>
-<li><a href="http://www.amazon.cn/s/ref=nb_ss?url=search-alias%3Daps&amp;keywords=%E4%B8%8A%E7%BD%91%E6%9C%AC&amp;x=0&amp;y=0">卓越</a>，左侧</li>
-<li><a href="http://search.360buy.com/Search?keyword=%C9%CF%CD%F8%B1%BE">京东商城</a>，顶部</li>
-</ul>
-
-
-<p>FacetFields有两种，枚举型和分词型。枚举型适合类别比较少的场景，如卓越。分词型适合于类别很多，但每个document所属的类别较少的情况。Facet field不需要定义成stored,但需要是indexed. facet主要是用在drill-down到搜索结果的一个子集，实际查询是会生成一个对应类别的filter query.</p>
-
-<p>实现原理，枚举型与分词型有些区别</p>
-
-<ul>
-<li>枚举型，遍历field的所有terms, 得到各个term对应的document BitSet, 这个结果与query result作与</li>
-<li>分词型，遍历搜索结果中的每个document, 从field cache里得到它对应的terms, 累加terms出现次数</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1104,6 +1293,10 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/posts/2011/12/12/you-dao-zi-dian-httpjie-kou/">有道字典 chrome extension</a>
+      </li>
+    
+      <li class="post">
         <a href="/posts/2011/12/11/speed-up-rails-asset-pipeline/">speed up rails asset pipeline</a>
       </li>
     
@@ -1117,10 +1310,6 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
     
       <li class="post">
         <a href="/posts/2011/12/09/bash-tips-0/">bash tips - 0</a>
-      </li>
-    
-      <li class="post">
-        <a href="/posts/2011/12/09/rvm-global-gems/">rvm global gems</a>
       </li>
     
   </ul>
