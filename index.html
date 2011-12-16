@@ -69,6 +69,115 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/posts/2011-12-16-ack-better-grep/">Ack - Better Grep</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+  
+
+<time datetime="2011-12-16T16:40:00+08:00" pubdate>Dec 16<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://betterthangrep.com/">Ack</a>是一个给程序员用的grep, 使用perl regular expressions, 而不是POSIX/GNU subset.</p>
+
+<h2>why ack?</h2>
+
+<ul>
+<li>使用perl regular expressions, 忘掉grep那套不人性的pattern吧</li>
+<li>速度快, 默认只搜索程序代码文件</li>
+<li>自动忽略.svn, .git, CVS这类目录, 默认递归搜索子目录</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># with grep</span>
+</span><span class='line'><span class="nv">$ </span>grep pattern <span class="k">$(</span>find . -type f | grep -v <span class="s1">&#39;\.svn&#39;</span><span class="k">)</span>
+</span><span class='line'>or
+</span><span class='line'><span class="nv">$ </span>grep -R --exclude-dir .svn pattern
+</span><span class='line'><span class="c"># with ack</span>
+</span><span class='line'><span class="nv">$ </span>ack pattern
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>支持搜索指定文件类型</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 只搜索ruby code</span>
+</span><span class='line'><span class="nv">$ </span>ack --ruby pattern
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>install</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># mac</span>
+</span><span class='line'><span class="nv">$ </span>brew install ack
+</span><span class='line'><span class="c"># ubuntu</span>
+</span><span class='line'><span class="nv">$ </span>sudo apt-get install ack-grep
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>integrate into vim</h2>
+
+<ul>
+<li>install <a href="https://github.com/mileszs/ack.vim">ack.vim</a></li>
+<li>set grepprg=ack in vimrc</li>
+</ul>
+
+
+<h2>custom ack</h2>
+
+<p>Ack默认包含很多filetype => extensions的设置，但新出现的语言不一定支持。好在ack提供<code>--type-add TYPE=.EXTENSION[,.EXT2[,...]]</code>, <code>--type-set TYPE=.EXTENSION[,.EXT2[,...]]</code>来扩展。经常用的可以加到~/.ackrc里, 我的.ackrc:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat ~/.ackrc
+</span><span class='line'>--type-add
+</span><span class='line'><span class="nv">ruby</span><span class="o">=</span>.haml,.ru
+</span><span class='line'>--type-add
+</span><span class='line'><span class="nv">css</span><span class="o">=</span>.scss,.sass,.less
+</span><span class='line'>--type-add
+</span><span class='line'><span class="nv">js</span><span class="o">=</span>.coffee
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/posts/2011-12-12-you-dao-zi-dian-httpjie-kou/">有道字典 Chrome Extension</a></h1>
     
     
@@ -1001,277 +1110,6 @@ bug总是无处不在啊!</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blogs/86">Lucene中文分词器比较</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-  
-
-<time datetime="2011-05-03T00:00:00+08:00" pubdate>May 3<span>rd</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>当前支持lucene 3.1的中文分词器</h1>
-
-<ul>
-<li><a href="http://code.google.com/p/mmseg4j/">mmseg4j</a>
-mmseg4j 用 Chih-Hao Tsai 的 MMSeg 算法(http://technology.chtsai.org/mmseg/ )实现的中文分词器，并实现 lucene 的 analyzer 和 solr 的TokenizerFactory 以方便在Lucene和Solr中使用。 </li>
-<li><a href="http://code.google.com/p/paoding/">paoding</a>
-Paoding&#8217;s Knives 中文分词具有极 高效率 和 高扩展性 。引入隐喻，采用完全的面向对象设计，构思先进。
-高效率：在PIII 1G内存个人机器上，1秒 可准确分词 100万 汉字。
-采用基于 不限制个数 的词典文件对文章进行有效切分，使能够将对词汇分类定义。
-能够对未知的词汇进行合理解析 </li>
-<li><a href="http://code.google.com/p/ik-analyzer/">ik-analyzer</a>
-IKAnalyzer是一个开源的，基于java语言开发的轻量级的中文分词工具包。从2006年12月推出1.0版开始，IKAnalyzer已经推出了3个大版本。最初，它是以开源项目Luence为应用主体的，结合词典分词和文法分析算法的中文分词组件。新版本的IKAnalyzer3.0则发展为面向Java的公用分词组件，独立于Lucene项目，同时提供了对Lucene的默认优化实现。</li>
-<li><a href="http://code.google.com/p/imdict-chinese-analyzer/">imdict</a>
-imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算法基于隐马尔科夫模型(Hidden Markov Model, HMM)，是中国科学院计算技术研究所的ictclas中文分词程序的重新实现（基于Java），可以直接为lucene搜索引擎提供简体中文分词支持。 已加入lucene contributor, smartcn.</li>
-</ul>
-
-
-<h1>支持的特性</h1>
-
-<table>
-  <thead>
-     <td>name</td>
-     <td>CharTermAttribute</td>
-     <td>OffsetAttribute</td>
-     <td>TypeAttribute</td>
-     <td>PositionIncrementAttribute</td>
-     <td>KeywordAttribute</td>
-  </thead>
-  <tr>
-     <td>mmseg4j</td>
-     <td>Y</td>
-     <td>Y</td>
-     <td>Y</td>
-     <td>N</td>
-     <td>N</td>
-  </tr>
-  <tr>
-     <td>paoding</td>
-     <td>Y</td>
-     <td>Y</td>
-     <td>Y</td>
-     <td>N</td>
-     <td>N</td>
-  </tr>
-  <tr>
-     <td>ik-analyzer</td>
-     <td>Y</td>
-     <td>Y</td>
-     <td>N</td>
-     <td>N</td>
-     <td>N</td>
-  </tr>
-  <tr>
-     <td>imdict</td>
-     <td>Y</td>
-     <td>Y</td>
-     <td>Y</td>
-     <td>N</td>
-     <td>Y</td>
-  </tr>
-</table>
-
-
-<h1>性能比较</h1>
-
-<p>本机cpu: Intel(R) Core(TM)2 Duo CPU     P8600  @ 2.40GHz</p>
-
-<table>
-  <thead>
-     <td>name</td>
-     <td>speed(chars/second)</td>
-  </thead>
-  <tr>
-     <td>StandardAnalyzer</td>
-     <td>5227272</td>
-  </tr>
-  <tr>
-     <td>mmseg4j</td>
-     <td>771812</td>
-  </tr>
-  <tr>
-     <td>paoding</td>
-     <td>847145</td>
-  </tr>
-  <tr>
-     <td>ik-analyzer</td>
-     <td>657142</td>
-  </tr>
-  <tr>
-     <td>imdict</td>
-     <td>269242</td>
-  </tr>
-</table>
-
-
-<p>测试代码:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">//CNAnalyzerBenchmark.java</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">java.io.StringReader</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.HashSet</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.Iterator</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">net.paoding.analysis.analyzer.PaodingAnalyzer</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.analysis.Analyzer</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.analysis.TokenStream</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.analysis.standard.StandardAnalyzer</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.util.Attribute</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.util.Version</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.wltea.analyzer.lucene.IKAnalyzer</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">com.chenlb.mmseg4j.analysis.MMSegAnalyzer</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CNAnalyzerBenchmark</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">IKAnalyzer</span> <span class="n">ikAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">IKAnalyzer</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">ikAnalyzer</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">MMSegAnalyzer</span> <span class="n">mmsegAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MMSegAnalyzer</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">mmsegAnalyzer</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">PaodingAnalyzer</span> <span class="n">paodingAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PaodingAnalyzer</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">paodingAnalyzer</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">SmartChineseAnalyzer</span> <span class="n">smartChineseAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SmartChineseAnalyzer</span><span class="o">(</span>
-</span><span class='line'>                <span class="n">Version</span><span class="o">.</span><span class="na">LUCENE_31</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">smartChineseAnalyzer</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">StandardAnalyzer</span> <span class="n">standardAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StandardAnalyzer</span><span class="o">(</span>
-</span><span class='line'>                <span class="n">Version</span><span class="o">.</span><span class="na">LUCENE_31</span><span class="o">,</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;());</span>
-</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">standardAnalyzer</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">static</span> <span class="kt">void</span> <span class="nf">testAnalyzer</span><span class="o">(</span><span class="n">Analyzer</span> <span class="n">a</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">data</span> <span class="o">=</span> <span class="s">&quot;中文(chinese)与西方语言最大的区别&quot;</span> <span class="o">+</span> <span class="s">&quot;就在于语句的词汇之间没有明显的分词界限，&quot;</span>
-</span><span class='line'>                <span class="o">+</span> <span class="s">&quot;但是计算机自然语言处理是按词汇来进行分析的，&quot;</span> <span class="o">+</span> <span class="s">&quot;因此中文分词的效果直接影响中文检索和自然语言处理的准确性。&quot;</span><span class="o">;</span>
-</span><span class='line'>        <span class="n">StringBuilder</span> <span class="n">ss</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
-</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">ss</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="kt">long</span> <span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">String</span> <span class="n">attributes</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
-</span><span class='line'>        <span class="n">TokenStream</span> <span class="n">stream</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="na">tokenStream</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">StringReader</span><span class="o">(</span><span class="n">s</span><span class="o">));</span>
-</span><span class='line'>        <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">Attribute</span><span class="o">&gt;&gt;</span> <span class="n">iterator</span> <span class="o">=</span> <span class="n">stream</span>
-</span><span class='line'>                <span class="o">.</span><span class="na">getAttributeClassesIterator</span><span class="o">();</span>
-</span><span class='line'>        <span class="k">while</span> <span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">Attribute</span><span class="o">&gt;</span> <span class="n">attrClass</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
-</span><span class='line'>            <span class="n">attributes</span> <span class="o">+=</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="n">attrClass</span><span class="o">.</span><span class="na">getSimpleName</span><span class="o">();</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>        <span class="n">stream</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="na">tokenStream</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">StringReader</span><span class="o">(</span><span class="n">s</span><span class="o">));</span>
-</span><span class='line'>        <span class="k">while</span> <span class="o">(</span><span class="n">stream</span><span class="o">.</span><span class="na">incrementToken</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>        <span class="kt">long</span> <span class="n">endTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
-</span><span class='line'>               <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getSimpleName</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot; attributes: &quot;</span>
-</span><span class='line'>                   <span class="o">+</span> <span class="n">attributes</span><span class="o">);</span>
-</span><span class='line'>               <span class="kt">double</span> <span class="n">seconds</span> <span class="o">=</span> <span class="o">(</span><span class="n">endTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">)</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="o">;</span>
-</span><span class='line'>               <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;chars=&quot;</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">+</span>
-</span><span class='line'>                       <span class="s">&quot;,time=&quot;</span> <span class="o">+</span> <span class="n">seconds</span> <span class="o">+</span> <span class="s">&quot;seconds&quot;</span> <span class="o">+</span>
-</span><span class='line'>                      <span class="s">&quot;,speed=&quot;</span> <span class="o">+</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">/</span> <span class="n">seconds</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;chars/second&quot;</span>
-</span><span class='line'>               <span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page/2/">&larr; Older</a>
@@ -1287,6 +1125,10 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/posts/2011-12-16-ack-better-grep/">ack - better grep</a>
+      </li>
+    
+      <li class="post">
         <a href="/posts/2011-12-12-you-dao-zi-dian-httpjie-kou/">有道字典 chrome extension</a>
       </li>
     
@@ -1300,10 +1142,6 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
     
       <li class="post">
         <a href="/posts/2011-12-10-crontab-tips/">crontab tips</a>
-      </li>
-    
-      <li class="post">
-        <a href="/posts/2011-12-09-bash-tips-0/">bash tips - 0</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[zzzhc's Blog]]></title>
   <link href="http://blog.zzzhc.com/atom.xml" rel="self"/>
   <link href="http://blog.zzzhc.com/"/>
-  <updated>2011-12-14T11:06:22+08:00</updated>
+  <updated>2011-12-16T17:20:48+08:00</updated>
   <id>http://blog.zzzhc.com/</id>
   <author>
     <name><![CDATA[zzzhc]]></name>
@@ -12,6 +12,93 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ack - better grep]]></title>
+    <link href="http://blog.zzzhc.com/posts/2011-12-16-ack-better-grep/"/>
+    <updated>2011-12-16T16:40:00+08:00</updated>
+    <id>http://blog.zzzhc.com/posts/ack-better-grep</id>
+    <content type="html"><![CDATA[<p><a href="http://betterthangrep.com/">Ack</a>是一个给程序员用的grep, 使用perl regular expressions, 而不是POSIX/GNU subset.</p>
+
+<h2>why ack?</h2>
+
+<ul>
+<li>使用perl regular expressions, 忘掉grep那套不人性的pattern吧</li>
+<li>速度快, 默认只搜索程序代码文件</li>
+<li>自动忽略.svn, .git, CVS这类目录, 默认递归搜索子目录</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># with grep</span>
+</span><span class='line'><span class="nv">$ </span>grep pattern <span class="k">$(</span>find . -type f | grep -v <span class="s1">&#39;\.svn&#39;</span><span class="k">)</span>
+</span><span class='line'>or
+</span><span class='line'><span class="nv">$ </span>grep -R --exclude-dir .svn pattern
+</span><span class='line'><span class="c"># with ack</span>
+</span><span class='line'><span class="nv">$ </span>ack pattern
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>支持搜索指定文件类型</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 只搜索ruby code</span>
+</span><span class='line'><span class="nv">$ </span>ack --ruby pattern
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>install</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># mac</span>
+</span><span class='line'><span class="nv">$ </span>brew install ack
+</span><span class='line'><span class="c"># ubuntu</span>
+</span><span class='line'><span class="nv">$ </span>sudo apt-get install ack-grep
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>integrate into vim</h2>
+
+<ul>
+<li>install <a href="https://github.com/mileszs/ack.vim">ack.vim</a></li>
+<li>set grepprg=ack in vimrc</li>
+</ul>
+
+
+<h2>custom ack</h2>
+
+<p>Ack默认包含很多filetype => extensions的设置，但新出现的语言不一定支持。好在ack提供<code>--type-add TYPE=.EXTENSION[,.EXT2[,...]]</code>, <code>--type-set TYPE=.EXTENSION[,.EXT2[,...]]</code>来扩展。经常用的可以加到~/.ackrc里, 我的.ackrc:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat ~/.ackrc
+</span><span class='line'>--type-add
+</span><span class='line'><span class="nv">ruby</span><span class="o">=</span>.haml,.ru
+</span><span class='line'>--type-add
+</span><span class='line'><span class="nv">css</span><span class="o">=</span>.scss,.sass,.less
+</span><span class='line'>--type-add
+</span><span class='line'><span class="nv">js</span><span class="o">=</span>.coffee
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[有道字典 chrome extension]]></title>
