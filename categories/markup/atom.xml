@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: markup | zzzhc's Blog]]></title>
+  <link href="http://blog.zzzhc.com/categories/markup/atom.xml" rel="self"/>
+  <link href="http://blog.zzzhc.com/"/>
+  <updated>2011-12-16T17:20:48+08:00</updated>
+  <id>http://blog.zzzhc.com/</id>
+  <author>
+    <name><![CDATA[zzzhc]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[wiki markup]]></title>
+    <link href="http://blog.zzzhc.com/blogs/42"/>
+    <updated>2011-04-09T00:00:00+08:00</updated>
+    <id>http://blog.zzzhc.com/blogs/42</id>
+    <content type="html"><![CDATA[<p>wordpress的编辑器实在不怎么样，想念<a href="http://confluence.atlassian.com/">conflucene</a>的<a href="http://confluence.atlassian.com/renderer/notationhelp.action?section=all">wiki markup</a>.</p>
+
+<p>confluence的wiki markup是从<a href="http://textile.thresholdstate.com/">textile</a>改进过来的，在plugins里找了会，没有好用的textile plugin，像textile 2会把原来的内容变成乱七八遭的，没法忍。</p>
+
+<p>接着试了下markdown, 因为在github的项目上经常看到README.md, 知道是用markdown语法写的。<a href="http://wordpress.org/extend/plugins/markdown-on-save/">markdown on save</a>看起来是没有侵入性的, markdown version放post_content_formatted字段里，对于wordpress 3.1来说放在meta里更好. 参考<a href="http://daringfireball.net/projects/markdown/syntax">markdown syntax</a>练习了一下，基本还好，有两个地方不太满意：</p>
+
+<ul>
+<li>ordered list要自己用数字开头,像1.这样来写，同时又忽略这些值的内容，相当反直觉，还是textile里的#爽快</li>
+<li>不直接支持table, 虽然可以自己直接写
+   &lt;table&gt;...&lt;/table&gt;
+confluence里的||column||column||很简单快捷。</li>
+</ul>
+
+
+<p>先用它了。</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: network | zzzhc's Blog]]></title>
+  <link href="http://blog.zzzhc.com/categories/network/atom.xml" rel="self"/>
+  <link href="http://blog.zzzhc.com/"/>
+  <updated>2011-12-16T17:20:48+08:00</updated>
+  <id>http://blog.zzzhc.com/</id>
+  <author>
+    <name><![CDATA[zzzhc]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ruby eventmachine]]></title>
+    <link href="http://blog.zzzhc.com/blogs/25"/>
+    <updated>2011-04-02T00:00:00+08:00</updated>
+    <id>http://blog.zzzhc.com/blogs/25</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/eventmachine/eventmachine">eventmachine</a> 是一个快速轻量的网络协议框架，有不少ruby应用基于它实现，如thin, ruby-amqp. eventmachine在不同os上自动选择最佳的底层网络通知机制，在linux上用epoll，freebsd上用kqueue.</p>
+
+<p>eventmachine对网络事件进行封装，有事件发生时回调预设的handler module。</p>
+
+<p>事件处理都需要放在EventMachine::run里，可以分server, client两种模式</p>
+
+<p>``` ruby</p>
+
+<h1>server</h1>
+
+<p>EventMachine::run {
+  EventMachine::start_server "0.0.0.0", port, ServerHandler
+}</p>
+
+<h1>client</h1>
+
+<p>EventMachine::run {
+  EventMachine::connect remote_server, port, ClientHandler #client
+}
+```</p>
+
+<p>在一个网络连接的生存周期中，可能发生的回调事件有：</p>
+
+<ol>
+<li>post_init　handler对象创建后，注意client模式时，即使连接还未建立也会被调用</li></li>
+<li>connection_completed　主动连接远端服务器，连接建立时</li></li>
+<li>receive_data　有数据可读时, 在这里需要处理协议细节</li></li>
+<li>unbind　连接关闭，主动关闭，对方关闭或网络错误</li></li>
+</ol>
+
+
+<p>在handler上可以使用send_data发送数据.</p>
+
+<p>最简单的echo server</p>
+
+<p>``` ruby</p>
+
+<h1>!/usr/bin/env ruby</h1>
+
+<p>require 'rubygems'
+require 'eventmachine'</p>
+
+<p>module EchoServer
+  def post_init</p>
+
+<pre><code>puts "-- someone connected to the echo server!"
+</code></pre>
+
+<p>  end</p>
+
+<p>  def receive_data data</p>
+
+<pre><code>send_data "&gt;&gt;&gt;you sent: #{data}"
+close_connection if data =~ /quit/i
+</code></pre>
+
+<p>  end</p>
+
+<p>  def unbind</p>
+
+<pre><code>puts "-- someone disconnected from the echo server!"
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>EventMachine::run {
+  EventMachine::start_server "127.0.0.1", 8081, EchoServer
+}
+```</p>
+
+<p>一个简单的http client</p>
+
+<p>``` ruby</p>
+
+<h1>!/usr/bin/env ruby</h1>
+
+<p>require 'rubygems'
+require 'eventmachine'</p>
+
+<p>module HttpClient
+  def post_init</p>
+
+<pre><code>puts "sending request to server"
+send_data "GET / HTTP/1.1\r\nHost: www.baidu.com\r\nConnection: close\r\n\r\n"
+</code></pre>
+
+<p>  end</p>
+
+<p>  def receive_data data</p>
+
+<pre><code>puts "recv: #{data}"
+</code></pre>
+
+<p>  end</p>
+
+<p>  def unbind</p>
+
+<pre><code>puts "connection closed"
+EventMachine::stop
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>EventMachine::run {
+  EventMachine::connect "www.baidu.com", 80, HttpClient
+}
+```</p>
+
+<p>连接失败的例子:</p>
+
+<p>``` ruby</p>
+
+<h1>!/usr/bin/env ruby</h1>
+
+<p>require 'rubygems'
+require 'eventmachine'</p>
+
+<p>module Client
+  def connection_completed</p>
+
+<pre><code>puts "connected"
+</code></pre>
+
+<p>  end</p>
+
+<p>  def post_init</p>
+
+<pre><code>puts "handler inited"
+</code></pre>
+
+<p>  end</p>
+
+<p>  def receive_data data</p>
+
+<pre><code>puts "recv: #{data}"
+</code></pre>
+
+<p>  end</p>
+
+<p>  def unbind</p>
+
+<pre><code>puts "connection closed"
+EventMachine::stop
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>EventMachine::run {
+  EventMachine::connect "api.jquery.com", 8088, Client
+}
+```</p>
+]]></content>
+  </entry>
+  
+</feed>
