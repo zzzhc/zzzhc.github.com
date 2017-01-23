@@ -1,0 +1,1319 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>zzzhc's Blog</title>
+  <meta name="author" content="zzzhc">
+
+  
+  <meta name="description" content="Ack是一个给程序员用的grep, 使用perl regular expressions, 而不是POSIX/GNU subset. why ack? 使用perl regular expressions, 忘掉grep那套不人性的pattern吧
+速度快, 默认只搜索程序代码文件
+自动忽略. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.zzzhc.com">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="zzzhc's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+-->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-337047-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">zzzhc's Blog</a></h1>
+  
+    <h2>stay curious</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.zzzhc.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a class='category' href='/categories/rails/'>Rails</a></li>
+  <li><a class='category' href='/categories/vim/'>Vim</a></li>
+  <li><a class='category' href='/categories/lucene/'>Lucene</a></li>
+  <li><a class='category' href='/categories/amqp/'>AMQP</a></li>
+  <li><a class='category' href='/categories/misc/'>Misc</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/posts/2011-12-16-ack-better-grep/">Ack - Better Grep</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-16T11:17:00+08:00" pubdate data-updated="true">Dec 16<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ack是一个给程序员用的grep, 使用perl regular expressions, 而不是POSIX/GNU subset.</p>
+
+<h2>why ack?</h2>
+
+<ul>
+<li>使用perl regular expressions, 忘掉grep那套不人性的pattern吧</li>
+<li>速度快, 默认只搜索程序代码文件</li>
+<li>自动忽略.svn, .git, CVS这类目录, 默认递归搜索子目录</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># with grep</span>
+</span><span class='line'><span class="nv">$ </span>grep pattern <span class="k">$(</span>find . -type f | grep -v <span class="s1">&#39;\.svn&#39;</span><span class="k">)</span>
+</span><span class='line'>or
+</span><span class='line'><span class="nv">$ </span>grep -R --exclude-dir .svn pattern
+</span><span class='line'><span class="c"># with ack</span>
+</span><span class='line'><span class="nv">$ </span>ack pattern
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>支持搜索指定文件类型</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 只搜索ruby code</span>
+</span><span class='line'><span class="nv">$ </span>ack --ruby pattern
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>install</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># mac</span>
+</span><span class='line'><span class="nv">$ </span>brew install ack
+</span><span class='line'><span class="c"># ubuntu</span>
+</span><span class='line'><span class="nv">$ </span>sudo apt-get install ack-grep
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>integrate into vim</h2>
+
+<ul>
+<li>install ack.vim</li>
+<li>set grepprg=ack in vimrc</li>
+</ul>
+
+
+<h2>custom ack</h2>
+
+<p>Ack默认包含很多filetype => extensions的设置，但新出现的语言不一定支持。好在ack提供&mdash;type-add TYPE=.EXTENSION[,.EXT2[,&hellip;]], &mdash;type-set TYPE=.EXTENSION[,.EXT2[,&hellip;]]来扩展。经常用的可以加到~/.ackrc里, 我的.ackrc:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat ~/.ackrc
+</span><span class='line'>--type-add
+</span><span class='line'><span class="nv">ruby</span><span class="o">=</span>.haml,.ru
+</span><span class='line'>--type-add
+</span><span class='line'><span class="nv">css</span><span class="o">=</span>.scss,.sass,.less
+</span><span class='line'>--type-add
+</span><span class='line'><span class="nv">js</span><span class="o">=</span>.coffee
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/posts/2011-12-12-you-dao-zi-dian-httpjie-kou/">有道字典 Chrome Extension</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-12T11:17:00+08:00" pubdate data-updated="true">Dec 12<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>有道字典的chrome extension会把鼠标下的词log到console里，debug的时候让人烦, 看了下code, 直接用的console.log, 发布的时候也没注释掉. 跑到~/Library/Application Support/Google/Chrome/Default/Extensions/nbndkplefmmhmcmfjanjaakhhkiegogd/1.0_0下把content.js,background.html里的console.log都注释掉，安静了。</p>
+
+<p>大概看了下extension code, 发现两个有意思的地方：</p>
+
+<ul>
+<li>打包的时候连.svn目录都没放过</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>svn info
+</span><span class='line'>Path: .
+</span><span class='line'>URL: https://dev.corp.youdao.com/svn/outfox/products/desktop/incubator/mac/GetWordExtension/Chrome/extension
+</span><span class='line'>Repository Root: https://dev.corp.youdao.com/svn/outfox
+</span><span class='line'>Repository UUID: 36a6777f-fe3c-0410-890b-904d6044f29d
+</span><span class='line'>Revision: 285097
+</span><span class='line'>Node Kind: directory
+</span><span class='line'>Schedule: normal
+</span><span class='line'>Last Changed Author: huangdx
+</span><span class='line'>Last Changed Rev: 277738
+</span><span class='line'>Last Changed Date: 2011-09-13 14:00:17 +0800 <span class="o">(</span>二, 13  9 2011<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>取词的时候调用的是本机有道字典app提供的http接口</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//in background.html</span>
+</span><span class='line'>     <span class="kd">function</span> <span class="nx">SendResult</span><span class="p">(</span><span class="nx">word</span><span class="p">,</span> <span class="nx">pos</span><span class="p">,</span> <span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>         <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">;</span>
+</span><span class='line'>         <span class="nx">s</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;http://localhost:32445/getword?word=&quot;</span> <span class="o">+</span> <span class="nx">word</span> <span class="o">+</span> <span class="s2">&quot;&amp;pos=&quot;</span> <span class="o">+</span> <span class="nx">pos</span> <span class="o">+</span> <span class="s2">&quot;&amp;type=&quot;</span> <span class="o">+</span> <span class="nx">type</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>         <span class="c1">//console.log(&#39;sending...&#39;)</span>
+</span><span class='line'>         <span class="nx">s</span><span class="p">.</span><span class="nx">send</span><span class="p">()</span>
+</span><span class='line'>     <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>用curl试了下，可以发送请求，但响应为空</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -vv <span class="s1">&#39;http://localhost:32445/getword?word=for%20suppliers&amp;pos=8&amp;type=0&#39;</span>
+</span><span class='line'>* About to connect<span class="o">()</span> to localhost port 32445 <span class="o">(</span><span class="c">#0)</span>
+</span><span class='line'>*   Trying ::1... Connection refused
+</span><span class='line'>*   Trying 127.0.0.1... connected
+</span><span class='line'>* Connected to localhost <span class="o">(</span>127.0.0.1<span class="o">)</span> port 32445 <span class="o">(</span><span class="c">#0)</span>
+</span><span class='line'>&gt; GET /getword?word<span class="o">=</span><span class="k">for</span>%20suppliers&amp;pos<span class="o">=</span>8&amp;type<span class="o">=</span>0 HTTP/1.1
+</span><span class='line'>&gt; User-Agent: curl/7.21.4 <span class="o">(</span>universal-apple-darwin11.0<span class="o">)</span> libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
+</span><span class='line'>&gt; Host: localhost:32445
+</span><span class='line'>&gt; Accept: */*
+</span><span class='line'>&gt;
+</span><span class='line'>* Empty reply from server
+</span><span class='line'>* Connection <span class="c">#0 to host localhost left intact</span>
+</span><span class='line'>curl: <span class="o">(</span>52<span class="o">)</span> Empty reply from server
+</span><span class='line'>* Closing connection <span class="c">#0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>word, pos, type这三个参数只要少一个有道字典就会crash</p>
+
+<p>这次http request只是一个trigger, 有道字典会向dict.youdao.com发一个request:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -vv <span class="s1">&#39;http://dict.youdao.com/fsearch?q=for%20suppliers&amp;pos=8&amp;keyfrom=mac.scrtrans.0&amp;id=E33EC7736AFDCABB184051CD3757CA73&amp;vendor=cidian.youdao.com&amp;client=macdict&#39;</span>
+</span><span class='line'>* About to connect<span class="o">()</span> to dict.youdao.com port 80 <span class="o">(</span><span class="c">#0)</span>
+</span><span class='line'>*   Trying 61.135.218.32... connected
+</span><span class='line'>* Connected to dict.youdao.com <span class="o">(</span>61.135.218.32<span class="o">)</span> port 80 <span class="o">(</span><span class="c">#0)</span>
+</span><span class='line'>&gt; GET /fsearch?q<span class="o">=</span><span class="k">for</span>%20suppliers&amp;pos<span class="o">=</span>8&amp;keyfrom<span class="o">=</span>mac.scrtrans.0&amp;id<span class="o">=</span>E33EC7736AFDCABB184051CD3757CA73&amp;vendor<span class="o">=</span>cidian.youdao.com&amp;client<span class="o">=</span>macdict HTTP/1.1
+</span><span class='line'>&gt; User-Agent: curl/7.21.4 <span class="o">(</span>universal-apple-darwin11.0<span class="o">)</span> libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
+</span><span class='line'>&gt; Host: dict.youdao.com
+</span><span class='line'>&gt; Accept: */*
+</span><span class='line'>&gt;
+</span><span class='line'>&lt; HTTP/1.1 200 OK
+</span><span class='line'>&lt; Server: nginx
+</span><span class='line'>&lt; Date: Tue, 13 Dec 2011 07:10:55 GMT
+</span><span class='line'>&lt; Content-Type: text/xml; <span class="nv">charset</span><span class="o">=</span>utf-8
+</span><span class='line'>&lt; Connection: keep-alive
+</span><span class='line'>&lt; Cache-Control: private
+</span><span class='line'>&lt; Content-Language: en-US
+</span><span class='line'>&lt; Set-Cookie: <span class="nv">OUTFOX_SEARCH_USER_ID</span><span class="o">=</span>-447518408@123.117.56.163; <span class="nv">domain</span><span class="o">=</span>.youdao.com; <span class="nv">expires</span><span class="o">=</span>Thu, 05-Dec-2041 07:10:55 GMT
+</span><span class='line'>&lt; Set-Cookie: <span class="nv">JSESSIONID</span><span class="o">=</span>abcdjNBcCWPPK4igOq2qt; <span class="nv">domain</span><span class="o">=</span>youdao.com; <span class="nv">path</span><span class="o">=</span>/
+</span><span class='line'>&lt; Vary: Accept-Encoding
+</span><span class='line'>&lt; Content-Length: 1477
+</span><span class='line'>&lt;
+</span><span class='line'>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span>?&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;yodaodict&gt;
+</span><span class='line'>  &lt;<span class="k">return</span>-phrase&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>suppliers<span class="o">]]</span>&gt;&lt;/return-phrase&gt;
+</span><span class='line'>
+</span><span class='line'>                            &lt;phonetic-symbol&gt;sə<span class="err">&#39;</span>plaiəz&lt;/phonetic-symbol&gt;
+</span><span class='line'>                  &lt;dictcn-speach&gt;suppliers&lt;/dictcn-speach&gt;
+</span><span class='line'>                          &lt;custom-translation&gt;
+</span><span class='line'>        &lt;<span class="nb">type</span>&gt;ec&lt;/type&gt;
+</span><span class='line'>                  &lt;translation&gt;&lt;content&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>n. 供应商（supplier的复数）<span class="o">]]</span>&gt;&lt;/content&gt;&lt;/translation&gt;
+</span><span class='line'>                &lt;/custom-translation&gt;
+</span><span class='line'>
+</span><span class='line'>              &lt;yodao-web-dict&gt;
+</span><span class='line'>                    &lt;web-translation&gt;
+</span><span class='line'>                &lt;key&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>Suppliers<span class="o">]]</span>&gt;&lt;/key&gt;
+</span><span class='line'>                          &lt;trans&gt;&lt;value&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>供应商<span class="o">]]</span>&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                  &lt;trans&gt;&lt;value&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>供货商<span class="o">]]</span>&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                  &lt;trans&gt;&lt;value&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>数据库<span class="o">]]</span>&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                &lt;/web-translation&gt;
+</span><span class='line'>              &lt;web-translation&gt;
+</span><span class='line'>                &lt;key&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>Overview Suppliers<span class="o">]]</span>&gt;&lt;/key&gt;
+</span><span class='line'>                          &lt;trans&gt;&lt;value&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>概览<span class="o">]]</span>&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                  &lt;trans&gt;&lt;value&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>供应商<span class="o">]]</span>&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                &lt;/web-translation&gt;
+</span><span class='line'>              &lt;web-translation&gt;
+</span><span class='line'>                &lt;key&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span><span class="k">select </span>suppliers<span class="o">]]</span>&gt;&lt;/key&gt;
+</span><span class='line'>                          &lt;trans&gt;&lt;value&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>挑选供应商<span class="o">]]</span>&gt;&lt;/value&gt;&lt;/trans&gt;
+</span><span class='line'>                &lt;/web-translation&gt;
+</span><span class='line'>            &lt;/yodao-web-dict&gt;
+</span><span class='line'>
+</span><span class='line'>                               &lt;recommend&gt;&lt;!<span class="o">[</span>CDATA<span class="o">[</span>supplier<span class="o">]]</span>&gt;&lt;/recommend&gt;
+</span><span class='line'>                    &lt;sexp&gt;0&lt;/sexp&gt;
+</span><span class='line'>&lt;/yodaodict&gt;
+</span><span class='line'>* Connection <span class="c">#0 to host dict.youdao.com left intact</span>
+</span><span class='line'>* Closing connection <span class="c">#0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>拿到结果后由有道字典显示一个提示窗口.</p>
+
+<p>这种实现方式倒也算精巧, 其他app要用这个http接口也比较方便，只是32445端口连个http 200都不返回粗暴了点.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/posts/2011-12-11-speed-up-rails-asset-pipeline/">Speed Up Rails Asset Pipeline</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-11T20:48:00+08:00" pubdate data-updated="true">Dec 11<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://guides.rubyonrails.org/asset_pipeline.html">Asset pipeline</a>是Rails 3.1里引入的一个特性, 用来帮助拼接，压缩js/css,同时对缓存asset提供了更好的支持.</p>
+
+<p>Asset pipe本身只是对<a href="https://github.com/sstephenson/sprockets">Sprockets</a>做了一层封装, 通过<code>Rails.application.assets</code>可以得到Sprockets自己的rack app.</p>
+
+<p>如果application.js里用到了一堆的js, 在development模式下会发现页面很慢, 即使用了<a href="https://github.com/paneq/active_reload">active_reload</a>来加速.在chrome console里看下network tab，每次js请求都在100ms以上。慢的原因在于每次请求都要过一次Rails/application里定义的middleware, 跳过这些middleware之后就快多了. 改下config.ru, 世界又和谐了:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># This file is used by Rack-based servers to start the application.</span>
+</span><span class='line'><span class="nb">require</span> <span class="o">::</span><span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s1">&#39;../config/environment&#39;</span><span class="p">,</span>  <span class="bp">__FILE__</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">map</span> <span class="s1">&#39;/assets&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">assets</span> <span class="o">=</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">assets</span>
+</span><span class='line'>  <span class="n">run</span> <span class="n">assets</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">map</span> <span class="s1">&#39;/&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">run</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/posts/2011-12-10-gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-10T12:59:00+08:00" pubdate data-updated="true">Dec 10<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://www.moolenaar.net/habits.html">Seven habits of effective text editing</a></p>
+
+<h2>编辑单个文件</h2>
+
+<h3>1. 快速移动</h3>
+
+<ul>
+<li>查找光标下单词在当前文件的其它位置
+
+<ol>
+<li>* 向后查找</li>
+<li># 向前查找</li>
+</ol>
+</li>
+<li>搜索文本, /pattern</li>
+<li>使用%跳转到对应块的结尾/开头，安装<a href="http://www.vim.org/scripts/script.php?script_id=39">matchit</a>插件效果更好</li>
+<li>使用gd跳转到变量定义</li>
+</ul>
+
+
+<p>掌握更多高效编辑命令的三个基本步骤:
+* 留意编辑过程中的重复动作和花时间较多的地方
+* 找出一个可以更快完成这些操作的命令
+* 反复练习，直到形成习惯，不需要思考靠直觉就能敲出命令</p>
+
+<h3>2. 不要重复输入两次</h3>
+
+<ul>
+<li>善用.命令重做前一个修改</li>
+<li>使用自动补全, 安装<a href="https://github.com/ervandew/supertab">supertab</a>后可用tab键补全</li>
+<li>录制宏, qa开始录制，q结束宏, @a重放宏</li>
+</ul>
+
+
+<h3>3. 自动修复拼写错误</h3>
+
+<ul>
+<li>abbr</li>
+<li>syntax hightlight</li>
+</ul>
+
+
+<h2>编辑多个文件</h2>
+
+<h3>4. 很少只在单独一个文件上工作</h3>
+
+<ul>
+<li>ctags, Ctrl+] 跳转到定义处</li>
+<li>:grep, :cn</li>
+</ul>
+
+
+<h3>5. 与其它程序协同工作</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:!command</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>6. Text is structured</h3>
+
+<p>自动化编译，修改过程</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:make
+</span><span class='line'>:set errorformat=xxx</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>磨快你的矩</h2>
+
+<h3>7. 养成习惯</h3>
+
+<p>这一点最重要，花大把时间找到合适的命令但很快就忘掉是很不划算的。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/posts/2011-12-10-crontab-tips/">Crontab Tips</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-10T12:02:00+08:00" pubdate data-updated="true">Dec 10<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>crontab command</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 设置编辑器</span>
+</span><span class='line'><span class="nv">$ </span><span class="nb">export </span><span class="nv">EDITOR</span><span class="o">=</span>vim
+</span><span class='line'><span class="c"># 编辑</span>
+</span><span class='line'><span class="nv">$ </span>crontab -e <span class="o">[</span>-u user<span class="o">]</span>
+</span><span class='line'><span class="c"># 列出crontab内容</span>
+</span><span class='line'><span class="nv">$ </span>crontab -l <span class="o">[</span>-u user<span class="o">]</span>
+</span><span class='line'><span class="c"># 删除crontab文件</span>
+</span><span class='line'><span class="nv">$ </span>crontab -r <span class="o">[</span>-u user<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>crontab syntax</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>* * * * *  <span class="nb">command</span>
+</span><span class='line'>| | | | |
+</span><span class='line'>| | | | |- day of week<span class="o">(</span>0-6<span class="o">)</span> 0 means sunday
+</span><span class='line'>| | | |--- month<span class="o">(</span>1-12<span class="o">)</span>
+</span><span class='line'>| | |----- day of month<span class="o">(</span>1-31<span class="o">)</span>
+</span><span class='line'>| |------- hour
+</span><span class='line'>|--------- minute<span class="o">(</span>0-59<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>* 表示的项可以用,分隔指定多个值<span class="o">(</span>如5,15,25<span class="o">)</span>，也可以指定周期，如在minute项上写*/5表示每5分钟执行一次
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>crontab environment</h2>
+
+<p>cron脚本执行的环境跟正常用户执行的有区别，~/.bashrc不会被执行, 这一点经常会引起问题, 可以在crontab里设置环境变量来减少影响.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># PATH, SHELL, MAILTO比较常用, 如</span>
+</span><span class='line'><span class="nv">PATH</span><span class="o">=</span>/usr/bin:/usr/sbin:/bin:/sbin
+</span><span class='line'><span class="nv">SHELL</span><span class="o">=</span>/bin/bash
+</span><span class='line'><span class="nv">MAILTO</span><span class="o">=</span>xxx@xxx.com
+</span><span class='line'>
+</span><span class='line'>1 * * * * find /var/data/upload/ -mtime 30 -exec rm -- <span class="o">{}</span> +
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>默认情况crontab按OS时区调度, 而不是用户时区，可以通过指定TZ环境变量设实际要用的时区</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">TZ</span><span class="o">=</span>UTC
+</span><span class='line'>1 * * * * find /var/data/upload/ -mtime 30 -exec rm -- <span class="o">{}</span> +
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>crontab notification</h1>
+
+<p>如果command有输出(stdout/stderr)，crond会发送通知邮件, 具体发送给谁可以通过MAILTO定义，默认发送给当前用户。
+一般情况stdout可以忽略，所以经常会看到crontab里有 command >/dev/null; stderr一定不要忽略，否则cron job有错误无法正常执行都不知道。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/posts/2011-12-09-bash-tips-0/">Bash Tips - 0</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-09T20:18:00+08:00" pubdate data-updated="true">Dec 9<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li>为变量设置缺省值</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>: <span class="k">${</span><span class="nv">BIND_PORT</span><span class="p">:=9999</span><span class="k">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>取得前一个在后台运行的进程pid</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sleep 10 &amp;
+</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="nv">$!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>当前脚本的绝对路径</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">SCRIPT_PATH</span><span class="o">=</span><span class="sb">`</span>readlink -f <span class="s2">&quot;$0&quot;</span><span class="sb">`</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/posts/2011-12-09-rvm-global-gems/">Rvm Global Gems</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-09T19:07:00+08:00" pubdate data-updated="true">Dec 9<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>用rvm安装多了ruby版本后，一些经常用的gem需要在多个版本下都重装一次，很费事。不过还好rvm早有<a href="http://beginrescueend.com/gemsets/initial/">解决方案</a>，可以通过编辑~/.rvm/gemsets/global.gems来添加全局的gemsets, 比如必不可少的bundler</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bundler</span></code></pre></td></tr></table></div></figure>
+
+
+<p>也可以指定版本</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bundler -v~&gt;1.0.21</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blogs/115">Lucene 3下最快的中文分词器</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-19T00:00:00+08:00" pubdate data-updated="true">Jun 19<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>包包分词器 &ndash; 一个基于字典的快速中文分词器</h1>
+
+<h2>source code</h2>
+
+<ul>
+<li><a href="https://github.com/zzzhc/baobao-analyzer">github project</a></li>
+</ul>
+
+
+<h2>features</h2>
+
+<ul>
+<li>简单 1000LOC</li>
+<li>高效 7M+ chars/second</li>
+<li>支持中文，英语，数字</li>
+<li>自动识别未登录词</li>
+<li>支持OffsetAttribute</li>
+<li>支持TypeAttribute</li>
+<li>支持PositionIncrementAttribute</li>
+</ul>
+
+
+<h2>usage</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Dict</span> <span class="n">dict</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Dict</span><span class="o">();</span>
+</span><span class='line'><span class="n">dict</span><span class="o">.</span><span class="na">addAllSpecialTypes</span><span class="o">();</span>
+</span><span class='line'><span class="n">BufferedReader</span> <span class="n">dictReader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="n">InputStreamReader</span><span class="o">(</span>
+</span><span class='line'>    <span class="k">new</span> <span class="nf">FileInputStream</span><span class="o">(</span><span class="s">&quot;dict.txt&quot;</span><span class="o">),</span> <span class="s">&quot;UTF-8&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="n">dict</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="n">dictReader</span><span class="o">);</span>
+</span><span class='line'><span class="n">dictReader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'><span class="n">dict</span><span class="o">.</span><span class="na">optimize</span><span class="o">();</span>
+</span><span class='line'><span class="n">DictAnalyzer</span> <span class="n">dictAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DictAnalyzer</span><span class="o">(</span><span class="n">dict</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>benchmark</h2>
+
+<p>ant benchmark</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">supported</span> <span class="nl">features:</span>
+</span><span class='line'>                  <span class="n">CharTerm</span>  <span class="n">Offset</span>  <span class="n">PositionIncrement</span>  <span class="n">Term</span>  <span class="n">Type</span>
+</span><span class='line'>      <span class="n">IKAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">N</span>     <span class="n">Y</span>     <span class="n">N</span>
+</span><span class='line'>   <span class="n">MMSegAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">N</span>     <span class="n">Y</span>     <span class="n">Y</span>
+</span><span class='line'> <span class="n">PaodingAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">N</span>     <span class="n">Y</span>     <span class="n">Y</span>
+</span><span class='line'><span class="n">StandardAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">Y</span>     <span class="n">Y</span>     <span class="n">Y</span>
+</span><span class='line'>  <span class="n">BaoBaoAnalyzer</span>         <span class="n">Y</span>       <span class="n">Y</span>                  <span class="n">Y</span>     <span class="n">Y</span>     <span class="n">Y</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">test</span> <span class="mi">1</span><span class="o">,</span> <span class="n">sample</span> <span class="n">length</span><span class="o">=</span><span class="mi">26265</span>
+</span><span class='line'>            <span class="n">name</span>          <span class="n">chars</span>           <span class="n">time</span>         <span class="n">tokens</span> <span class="nf">speed</span><span class="o">(</span><span class="n">chars</span><span class="o">/</span><span class="n">second</span><span class="o">)</span>
+</span><span class='line'> <span class="n">PaodingAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.610</span>          <span class="mi">12542</span>            <span class="mf">43036.87</span>
+</span><span class='line'>   <span class="n">MMSegAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.314</span>          <span class="mi">14007</span>            <span class="mf">83566.52</span>
+</span><span class='line'>      <span class="n">IKAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.262</span>          <span class="mi">16016</span>           <span class="mf">100177.91</span>
+</span><span class='line'><span class="n">StandardAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.141</span>          <span class="mi">22366</span>           <span class="mf">185727.87</span>
+</span><span class='line'>  <span class="n">BaoBaoAnalyzer</span>          <span class="mi">26265</span>          <span class="mf">0.038</span>          <span class="mi">18185</span>           <span class="mf">695682.16</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">test</span> <span class="mi">2</span><span class="o">,</span> <span class="n">sample</span> <span class="n">length</span><span class="o">=</span><span class="mi">262650</span>
+</span><span class='line'>            <span class="n">name</span>          <span class="n">chars</span>           <span class="n">time</span>         <span class="n">tokens</span> <span class="nf">speed</span><span class="o">(</span><span class="n">chars</span><span class="o">/</span><span class="n">second</span><span class="o">)</span>
+</span><span class='line'> <span class="n">PaodingAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.187</span>         <span class="mi">125420</span>          <span class="mf">1402139.61</span>
+</span><span class='line'>      <span class="n">IKAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.163</span>         <span class="mi">160160</span>          <span class="mf">1613693.16</span>
+</span><span class='line'>   <span class="n">MMSegAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.158</span>         <span class="mi">140070</span>          <span class="mf">1664009.53</span>
+</span><span class='line'>  <span class="n">BaoBaoAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.041</span>         <span class="mi">181850</span>          <span class="mf">6362134.44</span>
+</span><span class='line'><span class="n">StandardAnalyzer</span>         <span class="mi">262650</span>          <span class="mf">0.020</span>         <span class="mi">223660</span>         <span class="mf">12905789.80</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">test</span> <span class="mi">3</span><span class="o">,</span> <span class="n">sample</span> <span class="n">length</span><span class="o">=</span><span class="mi">2626500</span>
+</span><span class='line'>            <span class="n">name</span>          <span class="n">chars</span>           <span class="n">time</span>         <span class="n">tokens</span> <span class="nf">speed</span><span class="o">(</span><span class="n">chars</span><span class="o">/</span><span class="n">second</span><span class="o">)</span>
+</span><span class='line'>      <span class="n">IKAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">2.251</span>        <span class="mi">1601600</span>          <span class="mf">1166564.72</span>
+</span><span class='line'> <span class="n">PaodingAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">1.462</span>        <span class="mi">1254200</span>          <span class="mf">1796381.55</span>
+</span><span class='line'>   <span class="n">MMSegAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">1.043</span>        <span class="mi">1400700</span>          <span class="mf">2519010.94</span>
+</span><span class='line'>  <span class="n">BaoBaoAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">0.352</span>        <span class="mi">1818500</span>          <span class="mf">7458959.20</span>
+</span><span class='line'><span class="n">StandardAnalyzer</span>        <span class="mi">2626500</span>          <span class="mf">0.202</span>        <span class="mi">2236600</span>         <span class="mf">13015280.16</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blogs/107">Mysqld 5.1.41的一个神奇bug</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-09T00:00:00+08:00" pubdate data-updated="true">Jun 9<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天打算在本地装两个数据库，方便测试，用mysql_install_db &mdash;datadir=/opt/mysql初始化mysql data directory, 死活都不成功，/opt, /opt/mysql的权限都改成0777也是一样</p>
+
+<p>OS:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat /etc/lsb-release
+</span><span class='line'><span class="nv">DISTRIB_ID</span><span class="o">=</span>Ubuntu
+</span><span class='line'><span class="nv">DISTRIB_RELEASE</span><span class="o">=</span>10.04
+</span><span class='line'><span class="nv">DISTRIB_CODENAME</span><span class="o">=</span>lucid
+</span><span class='line'><span class="nv">DISTRIB_DESCRIPTION</span><span class="o">=</span><span class="s2">&quot;Ubuntu 10.04.1 LTS&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mysql_install_db --datadir<span class="o">=</span>/opt/mysql/
+</span><span class='line'>Installing MySQL system tables...
+</span><span class='line'>110609 20:59:26 <span class="o">[</span>Warning<span class="o">]</span> Can<span class="s1">&#39;t create test file /opt/mysql/zzzhc-laptop.lower-test</span>
+</span><span class='line'><span class="s1">110609 20:59:26 [Warning] Can&#39;</span>t create <span class="nb">test </span>file /opt/mysql/zzzhc-laptop.lower-test
+</span><span class='line'>
+</span><span class='line'>Installation of system tables failed!  Examine the logs in
+</span><span class='line'>/opt/mysql/ <span class="k">for </span>more information.
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>换成/tmp目录,mysql_install_db &mdash;datadir=/tmp，神奇地成功了。</p>
+
+<p>bash -x mysql_install_db &mdash;datadir=/opt/mysql/发现问题在这:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>+ <span class="nv">mysqld_install_cmd_line</span><span class="o">=</span><span class="s1">&#39;/usr/sbin/mysqld  --language=/usr/share/mysql/english --bootstrap   --basedir=/usr --datadir=/opt/mysql/ --log-warnings=0 --loose-skip-innodb   --loose-skip-ndbcluster  --user=mysql --max_allowed_packet=8M   --default-storage-engine=myisam   --net_buffer_length=16K&#39;</span>
+</span><span class='line'>+ s_echo <span class="s1">&#39;Installing MySQL system tables...&#39;</span>
+</span><span class='line'>+ <span class="nb">test </span>0 -eq 0 -a 0 -eq 0
+</span><span class='line'>+ <span class="nb">echo</span> <span class="s1">&#39;Installing MySQL system tables...&#39;</span>
+</span><span class='line'>Installing MySQL system tables...
+</span><span class='line'>+ /usr/sbin/mysqld --language<span class="o">=</span>/usr/share/mysql/english --bootstrap --basedir<span class="o">=</span>/usr --datadir<span class="o">=</span>/opt/mysql/ --log-warnings<span class="o">=</span>0 --loose-skip-innodb --loose-skip-ndbcluster --user<span class="o">=</span>mysql --max_allowed_packet<span class="o">=</span>8M --default-storage-engine<span class="o">=</span>myisam --net_buffer_length<span class="o">=</span>16K
+</span><span class='line'>+ <span class="nb">echo</span> <span class="s1">&#39;use mysql;&#39;</span>
+</span><span class='line'>+ cat /usr/share/mysql/mysql_system_tables.sql /usr/share/mysql/mysql_system_tables_data.sql
+</span><span class='line'>110609 21:04:14 <span class="o">[</span>Warning<span class="o">]</span> Can<span class="s1">&#39;t create test file /opt/mysql/zzzhc-laptop.lower-test</span>
+</span><span class='line'><span class="s1">110609 21:04:14 [Warning] Can&#39;</span>t create <span class="nb">test </span>file /opt/mysql/zzzhc-laptop.lower-test
+</span><span class='line'>+ <span class="nb">eval </span>cat
+</span><span class='line'>++ cat
+</span><span class='line'>+ <span class="nb">echo</span>
+</span><span class='line'>
+</span><span class='line'>+ <span class="nb">echo</span> <span class="s1">&#39;Installation of system tables failed!  Examine the logs in&#39;</span>
+</span><span class='line'>Installation of system tables failed!  Examine the logs in
+</span><span class='line'>+ <span class="nb">echo</span> <span class="s1">&#39;/opt/mysql/ for more information.&#39;</span>
+</span><span class='line'>/opt/mysql/ <span class="k">for </span>more information.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>strace /usr/sbin/mysqld &mdash;language=/usr/share/mysql/english &mdash;bootstrap &mdash;basedir=/usr &mdash;datadir=/opt/mysql/ &mdash;log-warnings=0 &mdash;loose-skip-innodb &mdash;loose-skip-ndbcluster &mdash;user=mysql &mdash;max_allowed_packet=8M &mdash;default-storage-engine=myisam &mdash;net_buffer_length=16K 2>&amp;1 |tee strace.log</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>stat64<span class="o">(</span><span class="s2">&quot;/usr/share/mysql/charsets/Index.xml&quot;</span>, <span class="o">{</span><span class="nv">st_mode</span><span class="o">=</span>S_IFREG|0644, <span class="nv">st_size</span><span class="o">=</span>18261, ...<span class="o">})</span> <span class="o">=</span> 0
+</span><span class='line'>brk<span class="o">(</span>0x22064000<span class="o">)</span>                         <span class="o">=</span> 0x22064000
+</span><span class='line'>open<span class="o">(</span><span class="s2">&quot;/usr/share/mysql/charsets/Index.xml&quot;</span>, O_RDONLY|O_LARGEFILE<span class="o">)</span> <span class="o">=</span> 3
+</span><span class='line'><span class="nb">read</span><span class="o">(</span>3, <span class="s2">&quot;..., 18261) = 18261</span>
+</span><span class='line'><span class="s2">close(3)                                = 0 </span>
+</span><span class='line'><span class="s2">unlink(&quot;</span>/opt/mysql/zzzhc-laptop.LOWER-TEST<span class="s2">&quot;) = -1 ENOENT (No such file or directory)</span>
+</span><span class='line'><span class="s2">open(&quot;</span>/opt/mysql/zzzhc-laptop.lower-test<span class="s2">&quot;, O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied)</span>
+</span><span class='line'><span class="s2">time(NULL)                              = 1307624820</span>
+</span><span class='line'><span class="s2">write(2, &quot;</span>110609 21:07:00 <span class="o">[</span>Warning<span class="o">]</span> Can<span class="s1">&#39;t &quot;..., 84110609 21:07:00 [Warning] Can&#39;</span>t create <span class="nb">test </span>file /opt/mysql/zzzhc-laptop.lower-test
+</span><span class='line'><span class="o">)</span> <span class="o">=</span> 84
+</span><span class='line'>unlink<span class="o">(</span><span class="s2">&quot;/opt/mysql/zzzhc-laptop.LOWER-TEST&quot;</span><span class="o">)</span> <span class="o">=</span> -1 ENOENT <span class="o">(</span>No such file or directory<span class="o">)</span>
+</span><span class='line'>open<span class="o">(</span><span class="s2">&quot;/opt/mysql/zzzhc-laptop.lower-test&quot;</span>, O_RDWR|O_CREAT|O_LARGEFILE, 0666<span class="o">)</span> <span class="o">=</span> -1 EACCES <span class="o">(</span>Permission denied<span class="o">)</span>
+</span><span class='line'><span class="nb">time</span><span class="o">(</span>NULL<span class="o">)</span>                              <span class="o">=</span> 1307624820
+</span><span class='line'>write<span class="o">(</span>2, <span class="s2">&quot;110609 21:07:00 [Warning] Can&#39;t &quot;</span>..., 84110609 21:07:00 <span class="o">[</span>Warning<span class="o">]</span> Can<span class="err">&#39;</span>t create <span class="nb">test </span>file /opt/mysql/zzzhc-laptop.lower-test
+</span><span class='line'><span class="o">)</span> <span class="o">=</span> 84
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>open(&ldquo;/opt/mysql/zzzhc-laptop.lower-test&rdquo;, O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied) 这个太没道理了。。。比较了/tmp和/opt/mysql两种情况下的strace结果，没发现什么可疑的地方，难道是/tmp目录有什么奇怪的特性??</p>
+
+<p>0.77试了下，一切正常。
+bug总是无处不在啊!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blogs/101">做事</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-19T00:00:00+08:00" pubdate data-updated="true">May 19<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>做好一件事和用正确的方法做好一件事，看起来是一样的结果，实际上如果每次做的事都留下一两个坑，几年之后会再也无法移动。
+但什么是正确的方法？这也没有定论，不同的阶段会不一样。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/page/2/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Links</h1>
+  <ul id="site_links">
+    <li><a href="http://www.patenthub.cn/">patenthub专利检索</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/posts/2011-12-16-ack-better-grep/">Ack - Better Grep</a>
+      </li>
+    
+      <li class="post">
+        <a href="/posts/2011-12-12-you-dao-zi-dian-httpjie-kou/">有道字典 Chrome Extension</a>
+      </li>
+    
+      <li class="post">
+        <a href="/posts/2011-12-11-speed-up-rails-asset-pipeline/">Speed Up Rails Asset Pipeline</a>
+      </li>
+    
+      <li class="post">
+        <a href="/posts/2011-12-10-gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a>
+      </li>
+    
+      <li class="post">
+        <a href="/posts/2011-12-10-crontab-tips/">Crontab Tips</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/zzzhc">@zzzhc</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'zzzhc',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/zzzhc?count=10&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/zzzhc">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - zzzhc -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'zzzhc';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-337047-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+
+</body>
+</html>

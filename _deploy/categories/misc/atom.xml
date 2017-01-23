@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: misc | zzzhc's Blog]]></title>
+  <link href="http://blog.zzzhc.com/categories/misc/atom.xml" rel="self"/>
+  <link href="http://blog.zzzhc.com/"/>
+  <updated>2017-01-23T16:47:23+08:00</updated>
+  <id>http://blog.zzzhc.com/</id>
+  <author>
+    <name><![CDATA[zzzhc]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ack - Better Grep]]></title>
+    <link href="http://blog.zzzhc.com/posts/2011-12-16-ack-better-grep/"/>
+    <updated>2011-12-16T11:17:00+08:00</updated>
+    <id>http://blog.zzzhc.com/posts/ack-better-grep</id>
+    <content type="html"><![CDATA[<p>Ack是一个给程序员用的grep, 使用perl regular expressions, 而不是POSIX/GNU subset.</p>
+
+<h2>why ack?</h2>
+
+<ul>
+<li>使用perl regular expressions, 忘掉grep那套不人性的pattern吧</li>
+<li>速度快, 默认只搜索程序代码文件</li>
+<li>自动忽略.svn, .git, CVS这类目录, 默认递归搜索子目录
+```bash
+
+<h1>with grep</h1>
+
+$ grep pattern $(find . -type f | grep -v &lsquo;.svn&rsquo;)
+or
+$ grep -R &mdash;exclude-dir .svn pattern
+
+<h1>with ack</h1>
+
+<p>$ ack pattern
+```</p></li>
+<li>支持搜索指定文件类型
+```bash
+
+<h1>只搜索ruby code</h1>
+
+<p>$ ack &mdash;ruby pattern
+```</p></li>
+</ul>
+
+
+<h2>install</h2>
+
+<p>```bash</p>
+
+<h1>mac</h1>
+
+<p>$ brew install ack</p>
+
+<h1>ubuntu</h1>
+
+<p>$ sudo apt-get install ack-grep
+```</p>
+
+<h2>integrate into vim</h2>
+
+<ul>
+<li>install ack.vim</li>
+<li>set grepprg=ack in vimrc</li>
+</ul>
+
+
+<h2>custom ack</h2>
+
+<p>Ack默认包含很多filetype => extensions的设置，但新出现的语言不一定支持。好在ack提供&mdash;type-add TYPE=.EXTENSION[,.EXT2[,&hellip;]], &mdash;type-set TYPE=.EXTENSION[,.EXT2[,&hellip;]]来扩展。经常用的可以加到~/.ackrc里, 我的.ackrc:</p>
+
+<p><code>bash
+$ cat ~/.ackrc
+--type-add
+ruby=.haml,.ru
+--type-add
+css=.scss,.sass,.less
+--type-add
+js=.coffee
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[有道字典 chrome extension]]></title>
+    <link href="http://blog.zzzhc.com/posts/2011-12-12-you-dao-zi-dian-httpjie-kou/"/>
+    <updated>2011-12-12T11:17:00+08:00</updated>
+    <id>http://blog.zzzhc.com/posts/you-dao-zi-dian-httpjie-kou</id>
+    <content type="html"><![CDATA[<p>有道字典的chrome extension会把鼠标下的词log到console里，debug的时候让人烦, 看了下code, 直接用的console.log, 发布的时候也没注释掉. 跑到~/Library/Application Support/Google/Chrome/Default/Extensions/nbndkplefmmhmcmfjanjaakhhkiegogd/1.0_0下把content.js,background.html里的console.log都注释掉，安静了。</p>
+
+<p>大概看了下extension code, 发现两个有意思的地方：</p>
+
+<ul>
+<li>打包的时候连.svn目录都没放过</li>
+</ul>
+
+
+<p><code>bash
+$ svn info
+Path: .
+URL: https://dev.corp.youdao.com/svn/outfox/products/desktop/incubator/mac/GetWordExtension/Chrome/extension
+Repository Root: https://dev.corp.youdao.com/svn/outfox
+Repository UUID: 36a6777f-fe3c-0410-890b-904d6044f29d
+Revision: 285097
+Node Kind: directory
+Schedule: normal
+Last Changed Author: huangdx
+Last Changed Rev: 277738
+Last Changed Date: 2011-09-13 14:00:17 +0800 (二, 13  9 2011)
+</code></p>
+
+<ul>
+<li>取词的时候调用的是本机有道字典app提供的http接口</li>
+</ul>
+
+
+<p>``` javascript
+//in background.html</p>
+
+<pre><code> function SendResult(word, pos, type) {
+     var s = new XMLHttpRequest;
+     s.open("GET", "http://localhost:32445/getword?word=" + word + "&amp;pos=" + pos + "&amp;type=" + type, true);
+     //console.log('sending...')
+     s.send()
+ };
+</code></pre>
+
+<p>```</p>
+
+<p>用curl试了下，可以发送请求，但响应为空</p>
+
+<p>``` bash
+$ curl -vv &lsquo;<a href="http://localhost:32445/getword?word=for%20suppliers&amp;pos=8&amp;type=0">http://localhost:32445/getword?word=for%20suppliers&amp;pos=8&amp;type=0</a>&rsquo;
+* About to connect() to localhost port 32445 (#0)
+*   Trying ::1&hellip; Connection refused
+*   Trying 127.0.0.1&hellip; connected
+* Connected to localhost (127.0.0.1) port 32445 (#0)</p>
+
+<blockquote><p>GET /getword?word=for%20suppliers&amp;pos=8&amp;type=0 HTTP/1.1
+User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
+Host: localhost:32445
+Accept: <em>/</em></p>
+
+<ul>
+<li>Empty reply from server</li>
+<li>Connection #0 to host localhost left intact
+curl: (52) Empty reply from server</li>
+<li>Closing connection #0
+```</li>
+</ul>
+</blockquote>
+
+<p>word, pos, type这三个参数只要少一个有道字典就会crash</p>
+
+<p>这次http request只是一个trigger, 有道字典会向dict.youdao.com发一个request:</p>
+
+<p>``` bash
+$ curl -vv &lsquo;<a href="http://dict.youdao.com/fsearch?q=for%20suppliers&amp;pos=8&amp;keyfrom=mac.scrtrans.0&amp;id=E33EC7736AFDCABB184051CD3757CA73&amp;vendor=cidian.youdao.com&amp;client=macdict">http://dict.youdao.com/fsearch?q=for%20suppliers&amp;pos=8&amp;keyfrom=mac.scrtrans.0&amp;id=E33EC7736AFDCABB184051CD3757CA73&amp;vendor=cidian.youdao.com&amp;client=macdict</a>&rsquo;
+* About to connect() to dict.youdao.com port 80 (#0)
+*   Trying 61.135.218.32&hellip; connected
+* Connected to dict.youdao.com (61.135.218.32) port 80 (#0)</p>
+
+<blockquote><p>GET /fsearch?q=for%20suppliers&amp;pos=8&amp;keyfrom=mac.scrtrans.0&amp;id=E33EC7736AFDCABB184051CD3757CA73&amp;vendor=cidian.youdao.com&amp;client=macdict HTTP/1.1
+User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
+Host: dict.youdao.com
+Accept: <em>/</em></p>
+
+<p>&lt; HTTP/1.1 200 OK
+&lt; Server: nginx
+&lt; Date: Tue, 13 Dec 2011 07:10:55 GMT
+&lt; Content-Type: text/xml; charset=utf-8
+&lt; Connection: keep-alive
+&lt; Cache-Control: private
+&lt; Content-Language: en-US
+&lt; Set-Cookie: OUTFOX_SEARCH_USER_ID=-447518408@123.117.56.163; domain=.youdao.com; expires=Thu, 05-Dec-2041 07:10:55 GMT
+&lt; Set-Cookie: JSESSIONID=abcdjNBcCWPPK4igOq2qt; domain=youdao.com; path=/
+&lt; Vary: Accept-Encoding
+&lt; Content-Length: 1477
+&lt;
+&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;UTF-8&rdquo;?></p></blockquote>
+
+<p><yodaodict>
+  &lt;return-phrase>&lt;![CDATA[suppliers]]&gt;&lt;/return-phrase></p>
+
+<pre><code>                        &lt;phonetic-symbol&gt;sə'plaiəz&lt;/phonetic-symbol&gt;
+              &lt;dictcn-speach&gt;suppliers&lt;/dictcn-speach&gt;
+                      &lt;custom-translation&gt;
+    &lt;type&gt;ec&lt;/type&gt;
+              &lt;translation&gt;&lt;content&gt;&lt;![CDATA[n. 供应商（supplier的复数）]]&gt;&lt;/content&gt;&lt;/translation&gt;
+            &lt;/custom-translation&gt;
+
+          &lt;yodao-web-dict&gt;
+                &lt;web-translation&gt;
+            &lt;key&gt;&lt;![CDATA[Suppliers]]&gt;&lt;/key&gt;
+                      &lt;trans&gt;&lt;value&gt;&lt;![CDATA[供应商]]&gt;&lt;/value&gt;&lt;/trans&gt;
+              &lt;trans&gt;&lt;value&gt;&lt;![CDATA[供货商]]&gt;&lt;/value&gt;&lt;/trans&gt;
+              &lt;trans&gt;&lt;value&gt;&lt;![CDATA[数据库]]&gt;&lt;/value&gt;&lt;/trans&gt;
+            &lt;/web-translation&gt;
+          &lt;web-translation&gt;
+            &lt;key&gt;&lt;![CDATA[Overview Suppliers]]&gt;&lt;/key&gt;
+                      &lt;trans&gt;&lt;value&gt;&lt;![CDATA[概览]]&gt;&lt;/value&gt;&lt;/trans&gt;
+              &lt;trans&gt;&lt;value&gt;&lt;![CDATA[供应商]]&gt;&lt;/value&gt;&lt;/trans&gt;
+            &lt;/web-translation&gt;
+          &lt;web-translation&gt;
+            &lt;key&gt;&lt;![CDATA[select suppliers]]&gt;&lt;/key&gt;
+                      &lt;trans&gt;&lt;value&gt;&lt;![CDATA[挑选供应商]]&gt;&lt;/value&gt;&lt;/trans&gt;
+            &lt;/web-translation&gt;
+        &lt;/yodao-web-dict&gt;
+
+                         &lt;recommend&gt;&lt;![CDATA[supplier]]&gt;&lt;/recommend&gt;
+                &lt;sexp&gt;0&lt;/sexp&gt;
+</code></pre>
+
+<p></yodaodict>
+* Connection #0 to host dict.youdao.com left intact
+* Closing connection #0
+```</p>
+
+<p>拿到结果后由有道字典显示一个提示窗口.</p>
+
+<p>这种实现方式倒也算精巧, 其他app要用这个http接口也比较方便，只是32445端口连个http 200都不返回粗暴了点.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[做事]]></title>
+    <link href="http://blog.zzzhc.com/blogs/101"/>
+    <updated>2011-05-19T00:00:00+08:00</updated>
+    <id>http://blog.zzzhc.com/blogs/101</id>
+    <content type="html"><![CDATA[<p>做好一件事和用正确的方法做好一件事，看起来是一样的结果，实际上如果每次做的事都留下一两个坑，几年之后会再也无法移动。
+但什么是正确的方法？这也没有定论，不同的阶段会不一样。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[nodejs]]></title>
+    <link href="http://blog.zzzhc.com/blogs/31"/>
+    <updated>2011-04-09T00:00:00+08:00</updated>
+    <id>http://blog.zzzhc.com/blogs/31</id>
+    <content type="html"><![CDATA[<h2><a href="http://nodejs.org/">nodejs</a> Evented I/O for <a href="http://code.google.com/p/v8/">V8 JavaScript</a>.</h2>
+
+<p>node的目标是提供一种简单的方式来构建可伸缩的网络程序。在node里几乎没有函数会直接执行IO操作，进程从不会阻塞在某个IO等待上。event, callback是node中两个主要的概念，因为IO操作不阻塞，通过event, callback来实现是很自然的。</p>
+
+<p>这一两年node发展很快，有了包管理器(<a href="http://github.com/isaacs/npm">npm</a>)，也出现了各种各样的module, 如</p>
+
+<ul>
+<li>Web Framework: <a href="http://github.com/visionmedia/express">Express</a>, node的<a href="http://www.sinatrarb.com/">sinatra</a></li>
+<li>template engine: <a href="https://github.com/visionmedia/haml.js">hamljs</a></li>
+<li>mysql driver: <a href="http://github.com/felixge/node-mysql">node-mysql</a></li>
+<li>mongodb client: <a href="https://github.com/christkv/node-mongodb-native">node-mongodb-native</a></li>
+<li>redis client: <a href="https://github.com/mranney/node_redis">node_redis</a></li>
+</ul>
+
+
+<p>有了这些之后要用javascript开发一个web app相对容易多了。</p>
+
+<p>这两天简单试了下，用express, hamljs, node-mongodb-native写了一个最简单的blog app.</p>
+
+<p>安装环境
+* install node</p>
+
+<p>``` bash</p>
+
+<h1>download source code from <a href="http://nodejs.org/dist/">http://nodejs.org/dist/</a></h1>
+
+<p>$ wget <a href="http://nodejs.org/dist/node-v0.4.5.tar.gz">http://nodejs.org/dist/node-v0.4.5.tar.gz</a>
+$ tar -xf node-v0.4.5.tar.gz
+$ cd node-v0.4.5
+$ ./configure &amp;&amp; make &amp;&amp; sudo make install
+```</p>
+
+<ul>
+<li>install mongodb</li>
+</ul>
+
+
+<p>``` bash</p>
+
+<h1><a href="http://www.mongodb.org/downloads">http://www.mongodb.org/downloads</a></h1>
+
+<p>$ wget <a href="http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.8.1.tgz">http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.8.1.tgz</a>
+$ tar -xf mongodb-linux-i686-1.8.1.tgz
+$ cd mongodb-linux-i686-1.8.1
+$ sudo mkdir -p /data/db
+$ sudo chown <code>id -u</code> -R /data
+$ bin/mongod # start mongodb server
+```</p>
+
+<ul>
+<li>install npm</li>
+</ul>
+
+
+<p><code>bash
+$ git clone http://github.com/isaacs/npm.git
+$ cd npm
+$ sudo make install
+</code></p>
+
+<ul>
+<li>install modules</li>
+</ul>
+
+
+<p><code>bash
+$ sudo npm install express
+$ sudo npm install hamljs
+$ sudo npm install mongodb
+</code></p>
+
+<p>express指南见<a href="http://expressjs.com/guide.html">http://expressjs.com/guide.html</a>，它的route方式跟rails比算很弱的，没有对restful的直接支持，但在加上methodOverride后都可以自己定义出来。
+模板引擎用hamljs, 通过app.register(&lsquo;.haml&rsquo;, require(&lsquo;hamljs&rsquo;))指定。在hamljs layout里要嵌入其它模板内容时可以用!= body。partial可以用!= partial(&ldquo;post.haml&rdquo;, posts)。!=的意思是对后面的内容不作escape, 细节可以看hamljs代码，很短，不到700行。
+mongodb client用起来比较费劲，一层一层的callback, 适当封装下应该会好使点。
+最终的代码放在<a href="https://github.com/nodepress/draft">https://github.com/nodepress/draft</a>
+性能看起来还是很好的，production模式下(NODE_ENV=production node blog.js) 并发５个连接(ab -c 5 -n 1000 <a href="http://localhost:3000/posts/">http://localhost:3000/posts/</a>)的结果
+Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
+
+<p>``` bash
+$ ab -c 5 -n 1000 <a href="http://localhost:3000/posts/">http://localhost:3000/posts/</a>
+&hellip;.
+Server Software:      <br/>
+Server Hostname:        localhost
+Server Port:            3000</p>
+
+<p>Document Path:          /posts/
+Document Length:        2950 bytes</p>
+
+<p>Concurrency Level:      5
+Time taken for tests:   1.145 seconds
+Complete requests:      1000
+Failed requests:        0
+Write errors:           0
+Total transferred:      3073000 bytes
+HTML transferred:       2950000 bytes
+Requests per second:    873.02 [#/sec] (mean)
+Time per request:       5.727 [ms] (mean)
+Time per request:       1.145 [ms] (mean, across all concurrent requests)
+Transfer rate:          2619.90 [Kbytes/sec] received</p>
+
+<p>Connection Times (ms)</p>
+
+<pre><code>          min  mean[+/-sd] median   max
+</code></pre>
+
+<p>Connect:        0    0   0.0      0       0
+Processing:     3    6   1.8      5      22
+Waiting:        3    6   1.8      5      22
+Total:          3    6   1.8      5      22</p>
+
+<p>Percentage of the requests served within a certain time (ms)
+  50%      5
+  66%      5
+  75%      6
+  80%      6
+  90%      7
+  95%      8
+  98%     14
+  99%     16
+  100%     22 (longest request)
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

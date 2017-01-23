@@ -1,0 +1,1405 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>zzzhc's Blog</title>
+  <meta name="author" content="zzzhc">
+
+  
+  <meta name="description" content="当前支持lucene 3.1的中文分词器 mmseg4j
+mmseg4j 用 Chih-Hao Tsai 的 MMSeg 算法(http://technology.chtsai.org/mmseg/ )实现的中文分词器，并实现 lucene 的 analyzer 和 solr &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.zzzhc.com/page/2">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="zzzhc's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+-->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-337047-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">zzzhc's Blog</a></h1>
+  
+    <h2>stay curious</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.zzzhc.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a class='category' href='/categories/rails/'>Rails</a></li>
+  <li><a class='category' href='/categories/vim/'>Vim</a></li>
+  <li><a class='category' href='/categories/lucene/'>Lucene</a></li>
+  <li><a class='category' href='/categories/amqp/'>AMQP</a></li>
+  <li><a class='category' href='/categories/misc/'>Misc</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blogs/86">Lucene中文分词器比较</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-03T00:00:00+08:00" pubdate data-updated="true">May 3<span>rd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>当前支持lucene 3.1的中文分词器</h1>
+
+<ul>
+<li><a href="http://code.google.com/p/mmseg4j/">mmseg4j</a>
+mmseg4j 用 Chih-Hao Tsai 的 MMSeg 算法(http://technology.chtsai.org/mmseg/ )实现的中文分词器，并实现 lucene 的 analyzer 和 solr 的TokenizerFactory 以方便在Lucene和Solr中使用。 </li>
+<li><a href="http://code.google.com/p/paoding/">paoding</a>
+Paoding&#8217;s Knives 中文分词具有极 高效率 和 高扩展性 。引入隐喻，采用完全的面向对象设计，构思先进。
+高效率：在PIII 1G内存个人机器上，1秒 可准确分词 100万 汉字。
+采用基于 不限制个数 的词典文件对文章进行有效切分，使能够将对词汇分类定义。
+能够对未知的词汇进行合理解析 </li>
+<li><a href="http://code.google.com/p/ik-analyzer/">ik-analyzer</a>
+IKAnalyzer是一个开源的，基于java语言开发的轻量级的中文分词工具包。从2006年12月推出1.0版开始，IKAnalyzer已经推出了3个大版本。最初，它是以开源项目Luence为应用主体的，结合词典分词和文法分析算法的中文分词组件。新版本的IKAnalyzer3.0则发展为面向Java的公用分词组件，独立于Lucene项目，同时提供了对Lucene的默认优化实现。</li>
+<li><a href="http://code.google.com/p/imdict-chinese-analyzer/">imdict</a>
+imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算法基于隐马尔科夫模型(Hidden Markov Model, HMM)，是中国科学院计算技术研究所的ictclas中文分词程序的重新实现（基于Java），可以直接为lucene搜索引擎提供简体中文分词支持。 已加入lucene contributor, smartcn.</li>
+</ul>
+
+
+<h1>支持的特性</h1>
+
+<table>
+  <thead>
+     <td>name</td>
+     <td>CharTermAttribute</td>
+     <td>OffsetAttribute</td>
+     <td>TypeAttribute</td>
+     <td>PositionIncrementAttribute</td>
+     <td>KeywordAttribute</td>
+  </thead>
+  <tr>
+     <td>mmseg4j</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>N</td>
+     <td>N</td>
+  </tr>
+  <tr>
+     <td>paoding</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>N</td>
+     <td>N</td>
+  </tr>
+  <tr>
+     <td>ik-analyzer</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>N</td>
+     <td>N</td>
+     <td>N</td>
+  </tr>
+  <tr>
+     <td>imdict</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>Y</td>
+     <td>N</td>
+     <td>Y</td>
+  </tr>
+</table>
+
+
+<h1>性能比较</h1>
+
+<p>本机cpu: Intel&reg; Core&trade;2 Duo CPU     P8600  @ 2.40GHz</p>
+
+<table>
+  <thead>
+     <td>name</td>
+     <td>speed(chars/second)</td>
+  </thead>
+  <tr>
+     <td>StandardAnalyzer</td>
+     <td>5227272</td>
+  </tr>
+  <tr>
+     <td>mmseg4j</td>
+     <td>771812</td>
+  </tr>
+  <tr>
+     <td>paoding</td>
+     <td>847145</td>
+  </tr>
+  <tr>
+     <td>ik-analyzer</td>
+     <td>657142</td>
+  </tr>
+  <tr>
+     <td>imdict</td>
+     <td>269242</td>
+  </tr>
+</table>
+
+
+<p>测试代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">//CNAnalyzerBenchmark.java</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.io.StringReader</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.HashSet</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.Iterator</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">net.paoding.analysis.analyzer.PaodingAnalyzer</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.analysis.Analyzer</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.analysis.TokenStream</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.analysis.standard.StandardAnalyzer</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.util.Attribute</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.lucene.util.Version</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.wltea.analyzer.lucene.IKAnalyzer</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">com.chenlb.mmseg4j.analysis.MMSegAnalyzer</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CNAnalyzerBenchmark</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">IKAnalyzer</span> <span class="n">ikAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">IKAnalyzer</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">ikAnalyzer</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">MMSegAnalyzer</span> <span class="n">mmsegAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MMSegAnalyzer</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">mmsegAnalyzer</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">PaodingAnalyzer</span> <span class="n">paodingAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PaodingAnalyzer</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">paodingAnalyzer</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">SmartChineseAnalyzer</span> <span class="n">smartChineseAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SmartChineseAnalyzer</span><span class="o">(</span>
+</span><span class='line'>                <span class="n">Version</span><span class="o">.</span><span class="na">LUCENE_31</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">smartChineseAnalyzer</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">StandardAnalyzer</span> <span class="n">standardAnalyzer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StandardAnalyzer</span><span class="o">(</span>
+</span><span class='line'>                <span class="n">Version</span><span class="o">.</span><span class="na">LUCENE_31</span><span class="o">,</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;());</span>
+</span><span class='line'>        <span class="n">testAnalyzer</span><span class="o">(</span><span class="n">standardAnalyzer</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">static</span> <span class="kt">void</span> <span class="nf">testAnalyzer</span><span class="o">(</span><span class="n">Analyzer</span> <span class="n">a</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">data</span> <span class="o">=</span> <span class="s">&quot;中文(chinese)与西方语言最大的区别&quot;</span> <span class="o">+</span> <span class="s">&quot;就在于语句的词汇之间没有明显的分词界限，&quot;</span>
+</span><span class='line'>                <span class="o">+</span> <span class="s">&quot;但是计算机自然语言处理是按词汇来进行分析的，&quot;</span> <span class="o">+</span> <span class="s">&quot;因此中文分词的效果直接影响中文检索和自然语言处理的准确性。&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">StringBuilder</span> <span class="n">ss</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">ss</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kt">long</span> <span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">String</span> <span class="n">attributes</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">TokenStream</span> <span class="n">stream</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="na">tokenStream</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">StringReader</span><span class="o">(</span><span class="n">s</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">Attribute</span><span class="o">&gt;&gt;</span> <span class="n">iterator</span> <span class="o">=</span> <span class="n">stream</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">getAttributeClassesIterator</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">while</span> <span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">Attribute</span><span class="o">&gt;</span> <span class="n">attrClass</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">attributes</span> <span class="o">+=</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="n">attrClass</span><span class="o">.</span><span class="na">getSimpleName</span><span class="o">();</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="n">stream</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="na">tokenStream</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">StringReader</span><span class="o">(</span><span class="n">s</span><span class="o">));</span>
+</span><span class='line'>        <span class="k">while</span> <span class="o">(</span><span class="n">stream</span><span class="o">.</span><span class="na">incrementToken</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="kt">long</span> <span class="n">endTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+</span><span class='line'>               <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getSimpleName</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot; attributes: &quot;</span>
+</span><span class='line'>                   <span class="o">+</span> <span class="n">attributes</span><span class="o">);</span>
+</span><span class='line'>               <span class="kt">double</span> <span class="n">seconds</span> <span class="o">=</span> <span class="o">(</span><span class="n">endTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">)</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="o">;</span>
+</span><span class='line'>               <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;chars=&quot;</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">+</span>
+</span><span class='line'>                       <span class="s">&quot;,time=&quot;</span> <span class="o">+</span> <span class="n">seconds</span> <span class="o">+</span> <span class="s">&quot;seconds&quot;</span> <span class="o">+</span>
+</span><span class='line'>                      <span class="s">&quot;,speed=&quot;</span> <span class="o">+</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">/</span> <span class="n">seconds</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;chars/second&quot;</span>
+</span><span class='line'>               <span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blogs/77">Solr Faceted Search</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-24T00:00:00+08:00" pubdate data-updated="true">Apr 24<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>从用户角度看，<a href="http://wiki.apache.org/solr/SolrFacetingOverview">faceted search</a>把搜索结果分入多个类别(一般还会显示各个类别下有多少结果)，并允许用户分类别查看。在电子商务类网站经常可以看到，如</p>
+
+<ul>
+<li><a href="http://s.taobao.com/search?q=%C9%CF%CD%F8%B1%BE">淘宝</a> 显示全部分类</li>
+<li><a href="http://www.amazon.cn/s/ref=nb_ss?url=search-alias%3Daps&amp;amp;keywords=%E4%B8%8A%E7%BD%91%E6%9C%AC&amp;amp;x=0&amp;amp;y=0">卓越</a> 左侧</li>
+<li><a href="http://search.360buy.com/Search?keyword=%C9%CF%CD%F8%B1%BE">京东商城</a> 顶部</li>
+</ul>
+
+
+<p>FacetFields有两种，枚举型和分词型。枚举型适合类别比较少的场景，如卓越。分词型适合于类别很多，但每个document所属的类别较少的情况。Facet field不需要定义成stored,但需要是indexed. facet主要是用在drill-down到搜索结果的一个子集，实际查询是会生成一个对应类别的filter query.</p>
+
+<p>实现原理，枚举型与分词型有些区别</p>
+
+<ul>
+<li>枚举型，遍历field的所有terms, 得到各个term对应的document BitSet, 这个结果与query result作与</li>
+<li>分词型，遍历搜索结果中的每个document, 从field cache里得到它对应的terms, 累加terms出现次数</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blogs/69">Solr</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-11T00:00:00+08:00" pubdate data-updated="true">Apr 11<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://lucene.apache.org/solr/">solr</a>是一个基于<a href="http://lucene.apache.org/">lucene</a>，高度可配置的企业级搜索平台。它自己的介绍:</p>
+
+<blockquote><p> Solr is the popular, blazing fast open source enterprise search platform from the Apache Lucene project. Its major features include powerful full-text search, hit highlighting, faceted search, dynamic clustering, database integration, rich document (e.g., Word, PDF) handling, and geospatial search. Solr is highly scalable, providing distributed search and index replication, and it powers the search and navigation features of many of the world&rsquo;s largest internet sites.</p></blockquote>
+
+<p><a href="http://lucene.apache.org/solr/features.html">Features</a>有一堆,觉得比较实用的几点有</p>
+
+<ul>
+<li>高度可配置，index和query的各部分都能通过配置定制</li>
+<li>与数据库表结构类似的索引定义，支持主键，支持基本数据类型(如int), 很容易与表结构关联起来，更新方便</li>
+<li>支持<a href="http://wiki.apache.org/solr/MultipleIndexes">multiple indexes</a>, 方便对多个表分别建索引</li>
+<li>简单的HTTP接口，开发改进client都很方便</li>
+<li>支持replication, 对HA和search scalability提供了一些安慰</li>
+<li>简单的后台管理界面，支持查看索引(<a href="http://wiki.apache.org/solr/LukeRequestHandler">LukeRequestHandler</a>),执行查询，有助于debug</li>
+<li>丰富的文档，主要是<a href="http://wiki.apache.org/solr/FrontPage">wiki</a></li>
+</ul>
+
+
+<p>几个不足的地方：</p>
+
+<ul>
+<li>配置太繁琐，需要反复查文档</li>
+<li>管理界面太简陋</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blogs/42">Wiki Markup</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-09T00:00:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>wordpress的编辑器实在不怎么样，想念<a href="http://confluence.atlassian.com/">conflucene</a>的<a href="http://confluence.atlassian.com/renderer/notationhelp.action?section=all">wiki markup</a>.</p>
+
+<p>confluence的wiki markup是从<a href="http://textile.thresholdstate.com/">textile</a>改进过来的，在plugins里找了会，没有好用的textile plugin，像textile 2会把原来的内容变成乱七八遭的，没法忍。</p>
+
+<p>接着试了下markdown, 因为在github的项目上经常看到README.md, 知道是用markdown语法写的。<a href="http://wordpress.org/extend/plugins/markdown-on-save/">markdown on save</a>看起来是没有侵入性的, markdown version放post_content_formatted字段里，对于wordpress 3.1来说放在meta里更好. 参考<a href="http://daringfireball.net/projects/markdown/syntax">markdown syntax</a>练习了一下，基本还好，有两个地方不太满意：</p>
+
+<ul>
+<li>ordered list要自己用数字开头,像1.这样来写，同时又忽略这些值的内容，相当反直觉，还是textile里的#爽快</li>
+<li>不直接支持table, 虽然可以自己直接写
+   &lt;table&gt;&#8230;&lt;/table&gt;
+confluence里的||column||column||很简单快捷。</li>
+</ul>
+
+
+<p>先用它了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blogs/31">Nodejs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-09T00:00:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="http://nodejs.org/">nodejs</a> Evented I/O for <a href="http://code.google.com/p/v8/">V8 JavaScript</a>.</h2>
+
+<p>node的目标是提供一种简单的方式来构建可伸缩的网络程序。在node里几乎没有函数会直接执行IO操作，进程从不会阻塞在某个IO等待上。event, callback是node中两个主要的概念，因为IO操作不阻塞，通过event, callback来实现是很自然的。</p>
+
+<p>这一两年node发展很快，有了包管理器(<a href="http://github.com/isaacs/npm">npm</a>)，也出现了各种各样的module, 如</p>
+
+<ul>
+<li>Web Framework: <a href="http://github.com/visionmedia/express">Express</a>, node的<a href="http://www.sinatrarb.com/">sinatra</a></li>
+<li>template engine: <a href="https://github.com/visionmedia/haml.js">hamljs</a></li>
+<li>mysql driver: <a href="http://github.com/felixge/node-mysql">node-mysql</a></li>
+<li>mongodb client: <a href="https://github.com/christkv/node-mongodb-native">node-mongodb-native</a></li>
+<li>redis client: <a href="https://github.com/mranney/node_redis">node_redis</a></li>
+</ul>
+
+
+<p>有了这些之后要用javascript开发一个web app相对容易多了。</p>
+
+<p>这两天简单试了下，用express, hamljs, node-mongodb-native写了一个最简单的blog app.</p>
+
+<p>安装环境
+* install node</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#download source code from http://nodejs.org/dist/</span>
+</span><span class='line'><span class="nv">$ </span>wget http://nodejs.org/dist/node-v0.4.5.tar.gz
+</span><span class='line'><span class="nv">$ </span>tar -xf node-v0.4.5.tar.gz
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>node-v0.4.5
+</span><span class='line'><span class="nv">$ </span>./configure &amp;amp;&amp;amp; make &amp;amp;&amp;amp; sudo make install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>install mongodb</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#http://www.mongodb.org/downloads</span>
+</span><span class='line'><span class="nv">$ </span>wget http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.8.1.tgz
+</span><span class='line'><span class="nv">$ </span>tar -xf mongodb-linux-i686-1.8.1.tgz
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>mongodb-linux-i686-1.8.1
+</span><span class='line'><span class="nv">$ </span>sudo mkdir -p /data/db
+</span><span class='line'><span class="nv">$ </span>sudo chown <span class="sb">`</span>id -u<span class="sb">`</span> -R /data
+</span><span class='line'><span class="nv">$ </span>bin/mongod <span class="c"># start mongodb server</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>install npm</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone http://github.com/isaacs/npm.git
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>npm
+</span><span class='line'><span class="nv">$ </span>sudo make install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>install modules</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo npm install express
+</span><span class='line'><span class="nv">$ </span>sudo npm install hamljs
+</span><span class='line'><span class="nv">$ </span>sudo npm install mongodb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>express指南见<a href="http://expressjs.com/guide.html">http://expressjs.com/guide.html</a>，它的route方式跟rails比算很弱的，没有对restful的直接支持，但在加上methodOverride后都可以自己定义出来。
+模板引擎用hamljs, 通过app.register(&lsquo;.haml&rsquo;, require(&lsquo;hamljs&rsquo;))指定。在hamljs layout里要嵌入其它模板内容时可以用!= body。partial可以用!= partial(&ldquo;post.haml&rdquo;, posts)。!=的意思是对后面的内容不作escape, 细节可以看hamljs代码，很短，不到700行。
+mongodb client用起来比较费劲，一层一层的callback, 适当封装下应该会好使点。
+最终的代码放在<a href="https://github.com/nodepress/draft">https://github.com/nodepress/draft</a>
+性能看起来还是很好的，production模式下(NODE_ENV=production node blog.js) 并发５个连接(ab -c 5 -n 1000 <a href="http://localhost:3000/posts/">http://localhost:3000/posts/</a>)的结果
+Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ab -c 5 -n 1000 http://localhost:3000/posts/
+</span><span class='line'>....
+</span><span class='line'>Server Software:
+</span><span class='line'>Server Hostname:        localhost
+</span><span class='line'>Server Port:            3000
+</span><span class='line'>
+</span><span class='line'>Document Path:          /posts/
+</span><span class='line'>Document Length:        2950 bytes
+</span><span class='line'>
+</span><span class='line'>Concurrency Level:      5
+</span><span class='line'>Time taken <span class="k">for </span>tests:   1.145 seconds
+</span><span class='line'>Complete requests:      1000
+</span><span class='line'>Failed requests:        0
+</span><span class='line'>Write errors:           0
+</span><span class='line'>Total transferred:      3073000 bytes
+</span><span class='line'>HTML transferred:       2950000 bytes
+</span><span class='line'>Requests per second:    873.02 <span class="o">[</span><span class="c">#/sec] (mean)</span>
+</span><span class='line'>Time per request:       5.727 <span class="o">[</span>ms<span class="o">]</span> <span class="o">(</span>mean<span class="o">)</span>
+</span><span class='line'>Time per request:       1.145 <span class="o">[</span>ms<span class="o">]</span> <span class="o">(</span>mean, across all concurrent requests<span class="o">)</span>
+</span><span class='line'>Transfer rate:          2619.90 <span class="o">[</span>Kbytes/sec<span class="o">]</span> received
+</span><span class='line'>
+</span><span class='line'>Connection Times <span class="o">(</span>ms<span class="o">)</span>
+</span><span class='line'>              min  mean<span class="o">[</span>+/-sd<span class="o">]</span> median   max
+</span><span class='line'>Connect:        0    0   0.0      0       0
+</span><span class='line'>Processing:     3    6   1.8      5      22
+</span><span class='line'>Waiting:        3    6   1.8      5      22
+</span><span class='line'>Total:          3    6   1.8      5      22
+</span><span class='line'>
+</span><span class='line'>Percentage of the requests served within a certain <span class="nb">time</span> <span class="o">(</span>ms<span class="o">)</span>
+</span><span class='line'>  50%      5
+</span><span class='line'>  66%      5
+</span><span class='line'>  75%      6
+</span><span class='line'>  80%      6
+</span><span class='line'>  90%      7
+</span><span class='line'>  95%      8
+</span><span class='line'>  98%     14
+</span><span class='line'>  99%     16
+</span><span class='line'>  100%     22 <span class="o">(</span>longest request<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blogs/25">Ruby Eventmachine</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-02T00:00:00+08:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="https://github.com/eventmachine/eventmachine">eventmachine</a> 是一个快速轻量的网络协议框架，有不少ruby应用基于它实现，如thin, ruby-amqp. eventmachine在不同os上自动选择最佳的底层网络通知机制，在linux上用epoll，freebsd上用kqueue.</p>
+
+<p>eventmachine对网络事件进行封装，有事件发生时回调预设的handler module。</p>
+
+<p>事件处理都需要放在EventMachine::run里，可以分server, client两种模式</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#server</span>
+</span><span class='line'><span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:run</span> <span class="p">{</span>
+</span><span class='line'>  <span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:start_server</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="no">ServerHandler</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="c1">#client</span>
+</span><span class='line'><span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:run</span> <span class="p">{</span>
+</span><span class='line'>  <span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:connect</span> <span class="n">remote_server</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="no">ClientHandler</span> <span class="c1">#client</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在一个网络连接的生存周期中，可能发生的回调事件有：</p>
+
+<ol>
+<li>post_init　handler对象创建后，注意client模式时，即使连接还未建立也会被调用</li></li>
+<li>connection_completed　主动连接远端服务器，连接建立时</li></li>
+<li>receive_data　有数据可读时, 在这里需要处理协议细节</li></li>
+<li>unbind　连接关闭，主动关闭，对方关闭或网络错误</li></li>
+</ol>
+
+
+<p>在handler上可以使用send_data发送数据.</p>
+
+<p>最简单的echo server</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;rubygems&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;eventmachine&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">EchoServer</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">post_init</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;-- someone connected to the echo server!&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">receive_data</span> <span class="n">data</span>
+</span><span class='line'>    <span class="n">send_data</span> <span class="s2">&quot;&gt;&gt;&gt;you sent: </span><span class="si">#{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="n">close_connection</span> <span class="k">if</span> <span class="n">data</span> <span class="o">=~</span> <span class="sr">/quit/i</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">unbind</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;-- someone disconnected from the echo server!&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:run</span> <span class="p">{</span>
+</span><span class='line'>  <span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:start_server</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">8081</span><span class="p">,</span> <span class="no">EchoServer</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>一个简单的http client</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;rubygems&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;eventmachine&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">HttpClient</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">post_init</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;sending request to server&quot;</span>
+</span><span class='line'>    <span class="n">send_data</span> <span class="s2">&quot;GET / HTTP/1.1</span><span class="se">\r\n</span><span class="s2">Host: www.baidu.com</span><span class="se">\r\n</span><span class="s2">Connection: close</span><span class="se">\r\n\r\n</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">receive_data</span> <span class="n">data</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;recv: </span><span class="si">#{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">unbind</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;connection closed&quot;</span>
+</span><span class='line'>    <span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:stop</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:run</span> <span class="p">{</span>
+</span><span class='line'>  <span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:connect</span> <span class="s2">&quot;www.baidu.com&quot;</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="no">HttpClient</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>连接失败的例子:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;rubygems&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;eventmachine&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">Client</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">connection_completed</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;connected&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">post_init</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;handler inited&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">receive_data</span> <span class="n">data</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;recv: </span><span class="si">#{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">unbind</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;connection closed&quot;</span>
+</span><span class='line'>    <span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:stop</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:run</span> <span class="p">{</span>
+</span><span class='line'>  <span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:connect</span> <span class="s2">&quot;api.jquery.com&quot;</span><span class="p">,</span> <span class="mi">8088</span><span class="p">,</span> <span class="no">Client</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blogs/17">Qpid Ruby Client</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-31T00:00:00+08:00" pubdate data-updated="true">Mar 31<span>st</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Qpid对ruby的官方支持：<a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/" target="_blank"><a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/">https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/</a></a></p>
+
+<p>感觉是对python client的port, 代码风格看起来很不ruby, 用了挺多锁，信号，线程，想要停止一个connection都比较困难。对AMQP协议的实现细节被序列化到一个spec_cache下，不可读。基本没有文档，总体来说不像是一个可以正式用的东西。</p>
+
+<p>大概的用法，用rake gem生成gem包，安装gem install pkg/qpid-0.10.2.gem</p>
+
+<p>用qpid java broker的时候要注意下，创建connection的时候要指定用户名密码。
+conn = Qpid::Connection.new(TCPSocket.new(&ldquo;localhost&rdquo;, 5672),
+:username => &ldquo;guest&rdquo;,
+:password => &ldquo;guest&rdquo;)</p>
+
+<p>参考example写了两个简单例子
+producer.rb</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;rubygems&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;qpid&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;socket&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">conn</span> <span class="o">=</span> <span class="ss">Qpid</span><span class="p">:</span><span class="ss">:Connection</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">TCPSocket</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">5672</span><span class="p">),</span>
+</span><span class='line'>                                         <span class="ss">:username</span> <span class="o">=&gt;</span> <span class="s2">&quot;guest&quot;</span><span class="p">,</span>
+</span><span class='line'>                                         <span class="ss">:password</span> <span class="o">=&gt;</span> <span class="s2">&quot;guest&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">conn</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ssn</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">session</span><span class="p">(</span><span class="s2">&quot;test_producer&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># create a queue</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">queue_declare</span><span class="p">(</span><span class="s2">&quot;test-queue&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">exchange_declare</span><span class="p">(</span><span class="s2">&quot;test-exchange&quot;</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="s2">&quot;direct&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">dp</span> <span class="o">=</span> <span class="n">ssn</span><span class="o">.</span><span class="n">delivery_properties</span><span class="p">(</span><span class="ss">:routing_key</span> <span class="o">=&gt;</span> <span class="s2">&quot;test-queue&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">mp</span> <span class="o">=</span> <span class="n">ssn</span><span class="o">.</span><span class="n">message_properties</span><span class="p">(</span><span class="ss">:content_type</span> <span class="o">=&gt;</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="ss">Qpid</span><span class="p">:</span><span class="ss">:Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="s2">&quot;Hello QPID!&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="ss">Qpid</span><span class="p">:</span><span class="ss">:Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="s2">&quot;Hello RUBY!&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="k">while</span> <span class="n">line</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">strip</span>
+</span><span class='line'>  <span class="k">break</span> <span class="k">if</span> <span class="n">line</span> <span class="o">=~</span> <span class="sr">/^(exit|done)$/i</span>
+</span><span class='line'>  <span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="ss">Qpid</span><span class="p">:</span><span class="ss">:Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">))</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="ss">Qpid</span><span class="p">:</span><span class="ss">:Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="s2">&quot;done&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">sync</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>consumer.rb</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;rubygems&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;qpid&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;socket&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">conn</span> <span class="o">=</span> <span class="ss">Qpid</span><span class="p">:</span><span class="ss">:Connection</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">TCPSocket</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">5672</span><span class="p">),</span>
+</span><span class='line'>                                         <span class="ss">:username</span> <span class="o">=&gt;</span> <span class="s2">&quot;guest&quot;</span><span class="p">,</span>
+</span><span class='line'>                                         <span class="ss">:password</span> <span class="o">=&gt;</span> <span class="s2">&quot;guest&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">conn</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ssn</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">session</span><span class="p">(</span><span class="s2">&quot;test_consumer&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">incoming</span> <span class="o">=</span> <span class="n">ssn</span><span class="o">.</span><span class="n">incoming</span><span class="p">(</span><span class="s2">&quot;messages&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">message_subscribe</span><span class="p">(</span>
+</span><span class='line'>  <span class="ss">:destination</span> <span class="o">=&gt;</span> <span class="s2">&quot;messages&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">:queue</span> <span class="o">=&gt;</span> <span class="s2">&quot;test-queue&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">:accept_mode</span> <span class="o">=&gt;</span> <span class="n">ssn</span><span class="o">.</span><span class="n">message_accept_mode</span><span class="o">.</span><span class="n">none</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># start incoming message flow</span>
+</span><span class='line'><span class="n">incoming</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">while</span> <span class="kp">true</span>
+</span><span class='line'> <span class="n">body</span> <span class="o">=</span> <span class="n">incoming</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">body</span>
+</span><span class='line'> <span class="nb">puts</span> <span class="n">body</span>
+</span><span class='line'> <span class="k">break</span> <span class="k">if</span> <span class="n">body</span> <span class="o">==</span> <span class="s2">&quot;done&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>另一个ruby AMQP协议的实现是<a href="https://github.com/ruby-amqp/amqp">ruby-amqp</a> ,基于event-machine, 目前只支持amqp 0-8.</p>
+
+<p>主要是为与rabbitmq通讯打造，简单试了下simple example也可用在qpid上，其它自动的example基本跑不过。现在开发比较活跃，更看好它。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blogs/4">AMQP</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-30T00:00:00+08:00" pubdate data-updated="true">Mar 30<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://www.amqp.org/">AMQP</a>(Advanced Message Queuing Protocol) 是一个为消息驱动中间件提供的应用层协议，binary protocol. <a href="http://www.amqp.org/confluence/display/AMQP/AMQP+Specification">协议规范</a>有多个版本，0-8版本是支持得最多的。</p>
+
+<p>AMQP的原始用途只是为金融界提供一个可以彼此协作的消息协议，而现在的目标则是为通用消息队列架构提供通用基础架构。因此，面向消息的中间件 （MOM）系统，例如发布/订阅队列，没有作为基本元素实现，而是通过发送简化的AMQ实体来完成。这些实体也是规范的一 部分，形成了在线路层协议顶端的一个层级：AMQP模型。这个模型统一了消息模式，包括发布/订阅，队列，事务以及流数据，路由等。</p>
+
+<h2>几个主要概念:</h2>
+
+<ul>
+<li>broker，即AMQP server</li>
+<li>message, 内容不可变，没有长度限制</li>
+<li>queue, message最终总会进入一个queue</li>
+<li>exchange, 为message提供分发服务，按binding规则将message分发到一个或多个queue, 有多种类型，如direct, fanout, topic</li>
+<li>binding,　消息路由规则</li>
+</ul>
+
+
+<h2>exchange的类型说明:</h2>
+
+<p><img class="size-full wp-image-5" title="direct exchange" src="/images/posts/direct.jpg" alt="" width="450" height="300" />
+<img class="size-full wp-image-7" title="topic exchange" src="/images/posts/topic.jpg" alt="" width="550" height="350" />
+<img class="size-full wp-image-6" title="fanout exchange" src="/images/posts/fanout.jpg" alt="" width="450" height="300" /></p>
+
+<p>&nbsp;</p>
+
+<h2>brokers</h2>
+
+<ul>
+<li><a href="http://qpid.apache.org/">Apache Qpid</a> 性能很好</li>
+<li><a href="http://www.rabbitmq.com/">RabbitMQ</a></li>
+<li><a href="http://www.redhat.com/mrg">Red Hat Enterprise MRG</a></li>
+<li>&hellip;</li>
+</ul>
+
+
+<h2>Qpid c++ broker性能测试结果</h2>
+
+<p>qpid-perftest &mdash;worker-threads 16 &mdash;default-queue-limit 1024000 &mdash;queue-purge-interval 30 &mdash;tcp-nodelay &mdash;mgmt-enable no</p>
+
+<table>
+<tbody>
+<tr>
+<th><span style="color: #333333;">Message size (bytes)</span></th>
+<th><span style="color: #333333;">Total transfers/sec</span></th>
+<th> Total Mbytes/sec</th>
+</tr>
+<tr>
+<td>32</td>
+<td>708,159</td>
+<td>21.6113</td>
+</tr>
+<tr>
+<td>64</td>
+<td>627,766</td>
+<td>38.3158</td>
+</tr>
+<tr>
+<td>128</td>
+<td>537,001</td>
+<td>65.5519</td>
+</tr>
+<tr>
+<td>256</td>
+<td>487,070</td>
+<td>118.914</td>
+</tr>
+<tr>
+<td>512</td>
+<td>278,192</td>
+<td>135.445</td>
+</tr>
+<tr>
+<td>1024</td>
+<td>176,901</td>
+<td>172.755</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>ruby client</h2>
+
+<ul>
+<li><a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/">qpid ruby client</a></li>
+<li><a href="https://github.com/ruby-amqp/amqp">ruby-amqp</a> 只支持AMQP 0-8</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Links</h1>
+  <ul id="site_links">
+    <li><a href="http://www.patenthub.cn/">patenthub专利检索</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/posts/2011-12-16-ack-better-grep/">Ack - Better Grep</a>
+      </li>
+    
+      <li class="post">
+        <a href="/posts/2011-12-12-you-dao-zi-dian-httpjie-kou/">有道字典 Chrome Extension</a>
+      </li>
+    
+      <li class="post">
+        <a href="/posts/2011-12-11-speed-up-rails-asset-pipeline/">Speed Up Rails Asset Pipeline</a>
+      </li>
+    
+      <li class="post">
+        <a href="/posts/2011-12-10-gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a>
+      </li>
+    
+      <li class="post">
+        <a href="/posts/2011-12-10-crontab-tips/">Crontab Tips</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/zzzhc">@zzzhc</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'zzzhc',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/zzzhc?count=10&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/zzzhc">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - zzzhc -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'zzzhc';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-337047-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+
+</body>
+</html>

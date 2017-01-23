@@ -1,0 +1,383 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>AMQP - zzzhc's Blog</title>
+  <meta name="author" content="zzzhc">
+
+  
+  <meta name="description" content="AMQP(Advanced Message Queuing Protocol) 是一个为消息驱动中间件提供的应用层协议，binary protocol. 协议规范有多个版本，0-8版本是支持得最多的。 AMQP的原始用途只是为金融界提供一个可以彼此协作的消息协议， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.zzzhc.com/blogs/4">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="zzzhc's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+-->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-337047-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">zzzhc's Blog</a></h1>
+  
+    <h2>stay curious</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.zzzhc.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a class='category' href='/categories/rails/'>Rails</a></li>
+  <li><a class='category' href='/categories/vim/'>Vim</a></li>
+  <li><a class='category' href='/categories/lucene/'>Lucene</a></li>
+  <li><a class='category' href='/categories/amqp/'>AMQP</a></li>
+  <li><a class='category' href='/categories/misc/'>Misc</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">AMQP</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-30T00:00:00+08:00" pubdate data-updated="true">Mar 30<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="http://www.amqp.org/">AMQP</a>(Advanced Message Queuing Protocol) 是一个为消息驱动中间件提供的应用层协议，binary protocol. <a href="http://www.amqp.org/confluence/display/AMQP/AMQP+Specification">协议规范</a>有多个版本，0-8版本是支持得最多的。</p>
+
+<p>AMQP的原始用途只是为金融界提供一个可以彼此协作的消息协议，而现在的目标则是为通用消息队列架构提供通用基础架构。因此，面向消息的中间件 （MOM）系统，例如发布/订阅队列，没有作为基本元素实现，而是通过发送简化的AMQ实体来完成。这些实体也是规范的一 部分，形成了在线路层协议顶端的一个层级：AMQP模型。这个模型统一了消息模式，包括发布/订阅，队列，事务以及流数据，路由等。</p>
+
+<h2>几个主要概念:</h2>
+
+<ul>
+<li>broker，即AMQP server</li>
+<li>message, 内容不可变，没有长度限制</li>
+<li>queue, message最终总会进入一个queue</li>
+<li>exchange, 为message提供分发服务，按binding规则将message分发到一个或多个queue, 有多种类型，如direct, fanout, topic</li>
+<li>binding,　消息路由规则</li>
+</ul>
+
+
+<h2>exchange的类型说明:</h2>
+
+<p><img class="size-full wp-image-5" title="direct exchange" src="/images/posts/direct.jpg" alt="" width="450" height="300" />
+<img class="size-full wp-image-7" title="topic exchange" src="/images/posts/topic.jpg" alt="" width="550" height="350" />
+<img class="size-full wp-image-6" title="fanout exchange" src="/images/posts/fanout.jpg" alt="" width="450" height="300" /></p>
+
+<p>&nbsp;</p>
+
+<h2>brokers</h2>
+
+<ul>
+<li><a href="http://qpid.apache.org/">Apache Qpid</a> 性能很好</li>
+<li><a href="http://www.rabbitmq.com/">RabbitMQ</a></li>
+<li><a href="http://www.redhat.com/mrg">Red Hat Enterprise MRG</a></li>
+<li>&hellip;</li>
+</ul>
+
+
+<h2>Qpid c++ broker性能测试结果</h2>
+
+<p>qpid-perftest &mdash;worker-threads 16 &mdash;default-queue-limit 1024000 &mdash;queue-purge-interval 30 &mdash;tcp-nodelay &mdash;mgmt-enable no</p>
+
+<table>
+<tbody>
+<tr>
+<th><span style="color: #333333;">Message size (bytes)</span></th>
+<th><span style="color: #333333;">Total transfers/sec</span></th>
+<th> Total Mbytes/sec</th>
+</tr>
+<tr>
+<td>32</td>
+<td>708,159</td>
+<td>21.6113</td>
+</tr>
+<tr>
+<td>64</td>
+<td>627,766</td>
+<td>38.3158</td>
+</tr>
+<tr>
+<td>128</td>
+<td>537,001</td>
+<td>65.5519</td>
+</tr>
+<tr>
+<td>256</td>
+<td>487,070</td>
+<td>118.914</td>
+</tr>
+<tr>
+<td>512</td>
+<td>278,192</td>
+<td>135.445</td>
+</tr>
+<tr>
+<td>1024</td>
+<td>176,901</td>
+<td>172.755</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>ruby client</h2>
+
+<ul>
+<li><a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/">qpid ruby client</a></li>
+<li><a href="https://github.com/ruby-amqp/amqp">ruby-amqp</a> 只支持AMQP 0-8</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">zzzhc</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-30T00:00:00+08:00" pubdate data-updated="true">Mar 30<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/amqp/'>AMQP</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blogs/17" title="Next Post: Qpid ruby client">Qpid ruby client &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Links</h1>
+  <ul id="site_links">
+    <li><a href="http://www.patenthub.cn/">patenthub专利检索</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/posts/2011-12-16-ack-better-grep/">Ack - Better Grep</a>
+      </li>
+    
+      <li class="post">
+        <a href="/posts/2011-12-12-you-dao-zi-dian-httpjie-kou/">有道字典 Chrome Extension</a>
+      </li>
+    
+      <li class="post">
+        <a href="/posts/2011-12-11-speed-up-rails-asset-pipeline/">Speed Up Rails Asset Pipeline</a>
+      </li>
+    
+      <li class="post">
+        <a href="/posts/2011-12-10-gao-xiao-neng-wen-ben-bian-ji-de-7ge-xi-guan/">高效能文本编辑的7个习惯</a>
+      </li>
+    
+      <li class="post">
+        <a href="/posts/2011-12-10-crontab-tips/">Crontab Tips</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/zzzhc">@zzzhc</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'zzzhc',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/zzzhc?count=10&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/zzzhc">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - zzzhc -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'zzzhc';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.zzzhc.com/blogs/4';
+        var disqus_url = 'http://blog.zzzhc.com/blogs/4';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-337047-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+
+</body>
+</html>

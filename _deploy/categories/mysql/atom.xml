@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: MySQL | zzzhc's Blog]]></title>
+  <link href="http://blog.zzzhc.com/categories/mysql/atom.xml" rel="self"/>
+  <link href="http://blog.zzzhc.com/"/>
+  <updated>2017-01-23T16:47:23+08:00</updated>
+  <id>http://blog.zzzhc.com/</id>
+  <author>
+    <name><![CDATA[zzzhc]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[mysqld 5.1.41的一个神奇bug]]></title>
+    <link href="http://blog.zzzhc.com/blogs/107"/>
+    <updated>2011-06-09T00:00:00+08:00</updated>
+    <id>http://blog.zzzhc.com/blogs/107</id>
+    <content type="html"><![CDATA[<p>今天打算在本地装两个数据库，方便测试，用mysql_install_db &mdash;datadir=/opt/mysql初始化mysql data directory, 死活都不成功，/opt, /opt/mysql的权限都改成0777也是一样</p>
+
+<p>OS:</p>
+
+<p><code>bash
+$ cat /etc/lsb-release
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=10.04
+DISTRIB_CODENAME=lucid
+DISTRIB_DESCRIPTION="Ubuntu 10.04.1 LTS"
+</code></p>
+
+<p>``` bash
+$ mysql_install_db &mdash;datadir=/opt/mysql/
+Installing MySQL system tables&hellip;
+110609 20:59:26 [Warning] Can&rsquo;t create test file /opt/mysql/zzzhc-laptop.lower-test
+110609 20:59:26 [Warning] Can&rsquo;t create test file /opt/mysql/zzzhc-laptop.lower-test</p>
+
+<p>Installation of system tables failed!  Examine the logs in
+/opt/mysql/ for more information.
+&hellip;
+```</p>
+
+<p>换成/tmp目录,mysql_install_db &mdash;datadir=/tmp，神奇地成功了。</p>
+
+<p>bash -x mysql_install_db &mdash;datadir=/opt/mysql/发现问题在这:</p>
+
+<p>``` bash
++ mysqld_install_cmd_line=&lsquo;/usr/sbin/mysqld  &mdash;language=/usr/share/mysql/english &mdash;bootstrap   &mdash;basedir=/usr &mdash;datadir=/opt/mysql/ &mdash;log-warnings=0 &mdash;loose-skip-innodb   &mdash;loose-skip-ndbcluster  &mdash;user=mysql &mdash;max_allowed_packet=8M   &mdash;default-storage-engine=myisam   &mdash;net_buffer_length=16K&rsquo;
++ s_echo &lsquo;Installing MySQL system tables&hellip;&rsquo;
++ test 0 -eq 0 -a 0 -eq 0
++ echo &lsquo;Installing MySQL system tables&hellip;&rsquo;
+Installing MySQL system tables&hellip;
++ /usr/sbin/mysqld &mdash;language=/usr/share/mysql/english &mdash;bootstrap &mdash;basedir=/usr &mdash;datadir=/opt/mysql/ &mdash;log-warnings=0 &mdash;loose-skip-innodb &mdash;loose-skip-ndbcluster &mdash;user=mysql &mdash;max_allowed_packet=8M &mdash;default-storage-engine=myisam &mdash;net_buffer_length=16K
++ echo &lsquo;use mysql;&rsquo;
++ cat /usr/share/mysql/mysql_system_tables.sql /usr/share/mysql/mysql_system_tables_data.sql
+110609 21:04:14 [Warning] Can&rsquo;t create test file /opt/mysql/zzzhc-laptop.lower-test
+110609 21:04:14 [Warning] Can&rsquo;t create test file /opt/mysql/zzzhc-laptop.lower-test
++ eval cat
+++ cat
++ echo</p>
+
+<ul>
+<li>echo &lsquo;Installation of system tables failed!  Examine the logs in&rsquo;
+Installation of system tables failed!  Examine the logs in</li>
+<li>echo &lsquo;/opt/mysql/ for more information.&rsquo;
+/opt/mysql/ for more information.</li>
+</ul>
+
+
+<p>```</p>
+
+<p>strace /usr/sbin/mysqld &mdash;language=/usr/share/mysql/english &mdash;bootstrap &mdash;basedir=/usr &mdash;datadir=/opt/mysql/ &mdash;log-warnings=0 &mdash;loose-skip-innodb &mdash;loose-skip-ndbcluster &mdash;user=mysql &mdash;max_allowed_packet=8M &mdash;default-storage-engine=myisam &mdash;net_buffer_length=16K 2>&amp;1 |tee strace.log</p>
+
+<p>```
+stat64(&ldquo;/usr/share/mysql/charsets/Index.xml&rdquo;, {st_mode=S_IFREG|0644, st_size=18261, &hellip;}) = 0
+brk(0x22064000)                         = 0x22064000
+open(&ldquo;/usr/share/mysql/charsets/Index.xml&rdquo;, O_RDONLY|O_LARGEFILE) = 3
+read(3, &ldquo;&hellip;, 18261) = 18261
+close(3)                                = 0
+unlink(&rdquo;/opt/mysql/zzzhc-laptop.LOWER-TEST") = -1 ENOENT (No such file or directory)
+open(&ldquo;/opt/mysql/zzzhc-laptop.lower-test&rdquo;, O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied)
+time(NULL)                              = 1307624820
+write(2, &ldquo;110609 21:07:00 [Warning] Can&rsquo;t &rdquo;&hellip;, 84110609 21:07:00 [Warning] Can&rsquo;t create test file /opt/mysql/zzzhc-laptop.lower-test
+) = 84
+unlink(&ldquo;/opt/mysql/zzzhc-laptop.LOWER-TEST&rdquo;) = -1 ENOENT (No such file or directory)
+open(&ldquo;/opt/mysql/zzzhc-laptop.lower-test&rdquo;, O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied)
+time(NULL)                              = 1307624820
+write(2, &ldquo;110609 21:07:00 [Warning] Can&rsquo;t &rdquo;&hellip;, 84110609 21:07:00 [Warning] Can&rsquo;t create test file /opt/mysql/zzzhc-laptop.lower-test
+) = 84</p>
+
+<p>```</p>
+
+<p>open(&ldquo;/opt/mysql/zzzhc-laptop.lower-test&rdquo;, O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied) 这个太没道理了。。。比较了/tmp和/opt/mysql两种情况下的strace结果，没发现什么可疑的地方，难道是/tmp目录有什么奇怪的特性??</p>
+
+<p>0.77试了下，一切正常。
+bug总是无处不在啊!</p>
+]]></content>
+  </entry>
+  
+</feed>
