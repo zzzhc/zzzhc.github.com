@@ -1,15 +1,23 @@
-*.swp
-*.swo
-.bundle
-.DS_Store
-.sass-cache
-.gist-cache
-.pygments-cache
-_deploy
-public
-sass.old
-source.old
-source/_stash
-source/stylesheets/screen.css
-vendor
-node_modules
+/public
+/.pygments-cache
+/.sass-cache
+/source/stylesheets/screen.css
+
+# Created by https://www.gitignore.io/api/vim
+
+### Vim ###
+# swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+# session
+Session.vim
+# temporary
+.netrwhist
+*~
+# auto-generated tag files
+tags
+
+# End of https://www.gitignore.io/api/vim
+
