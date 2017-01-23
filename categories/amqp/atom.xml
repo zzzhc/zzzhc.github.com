@@ -4,7 +4,7 @@
   <title><![CDATA[Category: AMQP | zzzhc's Blog]]></title>
   <link href="http://blog.zzzhc.com/categories/amqp/atom.xml" rel="self"/>
   <link href="http://blog.zzzhc.com/"/>
-  <updated>2011-12-16T17:20:48+08:00</updated>
+  <updated>2017-01-23T16:47:23+08:00</updated>
   <id>http://blog.zzzhc.com/</id>
   <author>
     <name><![CDATA[zzzhc]]></name>
@@ -18,16 +18,16 @@
     <link href="http://blog.zzzhc.com/blogs/17"/>
     <updated>2011-03-31T00:00:00+08:00</updated>
     <id>http://blog.zzzhc.com/blogs/17</id>
-    <content type="html"><![CDATA[<p>Qpid对ruby的官方支持：<a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/" target="_blank">https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/</a></p>
+    <content type="html"><![CDATA[<p>Qpid对ruby的官方支持：<a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/" target="_blank"><a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/">https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/</a></a></p>
 
 <p>感觉是对python client的port, 代码风格看起来很不ruby, 用了挺多锁，信号，线程，想要停止一个connection都比较困难。对AMQP协议的实现细节被序列化到一个spec_cache下，不可读。基本没有文档，总体来说不像是一个可以正式用的东西。</p>
 
 <p>大概的用法，用rake gem生成gem包，安装gem install pkg/qpid-0.10.2.gem</p>
 
 <p>用qpid java broker的时候要注意下，创建connection的时候要指定用户名密码。
-conn = Qpid::Connection.new(TCPSocket.new("localhost", 5672),
-:username => "guest",
-:password => "guest")</p>
+conn = Qpid::Connection.new(TCPSocket.new(&ldquo;localhost&rdquo;, 5672),
+:username => &ldquo;guest&rdquo;,
+:password => &ldquo;guest&rdquo;)</p>
 
 <p>参考example写了两个简单例子
 producer.rb</p>
@@ -36,11 +36,11 @@ producer.rb</p>
 
 <h1>!/usr/bin/env ruby</h1>
 
-<p>require "rubygems"
-require "qpid"
-require "socket"</p>
+<p>require &ldquo;rubygems&rdquo;
+require &ldquo;qpid&rdquo;
+require &ldquo;socket&rdquo;</p>
 
-<p>conn = Qpid::Connection.new(TCPSocket.new("localhost", 5672),</p>
+<p>conn = Qpid::Connection.new(TCPSocket.new(&ldquo;localhost&rdquo;, 5672),</p>
 
 <pre><code>                                     :username =&gt; "guest",
                                      :password =&gt; "guest")
@@ -48,23 +48,23 @@ require "socket"</p>
 
 <p>conn.start(10)</p>
 
-<p>ssn = conn.session("test_producer")</p>
+<p>ssn = conn.session(&ldquo;test_producer&rdquo;)</p>
 
 <h1>create a queue</h1>
 
-<p>ssn.queue_declare("test-queue")
-ssn.exchange_declare("test-exchange", :type => "direct")</p>
+<p>ssn.queue_declare(&ldquo;test-queue&rdquo;)
+ssn.exchange_declare(&ldquo;test-exchange&rdquo;, :type => &ldquo;direct&rdquo;)</p>
 
-<p>dp = ssn.delivery_properties(:routing_key => "test-queue")
-mp = ssn.message_properties(:content_type => "text/plain")</p>
+<p>dp = ssn.delivery_properties(:routing_key => &ldquo;test-queue&rdquo;)
+mp = ssn.message_properties(:content_type => &ldquo;text/plain&rdquo;)</p>
 
-<p>ssn.message_transfer(:message => Qpid::Message.new(dp, mp, "Hello QPID!"))
-ssn.message_transfer(:message => Qpid::Message.new(dp, mp, "Hello RUBY!"))
+<p>ssn.message_transfer(:message => Qpid::Message.new(dp, mp, &ldquo;Hello QPID!&rdquo;))
+ssn.message_transfer(:message => Qpid::Message.new(dp, mp, &ldquo;Hello RUBY!&rdquo;))
 while line = gets.strip
-  break if line =~ /<sup>(exit|done)$/i</sup>
+  break if line =~ /^(exit|done)$/i
   ssn.message_transfer(:message => Qpid::Message.new(dp, mp, line.strip))
 end
-ssn.message_transfer(:message => Qpid::Message.new(dp, mp, "done"))
+ssn.message_transfer(:message => Qpid::Message.new(dp, mp, &ldquo;done&rdquo;))
 ssn.sync</p>
 
 <p>ssn.close()
@@ -78,11 +78,11 @@ conn.close()</p>
 
 <h1>!/usr/bin/env ruby</h1>
 
-<p>require "rubygems"
-require "qpid"
-require "socket"</p>
+<p>require &ldquo;rubygems&rdquo;
+require &ldquo;qpid&rdquo;
+require &ldquo;socket&rdquo;</p>
 
-<p>conn = Qpid::Connection.new(TCPSocket.new("localhost", 5672),</p>
+<p>conn = Qpid::Connection.new(TCPSocket.new(&ldquo;localhost&rdquo;, 5672),</p>
 
 <pre><code>                                     :username =&gt; "guest",
                                      :password =&gt; "guest")
@@ -90,12 +90,12 @@ require "socket"</p>
 
 <p>conn.start(10)</p>
 
-<p>ssn = conn.session("test_consumer")</p>
+<p>ssn = conn.session(&ldquo;test_consumer&rdquo;)</p>
 
-<p>incoming = ssn.incoming("messages")
+<p>incoming = ssn.incoming(&ldquo;messages&rdquo;)
 ssn.message_subscribe(
-  :destination => "messages",
-  :queue => "test-queue",
+  :destination => &ldquo;messages&rdquo;,
+  :queue => &ldquo;test-queue&rdquo;,
   :accept_mode => ssn.message_accept_mode.none
 )</p>
 
@@ -106,7 +106,7 @@ ssn.message_subscribe(
 <p>while true
  body = incoming.get().body
  puts body
- break if body == "done"
+ break if body == &ldquo;done&rdquo;
 end</p>
 
 <p>ssn.close()
@@ -153,13 +153,13 @@ conn.close()
 <li><a href="http://qpid.apache.org/">Apache Qpid</a> 性能很好</li>
 <li><a href="http://www.rabbitmq.com/">RabbitMQ</a></li>
 <li><a href="http://www.redhat.com/mrg">Red Hat Enterprise MRG</a></li>
-<li>...</li>
+<li>&hellip;</li>
 </ul>
 
 
 <h2>Qpid c++ broker性能测试结果</h2>
 
-<p>qpid-perftest --worker-threads 16 --default-queue-limit 1024000 --queue-purge-interval 30 --tcp-nodelay --mgmt-enable no</p>
+<p>qpid-perftest &mdash;worker-threads 16 &mdash;default-queue-limit 1024000 &mdash;queue-purge-interval 30 &mdash;tcp-nodelay &mdash;mgmt-enable no</p>
 
 <table>
 <tbody>

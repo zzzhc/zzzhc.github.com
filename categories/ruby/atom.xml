@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | zzzhc's Blog]]></title>
   <link href="http://blog.zzzhc.com/categories/ruby/atom.xml" rel="self"/>
   <link href="http://blog.zzzhc.com/"/>
-  <updated>2011-12-16T17:20:48+08:00</updated>
+  <updated>2017-01-23T16:47:23+08:00</updated>
   <id>http://blog.zzzhc.com/</id>
   <author>
     <name><![CDATA[zzzhc]]></name>
@@ -48,7 +48,7 @@ bundler -v~&gt;1.0.21
 <h1>server</h1>
 
 <p>EventMachine::run {
-  EventMachine::start_server "0.0.0.0", port, ServerHandler
+  EventMachine::start_server &ldquo;0.0.0.0&rdquo;, port, ServerHandler
 }</p>
 
 <h1>client</h1>
@@ -76,8 +76,8 @@ bundler -v~&gt;1.0.21
 
 <h1>!/usr/bin/env ruby</h1>
 
-<p>require 'rubygems'
-require 'eventmachine'</p>
+<p>require &lsquo;rubygems&rsquo;
+require &lsquo;eventmachine&rsquo;</p>
 
 <p>module EchoServer
   def post_init</p>
@@ -104,7 +104,7 @@ close_connection if data =~ /quit/i
 end</p>
 
 <p>EventMachine::run {
-  EventMachine::start_server "127.0.0.1", 8081, EchoServer
+  EventMachine::start_server &ldquo;127.0.0.1&rdquo;, 8081, EchoServer
 }
 ```</p>
 
@@ -114,8 +114,8 @@ end</p>
 
 <h1>!/usr/bin/env ruby</h1>
 
-<p>require 'rubygems'
-require 'eventmachine'</p>
+<p>require &lsquo;rubygems&rsquo;
+require &lsquo;eventmachine&rsquo;</p>
 
 <p>module HttpClient
   def post_init</p>
@@ -143,7 +143,7 @@ EventMachine::stop
 end</p>
 
 <p>EventMachine::run {
-  EventMachine::connect "www.baidu.com", 80, HttpClient
+  EventMachine::connect &ldquo;www.baidu.com&rdquo;, 80, HttpClient
 }
 ```</p>
 
@@ -153,8 +153,8 @@ end</p>
 
 <h1>!/usr/bin/env ruby</h1>
 
-<p>require 'rubygems'
-require 'eventmachine'</p>
+<p>require &lsquo;rubygems&rsquo;
+require &lsquo;eventmachine&rsquo;</p>
 
 <p>module Client
   def connection_completed</p>
@@ -188,7 +188,7 @@ EventMachine::stop
 end</p>
 
 <p>EventMachine::run {
-  EventMachine::connect "api.jquery.com", 8088, Client
+  EventMachine::connect &ldquo;api.jquery.com&rdquo;, 8088, Client
 }
 ```</p>
 ]]></content>

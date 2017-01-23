@@ -4,7 +4,7 @@
   <title><![CDATA[Category: misc | zzzhc's Blog]]></title>
   <link href="http://blog.zzzhc.com/categories/misc/atom.xml" rel="self"/>
   <link href="http://blog.zzzhc.com/"/>
-  <updated>2011-12-16T17:20:48+08:00</updated>
+  <updated>2017-01-23T16:47:23+08:00</updated>
   <id>http://blog.zzzhc.com/</id>
   <author>
     <name><![CDATA[zzzhc]]></name>
@@ -12,6 +12,78 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ack - Better Grep]]></title>
+    <link href="http://blog.zzzhc.com/posts/2011-12-16-ack-better-grep/"/>
+    <updated>2011-12-16T11:17:00+08:00</updated>
+    <id>http://blog.zzzhc.com/posts/ack-better-grep</id>
+    <content type="html"><![CDATA[<p>Ack是一个给程序员用的grep, 使用perl regular expressions, 而不是POSIX/GNU subset.</p>
+
+<h2>why ack?</h2>
+
+<ul>
+<li>使用perl regular expressions, 忘掉grep那套不人性的pattern吧</li>
+<li>速度快, 默认只搜索程序代码文件</li>
+<li>自动忽略.svn, .git, CVS这类目录, 默认递归搜索子目录
+```bash
+
+<h1>with grep</h1>
+
+$ grep pattern $(find . -type f | grep -v &lsquo;.svn&rsquo;)
+or
+$ grep -R &mdash;exclude-dir .svn pattern
+
+<h1>with ack</h1>
+
+<p>$ ack pattern
+```</p></li>
+<li>支持搜索指定文件类型
+```bash
+
+<h1>只搜索ruby code</h1>
+
+<p>$ ack &mdash;ruby pattern
+```</p></li>
+</ul>
+
+
+<h2>install</h2>
+
+<p>```bash</p>
+
+<h1>mac</h1>
+
+<p>$ brew install ack</p>
+
+<h1>ubuntu</h1>
+
+<p>$ sudo apt-get install ack-grep
+```</p>
+
+<h2>integrate into vim</h2>
+
+<ul>
+<li>install ack.vim</li>
+<li>set grepprg=ack in vimrc</li>
+</ul>
+
+
+<h2>custom ack</h2>
+
+<p>Ack默认包含很多filetype => extensions的设置，但新出现的语言不一定支持。好在ack提供&mdash;type-add TYPE=.EXTENSION[,.EXT2[,&hellip;]], &mdash;type-set TYPE=.EXTENSION[,.EXT2[,&hellip;]]来扩展。经常用的可以加到~/.ackrc里, 我的.ackrc:</p>
+
+<p><code>bash
+$ cat ~/.ackrc
+--type-add
+ruby=.haml,.ru
+--type-add
+css=.scss,.sass,.less
+--type-add
+js=.coffee
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[有道字典 chrome extension]]></title>
@@ -62,10 +134,10 @@ Last Changed Date: 2011-09-13 14:00:17 +0800 (二, 13  9 2011)
 <p>用curl试了下，可以发送请求，但响应为空</p>
 
 <p>``` bash
-$ curl -vv 'http://localhost:32445/getword?word=for%20suppliers&amp;pos=8&amp;type=0'
+$ curl -vv &lsquo;<a href="http://localhost:32445/getword?word=for%20suppliers&amp;pos=8&amp;type=0">http://localhost:32445/getword?word=for%20suppliers&amp;pos=8&amp;type=0</a>&rsquo;
 * About to connect() to localhost port 32445 (#0)
-*   Trying ::1... Connection refused
-*   Trying 127.0.0.1... connected
+*   Trying ::1&hellip; Connection refused
+*   Trying 127.0.0.1&hellip; connected
 * Connected to localhost (127.0.0.1) port 32445 (#0)</p>
 
 <blockquote><p>GET /getword?word=for%20suppliers&amp;pos=8&amp;type=0 HTTP/1.1
@@ -87,9 +159,9 @@ curl: (52) Empty reply from server</li>
 <p>这次http request只是一个trigger, 有道字典会向dict.youdao.com发一个request:</p>
 
 <p>``` bash
-$ curl -vv 'http://dict.youdao.com/fsearch?q=for%20suppliers&amp;pos=8&amp;keyfrom=mac.scrtrans.0&amp;id=E33EC7736AFDCABB184051CD3757CA73&amp;vendor=cidian.youdao.com&amp;client=macdict'
+$ curl -vv &lsquo;<a href="http://dict.youdao.com/fsearch?q=for%20suppliers&amp;pos=8&amp;keyfrom=mac.scrtrans.0&amp;id=E33EC7736AFDCABB184051CD3757CA73&amp;vendor=cidian.youdao.com&amp;client=macdict">http://dict.youdao.com/fsearch?q=for%20suppliers&amp;pos=8&amp;keyfrom=mac.scrtrans.0&amp;id=E33EC7736AFDCABB184051CD3757CA73&amp;vendor=cidian.youdao.com&amp;client=macdict</a>&rsquo;
 * About to connect() to dict.youdao.com port 80 (#0)
-*   Trying 61.135.218.32... connected
+*   Trying 61.135.218.32&hellip; connected
 * Connected to dict.youdao.com (61.135.218.32) port 80 (#0)</p>
 
 <blockquote><p>GET /fsearch?q=for%20suppliers&amp;pos=8&amp;keyfrom=mac.scrtrans.0&amp;id=E33EC7736AFDCABB184051CD3757CA73&amp;vendor=cidian.youdao.com&amp;client=macdict HTTP/1.1
@@ -109,10 +181,10 @@ Accept: <em>/</em></p>
 &lt; Vary: Accept-Encoding
 &lt; Content-Length: 1477
 &lt;
-&lt;?xml version="1.0" encoding="UTF-8"?></p></blockquote>
+&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;UTF-8&rdquo;?></p></blockquote>
 
 <p><yodaodict>
-  <return-phrase>&lt;![CDATA[suppliers]]&gt;</return-phrase></p>
+  &lt;return-phrase>&lt;![CDATA[suppliers]]&gt;&lt;/return-phrase></p>
 
 <pre><code>                        &lt;phonetic-symbol&gt;sə'plaiəz&lt;/phonetic-symbol&gt;
               &lt;dictcn-speach&gt;suppliers&lt;/dictcn-speach&gt;
@@ -193,9 +265,9 @@ Accept: <em>/</em></p>
 
 <p>``` bash</p>
 
-<h1>download source code from http://nodejs.org/dist/</h1>
+<h1>download source code from <a href="http://nodejs.org/dist/">http://nodejs.org/dist/</a></h1>
 
-<p>$ wget http://nodejs.org/dist/node-v0.4.5.tar.gz
+<p>$ wget <a href="http://nodejs.org/dist/node-v0.4.5.tar.gz">http://nodejs.org/dist/node-v0.4.5.tar.gz</a>
 $ tar -xf node-v0.4.5.tar.gz
 $ cd node-v0.4.5
 $ ./configure &amp;&amp; make &amp;&amp; sudo make install
@@ -208,9 +280,9 @@ $ ./configure &amp;&amp; make &amp;&amp; sudo make install
 
 <p>``` bash</p>
 
-<h1>http://www.mongodb.org/downloads</h1>
+<h1><a href="http://www.mongodb.org/downloads">http://www.mongodb.org/downloads</a></h1>
 
-<p>$ wget http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.8.1.tgz
+<p>$ wget <a href="http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.8.1.tgz">http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.8.1.tgz</a>
 $ tar -xf mongodb-linux-i686-1.8.1.tgz
 $ cd mongodb-linux-i686-1.8.1
 $ sudo mkdir -p /data/db
@@ -241,15 +313,15 @@ $ sudo npm install mongodb
 </code></p>
 
 <p>express指南见<a href="http://expressjs.com/guide.html">http://expressjs.com/guide.html</a>，它的route方式跟rails比算很弱的，没有对restful的直接支持，但在加上methodOverride后都可以自己定义出来。
-模板引擎用hamljs, 通过app.register('.haml', require('hamljs'))指定。在hamljs layout里要嵌入其它模板内容时可以用!= body。partial可以用!= partial("post.haml", posts)。!=的意思是对后面的内容不作escape, 细节可以看hamljs代码，很短，不到700行。
+模板引擎用hamljs, 通过app.register(&lsquo;.haml&rsquo;, require(&lsquo;hamljs&rsquo;))指定。在hamljs layout里要嵌入其它模板内容时可以用!= body。partial可以用!= partial(&ldquo;post.haml&rdquo;, posts)。!=的意思是对后面的内容不作escape, 细节可以看hamljs代码，很短，不到700行。
 mongodb client用起来比较费劲，一层一层的callback, 适当封装下应该会好使点。
 最终的代码放在<a href="https://github.com/nodepress/draft">https://github.com/nodepress/draft</a>
-性能看起来还是很好的，production模式下(NODE_ENV=production node blog.js) 并发５个连接(ab -c 5 -n 1000 http://localhost:3000/posts/)的结果
+性能看起来还是很好的，production模式下(NODE_ENV=production node blog.js) 并发５个连接(ab -c 5 -n 1000 <a href="http://localhost:3000/posts/">http://localhost:3000/posts/</a>)的结果
 Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
 
 <p>``` bash
-$ ab -c 5 -n 1000 http://localhost:3000/posts/
-....
+$ ab -c 5 -n 1000 <a href="http://localhost:3000/posts/">http://localhost:3000/posts/</a>
+&hellip;.
 Server Software:      <br/>
 Server Hostname:        localhost
 Server Port:            3000</p>

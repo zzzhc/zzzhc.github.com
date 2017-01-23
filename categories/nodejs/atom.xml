@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | zzzhc's Blog]]></title>
   <link href="http://blog.zzzhc.com/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://blog.zzzhc.com/"/>
-  <updated>2011-12-16T17:20:48+08:00</updated>
+  <updated>2017-01-23T16:47:23+08:00</updated>
   <id>http://blog.zzzhc.com/</id>
   <author>
     <name><![CDATA[zzzhc]]></name>
@@ -42,9 +42,9 @@
 
 <p>``` bash</p>
 
-<h1>download source code from http://nodejs.org/dist/</h1>
+<h1>download source code from <a href="http://nodejs.org/dist/">http://nodejs.org/dist/</a></h1>
 
-<p>$ wget http://nodejs.org/dist/node-v0.4.5.tar.gz
+<p>$ wget <a href="http://nodejs.org/dist/node-v0.4.5.tar.gz">http://nodejs.org/dist/node-v0.4.5.tar.gz</a>
 $ tar -xf node-v0.4.5.tar.gz
 $ cd node-v0.4.5
 $ ./configure &amp;&amp; make &amp;&amp; sudo make install
@@ -57,9 +57,9 @@ $ ./configure &amp;&amp; make &amp;&amp; sudo make install
 
 <p>``` bash</p>
 
-<h1>http://www.mongodb.org/downloads</h1>
+<h1><a href="http://www.mongodb.org/downloads">http://www.mongodb.org/downloads</a></h1>
 
-<p>$ wget http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.8.1.tgz
+<p>$ wget <a href="http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.8.1.tgz">http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.8.1.tgz</a>
 $ tar -xf mongodb-linux-i686-1.8.1.tgz
 $ cd mongodb-linux-i686-1.8.1
 $ sudo mkdir -p /data/db
@@ -90,15 +90,15 @@ $ sudo npm install mongodb
 </code></p>
 
 <p>express指南见<a href="http://expressjs.com/guide.html">http://expressjs.com/guide.html</a>，它的route方式跟rails比算很弱的，没有对restful的直接支持，但在加上methodOverride后都可以自己定义出来。
-模板引擎用hamljs, 通过app.register('.haml', require('hamljs'))指定。在hamljs layout里要嵌入其它模板内容时可以用!= body。partial可以用!= partial("post.haml", posts)。!=的意思是对后面的内容不作escape, 细节可以看hamljs代码，很短，不到700行。
+模板引擎用hamljs, 通过app.register(&lsquo;.haml&rsquo;, require(&lsquo;hamljs&rsquo;))指定。在hamljs layout里要嵌入其它模板内容时可以用!= body。partial可以用!= partial(&ldquo;post.haml&rdquo;, posts)。!=的意思是对后面的内容不作escape, 细节可以看hamljs代码，很短，不到700行。
 mongodb client用起来比较费劲，一层一层的callback, 适当封装下应该会好使点。
 最终的代码放在<a href="https://github.com/nodepress/draft">https://github.com/nodepress/draft</a>
-性能看起来还是很好的，production模式下(NODE_ENV=production node blog.js) 并发５个连接(ab -c 5 -n 1000 http://localhost:3000/posts/)的结果
+性能看起来还是很好的，production模式下(NODE_ENV=production node blog.js) 并发５个连接(ab -c 5 -n 1000 <a href="http://localhost:3000/posts/">http://localhost:3000/posts/</a>)的结果
 Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
 
 <p>``` bash
-$ ab -c 5 -n 1000 http://localhost:3000/posts/
-....
+$ ab -c 5 -n 1000 <a href="http://localhost:3000/posts/">http://localhost:3000/posts/</a>
+&hellip;.
 Server Software:      <br/>
 Server Hostname:        localhost
 Server Port:            3000</p>

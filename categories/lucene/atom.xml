@@ -4,7 +4,7 @@
   <title><![CDATA[Category: lucene | zzzhc's Blog]]></title>
   <link href="http://blog.zzzhc.com/categories/lucene/atom.xml" rel="self"/>
   <link href="http://blog.zzzhc.com/"/>
-  <updated>2011-12-16T17:20:48+08:00</updated>
+  <updated>2017-01-23T16:47:23+08:00</updated>
   <id>http://blog.zzzhc.com/</id>
   <author>
     <name><![CDATA[zzzhc]]></name>
@@ -18,7 +18,7 @@
     <link href="http://blog.zzzhc.com/blogs/115"/>
     <updated>2011-06-19T00:00:00+08:00</updated>
     <id>http://blog.zzzhc.com/blogs/115</id>
-    <content type="html"><![CDATA[<h1>包包分词器 - 一个基于字典的快速中文分词器</h1>
+    <content type="html"><![CDATA[<h1>包包分词器 &ndash; 一个基于字典的快速中文分词器</h1>
 
 <h2>source code</h2>
 
@@ -147,7 +147,7 @@ StandardAnalyzer        2626500          0.202        2236600         13015280.1
     <id>http://blog.zzzhc.com/blogs/69</id>
     <content type="html"><![CDATA[<p><a href="http://lucene.apache.org/solr/">solr</a>是一个基于<a href="http://lucene.apache.org/">lucene</a>，高度可配置的企业级搜索平台。它自己的介绍:</p>
 
-<blockquote><p> Solr is the popular, blazing fast open source enterprise search platform from the Apache Lucene project. Its major features include powerful full-text search, hit highlighting, faceted search, dynamic clustering, database integration, rich document (e.g., Word, PDF) handling, and geospatial search. Solr is highly scalable, providing distributed search and index replication, and it powers the search and navigation features of many of the world's largest internet sites.</p></blockquote>
+<blockquote><p> Solr is the popular, blazing fast open source enterprise search platform from the Apache Lucene project. Its major features include powerful full-text search, hit highlighting, faceted search, dynamic clustering, database integration, rich document (e.g., Word, PDF) handling, and geospatial search. Solr is highly scalable, providing distributed search and index replication, and it powers the search and navigation features of many of the world&rsquo;s largest internet sites.</p></blockquote>
 
 <p><a href="http://lucene.apache.org/solr/features.html">Features</a>有一堆,觉得比较实用的几点有</p>
 

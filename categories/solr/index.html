@@ -7,8 +7,11 @@
   <meta charset="utf-8">
   <title>Category: solr - zzzhc's Blog</title>
   <meta name="author" content="zzzhc">
+
+  
   <meta name="description" content="Category: solr">
   
+
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
@@ -18,14 +21,29 @@
   <link rel="canonical" href="http://blog.zzzhc.comcategories/solr">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="/javascripts/ender.js"></script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="zzzhc's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-337047-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
@@ -42,12 +60,14 @@
   <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
   
 </ul>
+  
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
     <input type="hidden" name="q" value="site:blog.zzzhc.com" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
+  
 <ul class="main-navigation">
   <li><a href="/">Home</a></li>
   <li><a class='category' href='/categories/rails/'>Rails</a></li>
@@ -112,19 +132,26 @@
 <aside class="sidebar">
   
     <section>
+  <h1>Links</h1>
+  <ul id="site_links">
+    <li><a href="http://www.patenthub.cn/">patenthub专利检索</a></li>
+  </ul>
+</section>
+
+<section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/posts/2011-12-16-ack-better-grep/">ack - better grep</a>
+        <a href="/posts/2011-12-16-ack-better-grep/">Ack - Better Grep</a>
       </li>
     
       <li class="post">
-        <a href="/posts/2011-12-12-you-dao-zi-dian-httpjie-kou/">有道字典 chrome extension</a>
+        <a href="/posts/2011-12-12-you-dao-zi-dian-httpjie-kou/">有道字典 Chrome Extension</a>
       </li>
     
       <li class="post">
-        <a href="/posts/2011-12-11-speed-up-rails-asset-pipeline/">speed up rails asset pipeline</a>
+        <a href="/posts/2011-12-11-speed-up-rails-asset-pipeline/">Speed Up Rails Asset Pipeline</a>
       </li>
     
       <li class="post">
@@ -132,22 +159,22 @@
       </li>
     
       <li class="post">
-        <a href="/posts/2011-12-10-crontab-tips/">crontab tips</a>
+        <a href="/posts/2011-12-10-crontab-tips/">Crontab Tips</a>
       </li>
     
   </ul>
 </section>
 
 <section>
-  <h1>Github Repos</h1>
+  <h1>GitHub Repos</h1>
   <ul id="gh_repos">
     <li class="loading">Status updating...</li>
   </ul>
   
-  <a href="https://github.com/zzzhc">@zzzhc</a> on Github
+  <a href="https://github.com/zzzhc">@zzzhc</a> on GitHub
   
   <script type="text/javascript">
-    $.domReady(function(){
+    $(document).ready(function(){
         if (!window.jXHR){
             var jxhr = document.createElement('script');
             jxhr.type = 'text/javascript';
@@ -182,7 +209,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2011 - zzzhc -
+  Copyright &copy; 2017 - zzzhc -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
@@ -197,7 +224,7 @@
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>
@@ -205,14 +232,6 @@
 
 
 
-
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-      script.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
-    })();
-  </script>
 
 
 

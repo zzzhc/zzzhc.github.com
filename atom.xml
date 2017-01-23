@@ -4,7 +4,7 @@
   <title><![CDATA[zzzhc's Blog]]></title>
   <link href="http://blog.zzzhc.com/atom.xml" rel="self"/>
   <link href="http://blog.zzzhc.com/"/>
-  <updated>2011-12-16T17:20:48+08:00</updated>
+  <updated>2017-01-23T16:47:23+08:00</updated>
   <id>http://blog.zzzhc.com/</id>
   <author>
     <name><![CDATA[zzzhc]]></name>
@@ -14,11 +14,11 @@
 
   
   <entry>
-    <title type="html"><![CDATA[ack - better grep]]></title>
+    <title type="html"><![CDATA[Ack - Better Grep]]></title>
     <link href="http://blog.zzzhc.com/posts/2011-12-16-ack-better-grep/"/>
-    <updated>2011-12-16T16:40:00+08:00</updated>
+    <updated>2011-12-16T11:17:00+08:00</updated>
     <id>http://blog.zzzhc.com/posts/ack-better-grep</id>
-    <content type="html"><![CDATA[<p><a href="http://betterthangrep.com/">Ack</a>是一个给程序员用的grep, 使用perl regular expressions, 而不是POSIX/GNU subset.</p>
+    <content type="html"><![CDATA[<p>Ack是一个给程序员用的grep, 使用perl regular expressions, 而不是POSIX/GNU subset.</p>
 
 <h2>why ack?</h2>
 
@@ -72,14 +72,14 @@
 <h2>integrate into vim</h2>
 
 <ul>
-<li>install <a href="https://github.com/mileszs/ack.vim">ack.vim</a></li>
+<li>install ack.vim</li>
 <li>set grepprg=ack in vimrc</li>
 </ul>
 
 
 <h2>custom ack</h2>
 
-<p>Ack默认包含很多filetype => extensions的设置，但新出现的语言不一定支持。好在ack提供<code>--type-add TYPE=.EXTENSION[,.EXT2[,...]]</code>, <code>--type-set TYPE=.EXTENSION[,.EXT2[,...]]</code>来扩展。经常用的可以加到~/.ackrc里, 我的.ackrc:</p>
+<p>Ack默认包含很多filetype => extensions的设置，但新出现的语言不一定支持。好在ack提供&mdash;type-add TYPE=.EXTENSION[,.EXT2[,&hellip;]], &mdash;type-set TYPE=.EXTENSION[,.EXT2[,&hellip;]]来扩展。经常用的可以加到~/.ackrc里, 我的.ackrc:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -96,6 +96,8 @@
 </span><span class='line'>--type-add
 </span><span class='line'><span class="nv">js</span><span class="o">=</span>.coffee
 </span></code></pre></td></tr></table></div></figure>
+
+
 
 ]]></content>
   </entry>
@@ -587,7 +589,7 @@
     <link href="http://blog.zzzhc.com/blogs/115"/>
     <updated>2011-06-19T00:00:00+08:00</updated>
     <id>http://blog.zzzhc.com/blogs/115</id>
-    <content type="html"><![CDATA[<h1>包包分词器 - 一个基于字典的快速中文分词器</h1>
+    <content type="html"><![CDATA[<h1>包包分词器 &ndash; 一个基于字典的快速中文分词器</h1>
 
 <h2>source code</h2>
 
@@ -706,7 +708,7 @@
     <link href="http://blog.zzzhc.com/blogs/107"/>
     <updated>2011-06-09T00:00:00+08:00</updated>
     <id>http://blog.zzzhc.com/blogs/107</id>
-    <content type="html"><![CDATA[<p>今天打算在本地装两个数据库，方便测试，用mysql_install_db &#8211;datadir=/opt/mysql初始化mysql data directory, 死活都不成功，/opt, /opt/mysql的权限都改成0777也是一样</p>
+    <content type="html"><![CDATA[<p>今天打算在本地装两个数据库，方便测试，用mysql_install_db &mdash;datadir=/opt/mysql初始化mysql data directory, 死活都不成功，/opt, /opt/mysql的权限都改成0777也是一样</p>
 
 <p>OS:</p>
 
@@ -744,9 +746,9 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>换成/tmp目录,mysql_install_db &#8211;datadir=/tmp，神奇地成功了。</p>
+<p>换成/tmp目录,mysql_install_db &mdash;datadir=/tmp，神奇地成功了。</p>
 
-<p>bash -x mysql_install_db &#8211;datadir=/opt/mysql/发现问题在这:</p>
+<p>bash -x mysql_install_db &mdash;datadir=/opt/mysql/发现问题在这:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -787,7 +789,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>strace /usr/sbin/mysqld &#8211;language=/usr/share/mysql/english &#8211;bootstrap &#8211;basedir=/usr &#8211;datadir=/opt/mysql/ &#8211;log-warnings=0 &#8211;loose-skip-innodb &#8211;loose-skip-ndbcluster &#8211;user=mysql &#8211;max_allowed_packet=8M &#8211;default-storage-engine=myisam &#8211;net_buffer_length=16K 2>&amp;1 |tee strace.log</p>
+<p>strace /usr/sbin/mysqld &mdash;language=/usr/share/mysql/english &mdash;bootstrap &mdash;basedir=/usr &mdash;datadir=/opt/mysql/ &mdash;log-warnings=0 &mdash;loose-skip-innodb &mdash;loose-skip-ndbcluster &mdash;user=mysql &mdash;max_allowed_packet=8M &mdash;default-storage-engine=myisam &mdash;net_buffer_length=16K 2>&amp;1 |tee strace.log</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -822,7 +824,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>open(&#8220;/opt/mysql/zzzhc-laptop.lower-test&#8221;, O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied) 这个太没道理了。。。比较了/tmp和/opt/mysql两种情况下的strace结果，没发现什么可疑的地方，难道是/tmp目录有什么奇怪的特性??</p>
+<p>open(&ldquo;/opt/mysql/zzzhc-laptop.lower-test&rdquo;, O_RDWR|O_CREAT|O_LARGEFILE, 0666) = -1 EACCES (Permission denied) 这个太没道理了。。。比较了/tmp和/opt/mysql两种情况下的strace结果，没发现什么可疑的地方，难道是/tmp目录有什么奇怪的特性??</p>
 
 <p>0.77试了下，一切正常。
 bug总是无处不在啊!</p>
@@ -909,7 +911,7 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
 
 <h1>性能比较</h1>
 
-<p>本机cpu: Intel(R) Core(TM)2 Duo CPU     P8600  @ 2.40GHz</p>
+<p>本机cpu: Intel&reg; Core&trade;2 Duo CPU     P8600  @ 2.40GHz</p>
 
 <table>
   <thead>
@@ -1121,7 +1123,7 @@ imdict-chinese-analyzer 是imdict智能词典的智能中文分词模块，算�
     <id>http://blog.zzzhc.com/blogs/69</id>
     <content type="html"><![CDATA[<p><a href="http://lucene.apache.org/solr/">solr</a>是一个基于<a href="http://lucene.apache.org/">lucene</a>，高度可配置的企业级搜索平台。它自己的介绍:</p>
 
-<blockquote><p> Solr is the popular, blazing fast open source enterprise search platform from the Apache Lucene project. Its major features include powerful full-text search, hit highlighting, faceted search, dynamic clustering, database integration, rich document (e.g., Word, PDF) handling, and geospatial search. Solr is highly scalable, providing distributed search and index replication, and it powers the search and navigation features of many of the world&#8217;s largest internet sites.</p></blockquote>
+<blockquote><p> Solr is the popular, blazing fast open source enterprise search platform from the Apache Lucene project. Its major features include powerful full-text search, hit highlighting, faceted search, dynamic clustering, database integration, rich document (e.g., Word, PDF) handling, and geospatial search. Solr is highly scalable, providing distributed search and index replication, and it powers the search and navigation features of many of the world&rsquo;s largest internet sites.</p></blockquote>
 
 <p><a href="http://lucene.apache.org/solr/features.html">Features</a>有一堆,觉得比较实用的几点有</p>
 
@@ -1260,10 +1262,10 @@ confluence里的||column||column||很简单快捷。</li>
 
 
 <p>express指南见<a href="http://expressjs.com/guide.html">http://expressjs.com/guide.html</a>，它的route方式跟rails比算很弱的，没有对restful的直接支持，但在加上methodOverride后都可以自己定义出来。
-模板引擎用hamljs, 通过app.register(&#8216;.haml&#8217;, require(&#8216;hamljs&#8217;))指定。在hamljs layout里要嵌入其它模板内容时可以用!= body。partial可以用!= partial(&#8220;post.haml&#8221;, posts)。!=的意思是对后面的内容不作escape, 细节可以看hamljs代码，很短，不到700行。
+模板引擎用hamljs, 通过app.register(&lsquo;.haml&rsquo;, require(&lsquo;hamljs&rsquo;))指定。在hamljs layout里要嵌入其它模板内容时可以用!= body。partial可以用!= partial(&ldquo;post.haml&rdquo;, posts)。!=的意思是对后面的内容不作escape, 细节可以看hamljs代码，很短，不到700行。
 mongodb client用起来比较费劲，一层一层的callback, 适当封装下应该会好使点。
 最终的代码放在<a href="https://github.com/nodepress/draft">https://github.com/nodepress/draft</a>
-性能看起来还是很好的，production模式下(NODE_ENV=production node blog.js) 并发５个连接(ab -c 5 -n 1000 http://localhost:3000/posts/)的结果
+性能看起来还是很好的，production模式下(NODE_ENV=production node blog.js) 并发５个连接(ab -c 5 -n 1000 <a href="http://localhost:3000/posts/">http://localhost:3000/posts/</a>)的结果
 Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -1369,12 +1371,12 @@ Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#server</span>
-</span><span class='line'><span class="no">EventMachine</span><span class="o">::</span><span class="n">run</span> <span class="p">{</span>
-</span><span class='line'>  <span class="no">EventMachine</span><span class="o">::</span><span class="n">start_server</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="no">ServerHandler</span>
+</span><span class='line'><span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:run</span> <span class="p">{</span>
+</span><span class='line'>  <span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:start_server</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="no">ServerHandler</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="c1">#client</span>
-</span><span class='line'><span class="no">EventMachine</span><span class="o">::</span><span class="n">run</span> <span class="p">{</span>
-</span><span class='line'>  <span class="no">EventMachine</span><span class="o">::</span><span class="n">connect</span> <span class="n">remote_server</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="no">ClientHandler</span> <span class="c1">#client</span>
+</span><span class='line'><span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:run</span> <span class="p">{</span>
+</span><span class='line'>  <span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:connect</span> <span class="n">remote_server</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="no">ClientHandler</span> <span class="c1">#client</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -1436,8 +1438,8 @@ Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="no">EventMachine</span><span class="o">::</span><span class="n">run</span> <span class="p">{</span>
-</span><span class='line'>  <span class="no">EventMachine</span><span class="o">::</span><span class="n">start_server</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">8081</span><span class="p">,</span> <span class="no">EchoServer</span>
+</span><span class='line'><span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:run</span> <span class="p">{</span>
+</span><span class='line'>  <span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:start_server</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">8081</span><span class="p">,</span> <span class="no">EchoServer</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -1485,12 +1487,12 @@ Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
 </span><span class='line'>
 </span><span class='line'>  <span class="k">def</span> <span class="nf">unbind</span>
 </span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;connection closed&quot;</span>
-</span><span class='line'>    <span class="no">EventMachine</span><span class="o">::</span><span class="n">stop</span>
+</span><span class='line'>    <span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:stop</span>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="no">EventMachine</span><span class="o">::</span><span class="n">run</span> <span class="p">{</span>
-</span><span class='line'>  <span class="no">EventMachine</span><span class="o">::</span><span class="n">connect</span> <span class="s2">&quot;www.baidu.com&quot;</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="no">HttpClient</span>
+</span><span class='line'><span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:run</span> <span class="p">{</span>
+</span><span class='line'>  <span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:connect</span> <span class="s2">&quot;www.baidu.com&quot;</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="no">HttpClient</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -1544,12 +1546,12 @@ Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
 </span><span class='line'>
 </span><span class='line'>  <span class="k">def</span> <span class="nf">unbind</span>
 </span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;connection closed&quot;</span>
-</span><span class='line'>    <span class="no">EventMachine</span><span class="o">::</span><span class="n">stop</span>
+</span><span class='line'>    <span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:stop</span>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="no">EventMachine</span><span class="o">::</span><span class="n">run</span> <span class="p">{</span>
-</span><span class='line'>  <span class="no">EventMachine</span><span class="o">::</span><span class="n">connect</span> <span class="s2">&quot;api.jquery.com&quot;</span><span class="p">,</span> <span class="mi">8088</span><span class="p">,</span> <span class="no">Client</span>
+</span><span class='line'><span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:run</span> <span class="p">{</span>
+</span><span class='line'>  <span class="ss">EventMachine</span><span class="p">:</span><span class="ss">:connect</span> <span class="s2">&quot;api.jquery.com&quot;</span><span class="p">,</span> <span class="mi">8088</span><span class="p">,</span> <span class="no">Client</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -1563,16 +1565,16 @@ Time per request:       1.145 [ms] (mean, across all concurrent requests)</p>
     <link href="http://blog.zzzhc.com/blogs/17"/>
     <updated>2011-03-31T00:00:00+08:00</updated>
     <id>http://blog.zzzhc.com/blogs/17</id>
-    <content type="html"><![CDATA[<p>Qpid对ruby的官方支持：<a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/" target="_blank">https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/</a></p>
+    <content type="html"><![CDATA[<p>Qpid对ruby的官方支持：<a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/" target="_blank"><a href="https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/">https://svn.apache.org/repos/asf/qpid/trunk/qpid/ruby/</a></a></p>
 
 <p>感觉是对python client的port, 代码风格看起来很不ruby, 用了挺多锁，信号，线程，想要停止一个connection都比较困难。对AMQP协议的实现细节被序列化到一个spec_cache下，不可读。基本没有文档，总体来说不像是一个可以正式用的东西。</p>
 
 <p>大概的用法，用rake gem生成gem包，安装gem install pkg/qpid-0.10.2.gem</p>
 
 <p>用qpid java broker的时候要注意下，创建connection的时候要指定用户名密码。
-conn = Qpid::Connection.new(TCPSocket.new(&#8220;localhost&#8221;, 5672),
-:username => &#8220;guest&#8221;,
-:password => &#8220;guest&#8221;)</p>
+conn = Qpid::Connection.new(TCPSocket.new(&ldquo;localhost&rdquo;, 5672),
+:username => &ldquo;guest&rdquo;,
+:password => &ldquo;guest&rdquo;)</p>
 
 <p>参考example写了两个简单例子
 producer.rb</p>
@@ -1614,7 +1616,7 @@ producer.rb</p>
 </span><span class='line'><span class="nb">require</span> <span class="s2">&quot;qpid&quot;</span>
 </span><span class='line'><span class="nb">require</span> <span class="s2">&quot;socket&quot;</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">conn</span> <span class="o">=</span> <span class="no">Qpid</span><span class="o">::</span><span class="no">Connection</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">TCPSocket</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">5672</span><span class="p">),</span>
+</span><span class='line'><span class="n">conn</span> <span class="o">=</span> <span class="ss">Qpid</span><span class="p">:</span><span class="ss">:Connection</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">TCPSocket</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">5672</span><span class="p">),</span>
 </span><span class='line'>                                         <span class="ss">:username</span> <span class="o">=&gt;</span> <span class="s2">&quot;guest&quot;</span><span class="p">,</span>
 </span><span class='line'>                                         <span class="ss">:password</span> <span class="o">=&gt;</span> <span class="s2">&quot;guest&quot;</span><span class="p">)</span>
 </span><span class='line'><span class="n">conn</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -1628,13 +1630,13 @@ producer.rb</p>
 </span><span class='line'><span class="n">dp</span> <span class="o">=</span> <span class="n">ssn</span><span class="o">.</span><span class="n">delivery_properties</span><span class="p">(</span><span class="ss">:routing_key</span> <span class="o">=&gt;</span> <span class="s2">&quot;test-queue&quot;</span><span class="p">)</span>
 </span><span class='line'><span class="n">mp</span> <span class="o">=</span> <span class="n">ssn</span><span class="o">.</span><span class="n">message_properties</span><span class="p">(</span><span class="ss">:content_type</span> <span class="o">=&gt;</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="no">Qpid</span><span class="o">::</span><span class="no">Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="s2">&quot;Hello QPID!&quot;</span><span class="p">))</span>
-</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="no">Qpid</span><span class="o">::</span><span class="no">Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="s2">&quot;Hello RUBY!&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="ss">Qpid</span><span class="p">:</span><span class="ss">:Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="s2">&quot;Hello QPID!&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="ss">Qpid</span><span class="p">:</span><span class="ss">:Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="s2">&quot;Hello RUBY!&quot;</span><span class="p">))</span>
 </span><span class='line'><span class="k">while</span> <span class="n">line</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">strip</span>
 </span><span class='line'>  <span class="k">break</span> <span class="k">if</span> <span class="n">line</span> <span class="o">=~</span> <span class="sr">/^(exit|done)$/i</span>
-</span><span class='line'>  <span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="no">Qpid</span><span class="o">::</span><span class="no">Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">))</span>
+</span><span class='line'>  <span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="ss">Qpid</span><span class="p">:</span><span class="ss">:Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">))</span>
 </span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="no">Qpid</span><span class="o">::</span><span class="no">Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="s2">&quot;done&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">message_transfer</span><span class="p">(</span><span class="ss">:message</span> <span class="o">=&gt;</span> <span class="ss">Qpid</span><span class="p">:</span><span class="ss">:Message</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="s2">&quot;done&quot;</span><span class="p">))</span>
 </span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">sync</span>
 </span><span class='line'>
 </span><span class='line'><span class="n">ssn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -1681,7 +1683,7 @@ producer.rb</p>
 </span><span class='line'><span class="nb">require</span> <span class="s2">&quot;qpid&quot;</span>
 </span><span class='line'><span class="nb">require</span> <span class="s2">&quot;socket&quot;</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">conn</span> <span class="o">=</span> <span class="no">Qpid</span><span class="o">::</span><span class="no">Connection</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">TCPSocket</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">5672</span><span class="p">),</span>
+</span><span class='line'><span class="n">conn</span> <span class="o">=</span> <span class="ss">Qpid</span><span class="p">:</span><span class="ss">:Connection</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">TCPSocket</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">5672</span><span class="p">),</span>
 </span><span class='line'>                                         <span class="ss">:username</span> <span class="o">=&gt;</span> <span class="s2">&quot;guest&quot;</span><span class="p">,</span>
 </span><span class='line'>                                         <span class="ss">:password</span> <span class="o">=&gt;</span> <span class="s2">&quot;guest&quot;</span><span class="p">)</span>
 </span><span class='line'><span class="n">conn</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -1749,13 +1751,13 @@ producer.rb</p>
 <li><a href="http://qpid.apache.org/">Apache Qpid</a> 性能很好</li>
 <li><a href="http://www.rabbitmq.com/">RabbitMQ</a></li>
 <li><a href="http://www.redhat.com/mrg">Red Hat Enterprise MRG</a></li>
-<li>&#8230;</li>
+<li>&hellip;</li>
 </ul>
 
 
 <h2>Qpid c++ broker性能测试结果</h2>
 
-<p>qpid-perftest &#8211;worker-threads 16 &#8211;default-queue-limit 1024000 &#8211;queue-purge-interval 30 &#8211;tcp-nodelay &#8211;mgmt-enable no</p>
+<p>qpid-perftest &mdash;worker-threads 16 &mdash;default-queue-limit 1024000 &mdash;queue-purge-interval 30 &mdash;tcp-nodelay &mdash;mgmt-enable no</p>
 
 <table>
 <tbody>
